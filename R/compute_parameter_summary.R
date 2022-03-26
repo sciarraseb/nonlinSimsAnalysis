@@ -23,6 +23,12 @@ compute_parameter_summary <- function(data, exp_num) {
   #add conv_fail categorical variable
   summary_data$conv_fail <-  factor(ifelse(summary_data$num_removed_values < .1*summary_data$num_converged_values, yes =  0, no = 1))
 
+  #set levels for time structuredness in exp 3
+  if (exp_num == 3){
+    summary_data$time_structuredness <- factor(summary_data$time_structuredness,
+                                               levels = c('time_structured', 'fast_response', 'slow_response'))
+  }
+
 
   return(summary_data)
 }

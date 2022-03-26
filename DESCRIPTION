@@ -15,7 +15,8 @@ Imports:
     parallel,
     rmarkdown,
     tidyverse, 
-    egg
+    egg, 
+    kableExtra
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
