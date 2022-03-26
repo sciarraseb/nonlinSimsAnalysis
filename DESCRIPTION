@@ -17,6 +17,8 @@ Imports:
     tidyverse, 
     egg, 
     kableExtra
+Suggests:
+    nonlinSimsAnalysis
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
