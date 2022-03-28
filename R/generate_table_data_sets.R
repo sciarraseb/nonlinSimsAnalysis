@@ -11,8 +11,9 @@ print_param_table <- function(table_ready_data, parameter_name,
 
   #setup variables
   num_repetitions <- length(col_header_name)
+  header_width <- length(column_names)
   header_details <- data.frame(col_name =  c('', '', col_header_name),
-                               col_width = c(1, 1, rep(6, times = num_repetitions)), check.names = F)
+                               col_width = c(1, 1, rep(header_width, times = num_repetitions)), check.names = F)
 
   table <- kbl(x = param_data, format = 'latex', digits = 2,
                col.names = c(IV_names, rep(column_names, times = num_repetitions)),
@@ -21,7 +22,7 @@ print_param_table <- function(table_ready_data, parameter_name,
                caption = caption_name,
                align = 'l') %>%
     column_spec(column = c(1, 2), width = '3cm') %>%
-    add_header_above(header = header_details, escape = F, line_sep = 6) %>%
+    add_header_above(header = header_details, escape = F, line_sep = 2) %>%
     footnote(escape = F, threeparttable = T) %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
     kable_styling(position = 'left') %>%

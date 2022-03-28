@@ -26,7 +26,6 @@ compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
   return(condition_summary)
 }
 
-
 generate_labels <- function(facet_var) {
 
   if (facet_var == 'measurement_spacing') {

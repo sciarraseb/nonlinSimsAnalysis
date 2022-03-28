@@ -22,8 +22,8 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
 
 
   #file names for PDFs
-  days_file_name = paste(exp_num, 'plot_days_', tolower(target_value), '.pdf', sep = '')
-  likert_file_name = paste(exp_num, 'plot_likert_', tolower(target_value),'.pdf', sep = '')
+  days_file_name = paste('Figures/', exp_num, 'plot_days_', tolower(target_value), '.pdf', sep = '')
+  likert_file_name = paste('Figures/', exp_num, 'plot_likert_', tolower(target_value),'.pdf', sep = '')
 
   #setup variable for dodging
   dodge_position <- position_dodge(width = 0.8)

@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.3.26)  26 MAR 2022 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.3.26)  27 MAR 2022 20:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpU8paBs/preview-1
-1b5f2397e9ea.dir/tutorial_analysis.tex
+1b5f47428df7.dir/tutorial_analysis.tex
 
 (/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpU8paBs/preview-11
-b5f2397e9ea.dir/tutorial_analysis.tex
+b5f47428df7.dir/tutorial_analysis.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (/Users/sebastiansciarra/Library/TinyTeX/texm
 f-dist/tex/latex/base/article.cls
@@ -544,8 +544,14 @@ nd-pdftex.def
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count305
 \l__pdf_internal_box=\box71
+) (./tutorial_analysis.aux
+
+LaTeX Warning: Label `tab:unnamed-chunk-2' multiply defined.
+
+
+LaTeX Warning: Label `tab:unnamed-chunk-2' multiply defined.
+
 )
-No file tutorial_analysis.aux.
 \openout1 = `tutorial_analysis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 84.
@@ -597,6 +603,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 84.
 LaTeX Info: Redefining \pageref on input line 84.
 LaTeX Info: Redefining \nameref on input line 84.
+(./tutorial_analysis.out) (./tutorial_analysis.out)
 \@outlinefile=\write3
 \openout3 = `tutorial_analysis.out'.
 
@@ -677,7 +684,7 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {/Users/sebastiansciarra/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdft
-ex.map}] [2]
+ex.map}]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -711,23 +718,117 @@ ex.map}] [2]
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 196.
+(Font)              <10> on input line 133.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 196.
+(Font)              <7> on input line 133.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 196.
-! Extra alignment tab has been changed to \cr.
-<template> \endtemplate 
-                        
-l.196 ...}{c}{$\uptheta_{fixed}$(lower plateau)} &
-                                                   \multicolumn{6}{c}{$\upth...
- 
+(Font)              <5> on input line 133.
+[2
+
+
+]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
+* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=557.38951pt
+* \textheight=738.0645pt
+* \oddsidemargin=-43.81725pt
+* \evensidemargin=-43.81725pt
+* \topmargin=-80.81725pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+[3
+
+
+
+
+]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
+* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=557.38951pt
+* \textheight=738.0645pt
+* \oddsidemargin=-43.81725pt
+* \evensidemargin=-43.81725pt
+* \topmargin=-80.81725pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+[4
+
+
+
+
+] (./tutorial_analysis.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `tutorial_analysis.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
 Here is how much of TeX's memory you used:
- 12242 strings out of 480236
- 194106 string characters out of 5894131
- 502623 words of memory out of 5000000
- 29969 multiletter control sequences out of 15000+600000
+ 12258 strings out of 480236
+ 194347 string characters out of 5894131
+ 514394 words of memory out of 5000000
+ 29972 multiletter control sequences out of 15000+600000
  504677 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,7n,63p,345b,465s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 60i,8n,63p,603b,355s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mat
+hit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/
+lm-ec.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/publi
+c/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist
+/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf
+-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/
+texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/sebastiansciarra/Library/Tin
+yTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on tutorial_analysis.pdf (4 pages, 98281 bytes).
+PDF statistics:
+ 57 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
+ 8 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

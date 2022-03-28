@@ -1,0 +1,265 @@
+---
+title             : "Is timing everything? Measurement timing and the ability to accurately model longitudinal data"
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{longtable}
+  - \usepackage{setspace}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionJustification{double}{\DoubleSpacing}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\footnotesize} #set caption font size to footnote 
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification=raggedright}
+  - \captionsetup[table]{font = {figCaptionFont,figCaptionSize,figCaptionStyle}, labelfont={bf}, labelsep=captionSep, justification = raggedright, margin = {0cm,0cm}}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{} \renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+  
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+  
+
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation:
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               :   "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r package_loading, echo=F}
+#load packages
+library(easypackages)
+packages <- c('tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims', 'nonlinSimsAnalysis')
+libraries(packages)
+```
+
+
+```{r obsolete_metadata_storing_importing, echo=F, eval=F}
+#store classes of each column 
+col_types_exp_1 <- unlist(lapply(X = param_summary_exp_1, FUN = class))
+col_types_exp_2 <- unlist(lapply(X = param_summary_exp_2, FUN = class))
+col_types_exp_3 <- unlist(lapply(X = param_summary_exp_3, FUN = class))
+
+#create data.frame that stores classes of data columns 
+col_types_df <- data.frame('exp_num' = c(rep(x = 1, times = length(col_types_exp_1)),
+                                         rep(x = 2, times = length(col_types_exp_2)),
+                                         rep(x = 3, times = length(col_types_exp_3))), 
+                           'variable_types' = c(col_types_exp_1, col_types_exp_2, col_types_exp_3))
+
+#create data fame that stores levels of factor variables 
+exp_1_factor_levels <- extract_factor_levels(param_summary_data = param_summary_exp_1)
+exp_2_factor_levels <- extract_factor_levels(param_summary_data = param_summary_exp_2)
+exp_3_factor_levels <- extract_factor_levels(param_summary_data = param_summary_exp_3)
+
+#write summary data  
+write_csv(x = param_summary_exp_1, file = 'data/param_summary_exp_1.csv')
+write_csv(x = param_summary_exp_2, file = 'data/param_summary_exp_2.csv')
+write_csv(x = param_summary_exp_3, file = 'data/param_summary_exp_3.csv')
+
+#write meta data + data for factor levels 
+write_csv(x = col_types_df, file = 'data/col_types.csv')
+write_csv(x = exp_1_factor_levels, file = 'data/exp_1_factor_levels.csv')
+write_csv(x = exp_2_factor_levels, file = 'data/exp_2_factor_levels.csv')
+write_csv(x = exp_3_factor_levels, file = 'data/exp_3_factor_levels.csv')
+
+#read in .csv files with experimental data already in summarized version 
+col_types_df <-read_csv(file = 'data/col_types.csv')
+exp_1_factor_levels <- read_csv(file = 'data/exp_1_factor_levels.csv')
+exp_2_factor_levels <- read_csv(file = 'data/exp_2_factor_levels.csv')
+exp_3_factor_levels <- read_csv(file = 'data/exp_3_factor_levels.csv')
+
+#import summary data files 
+param_summary_exp_1 <- read.csv(file = 'data/param_summary_exp_1.csv', colClasses = col_types_df$variable_types[col_types_df$exp_num == 1])
+param_summary_exp_2 <- read.csv(file = 'data/param_summary_exp_2.csv',  colClasses = col_types_df$variable_types[col_types_df$exp_num == 2])
+param_summary_exp_3 <- read.csv(file = 'data/param_summary_exp_3.csv', colClasses = col_types_df$variable_types[col_types_df$exp_num == 3])
+
+#relevel factors columns 
+param_summary_exp_1 <- relevel_factors(param_summary_data = param_summary_exp_1, factor_levels_df = exp_1_factor_levels)
+param_summary_exp_2 <- relevel_factors(param_summary_data = param_summary_exp_2, factor_levels_df = exp_2_factor_levels)
+param_summary_exp_3 <- relevel_factors(param_summary_data = param_summary_exp_3, factor_levels_df = exp_3_factor_levels)
+```
+
+```{r knitting_setup, echo = F}
+param_summary_exp_1 <- readRDS(file = 'data/param_summary_exp_1.RData')
+param_summary_exp_2 <- readRDS(file = 'data/param_summary_exp_2.RData')
+param_summary_exp_3 <- readRDS(file = 'data/param_summary_exp_3.RData')
+
+#create condition summary data sets 
+cond_summary_exp_1 <- compute_condition_summary(param_summary_data = param_summary_exp_1, facet_var = 'measurement_spacing', 
+                          ind_vars = c('number_measurements', 'measurement_spacing', 'midpoint'))
+cond_summary_exp_2 <- compute_condition_summary(param_summary_data = param_summary_exp_2, facet_var = 'measurement_spacing', 
+                  ind_vars = c('number_measurements', 'measurement_spacing', 'sample_size'))
+cond_summary_exp_3 <- compute_condition_summary(param_summary_data = param_summary_exp_3, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+
+#create analytical versions of summary data 
+exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = 1)
+exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = 2)
+exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = 3)
+```
+
+# Results
+
+## Experiment 1
+
+### Equal spacing
+
+```{r equa_spacing_exp_1, echo=F, eval=F}
+#compute percentage change value for each condition across all parameters 
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Equal',
+                                x_axis_name = 'Midpoint location (days)', 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -60, beta_upper = 70, ticks = 10)
+
+```
+
+
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimation Accuracy Across All Measurement Spacing Conditions in Experiment 1}
+  \label{fig:exp1_overall_perc_plot}
+  \includegraphics{Figures/exp1_plot_days_equal} 
+  \caption*{Note. \textup{Parameter estimation accuracy is computed by calculating the average percentage error across all parameters.}}
+\end{figure}
+
+Figure \ref{fig:exp1_overall_perc_plot} shows the average parameter
+estimation accuracy (in percentage units) across all measurement
+spacing and measurement number conditions. Two general results are shown
+in Figure \ref{fig:exp1_overall_perc_plot}. First, taking measurements
+across equally spaced intervals is the best strategy for minimizing
+error. Second, the measurement spacing schedules of time increasing,
+time decreasing, and middle-and-extreme incur error when five
+measurements are used and when the measurements are not taken near
+periods of change. As an example, Figure \ref{fig:exp_1_spacing_plot_example} shows where each measurement spacing schedule samples data 
+over the course of a 360-day period for a curve that has a midpoint at 80 days. The region shaded in gray specifies the period of change. The equal and time-increasing measurement schedules sample data in the region of change, whereas the time-increasing and middle-and-extreme schedules sample data outside this region. In looking at Figure \ref{fig:exp1_overall_perc_plot} when the midpoint occurs at 80 days, the equal and time-increasing spacing schedules (Panels A--B) incur less error than the time-decreasing and middle-and-extreme schedules (Panels C--D) because they sample data during the period of change. **Highlight
+that this agrees with previous research into the topic of spacing (Dormann & Griffin, 2015; Timmons & Preacher, 2015). 
+
+
+\begin{figure}
+  \caption{Measurement Schedules When Five Measurements are Taken and the Midpoint Occurs at 80 Days}
+  \label{fig:exp_1_spacing_plot_example}
+  \includegraphics{Figures/exp_1_spacing_plot_example} 
+  \caption*{Note. \textup{Region shaded in gray specifies the period of change. Only the equal and time-decreasing measurement schedules record data during the period of change, which explains why these two schedules are incur less error than the time-increasing and middle-and-extreme schedules.}}
+\end{figure}
+
+```{r echo=F, eval=F}
+theta <- 3
+alpha <- 3.32
+beta <- 80
+gamma <- 20
+day <- seq(from = 1, to = 360, by = 1)
+
+curve_values <- theta + (alpha - theta)/(1 + exp((beta - day)/gamma))
+
+equal_measurements <- compute_measurement_schedule(time_period = 360, num_measurements = 5, smallest_int_length = 30, measurement_spacing = 'equal')$measurement_days
+time_inc_measurements <- compute_measurement_schedule(time_period = 360, num_measurements = 5, smallest_int_length = 30, measurement_spacing = 'time_inc')$measurement_days
+time_dec_measurements <- compute_measurement_schedule(time_period = 360, num_measurements = 5, smallest_int_length = 30, measurement_spacing = 'time_dec')$measurement_days
+mid_ext_measurements <- compute_measurement_schedule(time_period = 360, num_measurements = 5, smallest_int_length = 30, measurement_spacing = 'mid_ext')$measurement_days
+
+
+
+logistic_curve <- data.frame('day' = day, 
+           'curve_value' = curve_values)
+
+#create spacing data
+implied_curve_value_equal <- logistic_curve$curve_value[which(logistic_curve$day %in% equal_measurements)]
+implied_curve_value_time_inc <- logistic_curve$curve_value[which(logistic_curve$day %in% time_inc_measurements)]
+implied_curve_value_time_dec <- logistic_curve$curve_value[which(logistic_curve$day %in% time_dec_measurements)]
+implied_curve_value_mid_ext <- logistic_curve$curve_value[which(logistic_curve$day %in% mid_ext_measurements)]
+
+
+spacing_data <- data.frame('spacing_type' = c(rep('equal', times = length(equal_measurements)),
+                                              rep('time_inc', times = length(time_inc_measurements)), 
+                                              rep('time_dec', times = length(time_dec_measurements)), 
+                                              rep('mid_ext', times = length(mid_ext_measurements))), 
+                           'measurement_day' = c(equal_measurements,
+                                                 time_inc_measurements, 
+                                                 time_dec_measurements, 
+                                                 mid_ext_measurements), 
+                           'curve_value' = c(implied_curve_value_equal, 
+                                             implied_curve_value_time_inc, 
+                                             implied_curve_value_time_dec, 
+                                             implied_curve_value_mid_ext))
+
+
+spacing_plot_example <- ggplot(data = logistic_curve, aes(x = day, y = curve_value)) + 
+  geom_line(size = 1) + 
+  theme_classic() + 
+  geom_point(data = spacing_data, aes(x = measurement_day, y = curve_value, 
+                                      group = spacing_type, shape = spacing_type), size = 5, alpha = 0.7) + 
+  scale_x_continuous(breaks = c(seq(from = 0, to = 360, by = 60), 30)) + 
+  annotate("rect", xmin = 30, xmax = 120, ymin = theta, ymax = alpha,
+           alpha = .3,fill = "gray") +
+
+  labs(x = 'Time (days)', y = 'Curve value') + 
+  scale_shape_manual(name = 'Spacing schedule', limits = c('equal', 'time_dec', 'time_inc', 'mid_ext'), 
+                      values = c(18, 15, 17, 16),
+                       labels = c('Equal', 'Time increasing', 'Time decreasing', 'Middle-and-extreme')) + 
+  theme(axis.ticks.y = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.text = element_text(size = 14), 
+        axis.title = element_text(size = 16), 
+        legend.text = element_text(size = 14), 
+        legend.title = element_text(size = 16))
+
+ggsave(filename = 'Figures/exp_1_spacing_plot_example.pdf', plot = spacing_plot_example, width = 9, height = 6)
+
+
+
+```
+
+
