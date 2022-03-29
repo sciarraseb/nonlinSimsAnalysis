@@ -8,13 +8,8 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
 
   #if exp_num contains 1, center beta estimates
   if (str_detect(string = exp_num, pattern = '1')){
-
-    #extract beta_fixed_data
-    beta_rows <- str_detect(string = analytical_data$days$parameter, pattern = 'beta\\[fixed\\]')
-    beta_fixed_data <- analytical_data$days[beta_rows, ]
-
-    analytical_data$days$estimate[beta_rows] <- beta_fixed_data$estimate - as.numeric(as.character(beta_fixed_data$pop_value))
-  }
+    analytical_data$days <- center_beta_param_data(day_data = analytical_data$days)
+    }
 
   #filter for rows that match measurement spacing/time structuredness condition
   day_parameter_data <- analytical_data$days %>% filter(!!sym(target_col) == target_value)
@@ -44,6 +39,20 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
                                 x_axis_var = x_axis_var, x_axis_name = x_axis_name)
 }
 
+center_beta_param_data <- function(day_data) {
+
+  #extract beta_fixed_data
+  beta_rows <- which(str_detect(string = day_data$parameter, pattern = 'beta\\[fixed\\]'))
+  beta_fixed_data <- day_data[beta_rows, ]
+
+  #replace estimate, upper_ci, lower_ci
+  day_data$estimate[beta_rows] <- as.numeric(as.character(beta_fixed_data$pop_value)) - beta_fixed_data$estimate
+  day_data$upper_ci[beta_rows] <- as.numeric(as.character(beta_fixed_data$pop_value)) - beta_fixed_data$upper_ci
+  day_data$lower_ci[beta_rows] <- as.numeric(as.character(beta_fixed_data$pop_value)) - beta_fixed_data$lower_ci
+
+  return(day_data)
+}
+
 
 generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_cols = 2,
                                               legend_position = c(0.50, .50), legend_direction = 'horizontal',
@@ -54,7 +63,7 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
                                               grouping_var = 'number_measurements',
                                               facet_var = 'parameter',
                                               fill_var = 'conv_fail',
-                                              fill_legend_title = 'Convergence \nSuccess',
+                                              fill_legend_title = 'Percentage \nRemoved Values',
                                               shape_legend_title = 'Number of \nMeasurements',
                                               panel_spacing_y = 12, dodge_position,
                                               #parameters that change across Experiments 1-3
@@ -109,7 +118,7 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                           grouping_var = 'number_measurements',
                                           facet_var = 'parameter',
                                           fill_var = 'conv_fail',
-                                          fill_legend_title = 'Convergence \nSuccess',
+                                          fill_legend_title = 'Percentage \nRemoved Values',
                                           shape_legend_title = 'Number of \nMeasurements',
                                           panel_spacing_y = 4, dodge_position,
                                           #arguments that need to be changed to Likert facets
@@ -189,7 +198,7 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
     scale_fill_manual(name = fill_legend_title,
                     values = c('black', 'white'),
-                    labels = c('Above 90%', 'Below 90%'), drop = FALSE), #set drop =FALSE so that unused levels are included
+                    labels = c('Below 10%', 'Above 10%'), drop = FALSE), #set drop =FALSE so that unused levels are included
     guides(fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
          shape = guide_legend(override.aes = list(fill = "black"))),
     scale_x_discrete(name = x_axis_name))

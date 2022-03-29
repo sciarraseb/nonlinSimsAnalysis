@@ -74,7 +74,7 @@ order_param_spacing_levels <- function(data) {
                                                       "gamma_fixed", "gamma_rand",
                                                       "epsilon")),
            'measurement_spacing' = factor(measurement_spacing, levels = c('equal', 'time_inc', 'time_dec', 'mid_ext'),
-                                          labels = c('Equal', 'Time increasing', 'Time decreasing', 'Middle-extreme')))
+                                          labels = c('Equal', 'Time increasing', 'Time decreasing', 'Middle-and-extreme')))
 
   return(ordered_data)
 }
