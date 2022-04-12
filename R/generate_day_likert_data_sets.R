@@ -68,15 +68,25 @@ append_parameter_labels <- function(summary_data) {
                                                "beta_fixed", "beta_rand",
                                                "gamma_fixed", "gamma_rand",
                                                "epsilon"),
-                                   labels = c(bquote(expr = 'bold(A:~theta[fixed]~(Lower~plateau))'),
-                                              bquote(expr = 'bold(B:~theta[random]~(Lower~plateau))'),
-                                              bquote(expr = 'bold(C:~alpha[fixed]~(Upper~plateau))'),
-                                              bquote(expr = 'bold(D:~alpha[random]~(Upper~plateau))'),
-                                              bquote(expr = 'bold(F:~beta[fixed]~(Midpoint))'),
-                                              bquote(expr = 'bold(G:~beta[random]~(Midpoint))'),
-                                              bquote(expr = 'bold(H:~gamma[fixed]~(Satiation~point))'),
-                                              bquote(expr = 'bold(I:~gamma[random]~(Satiation~point))'),
-                                              bquote(expr = 'bold(E:~epsilon~(Error))')))
+                                   labels = c(bquote(expr = 'bold(E:~theta[fixed]~(Baseline))'),
+                                              bquote(expr = 'bold(F:~theta[random]~(Baseline))'),
+                                              bquote(expr = 'bold(G:~alpha[fixed]~(Maximal~elevation))'),
+                                              bquote(expr = 'bold(H:~alpha[random]~(Maximal~elevation))'),
+                                              bquote(expr = 'bold(A:~beta[fixed]~(`Days-to-halfway`~elevation))'),
+                                              bquote(expr = 'bold(B:~beta[random]~(`Days-to-halfway`~elevation))'),
+                                              bquote(expr = 'bold(C:~gamma[fixed]~(`Triquarter-halfway`~duration))'),
+                                              bquote(expr = 'bold(D:~gamma[random]~(`Triquarter-halfway`~duration))'),
+                                              bquote(expr = 'bold(I:~epsilon~(Error))')))
+
+                                  #labels = c(bquote(expr = 'bold(theta[fixed])'),
+                                  #          bquote(expr = 'bold(theta[random])'),
+                                  #          bquote(expr = 'bold(alpha[fixed])'),
+                                  #          bquote(expr = 'bold(alpha[random])'),
+                                  #          bquote(expr = 'bold(beta[fixed])'),
+                                  #          bquote(expr = 'bold(beta[random])'),
+                                  #          bquote(expr = 'bold(gamma[fixed])'),
+                                  #          bquote(expr = 'bold(gamma[random])'),
+                                  #          bquote(expr = 'bold(epsilon~(error))')))
 
   return(summary_data)
 }

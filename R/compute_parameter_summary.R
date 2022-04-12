@@ -29,6 +29,10 @@ compute_parameter_summary <- function(data, exp_num) {
                                                levels = c('time_structured', 'fast_response', 'slow_response'))
   }
 
+  #compute necessary factor conversions
+
+
+
 
   return(summary_data)
 }
@@ -74,7 +78,10 @@ order_param_spacing_levels <- function(data) {
                                                       "gamma_fixed", "gamma_rand",
                                                       "epsilon")),
            'measurement_spacing' = factor(measurement_spacing, levels = c('equal', 'time_inc', 'time_dec', 'mid_ext'),
-                                          labels = c('Equal', 'Time increasing', 'Time decreasing', 'Middle-and-extreme')))
+                                          labels = c('Equal spacing',
+                                                     'Time-interval increasing',
+                                                     'Time-interval decreasing',
+                                                     'Middle-and-extreme spacing')))
 
   return(ordered_data)
 }

@@ -18,7 +18,8 @@ compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
     summarize(mean_perc_error = mean(perc_error),
               mean_lower_ci = mean(lower_ci_perc),
               mean_upper_ci = mean(upper_ci_perc),
-              mean_convergence = mean(num_converged_values))
+              mean_convergence = mean(num_converged_values)/1000,
+              mean_sd = mean(sd_estimate))
 
   #add conv_fail variable; 900 comes from .9*cell size
   condition_summary$conv_fail <-  factor(ifelse(condition_summary$mean_convergence > 900, yes =  0, no = 1))

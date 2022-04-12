@@ -1,0 +1,1048 @@
+---
+title: "other"
+output: pdf_document
+---
+## Post-processing of data
+
+After the simulations were completed, outliers were removed so that
+irregularities did not exist in patterns of variability. For example,
+Figure \ref{fig:unusual_variability} shows one example of an irregular
+variability pattern. Panel \ref{fig:unusual_variability}A shows the
+estimates for the triquarter point (in Experiment 2) when outliers were
+not removed and Panel \ref{fig:unusual_variability}B shows the estimates
+for the triquarter point (in Experiment 2) when outliers were removed
+(error bars represent the middle 95% of estimated values). When outliers
+were not removed, the error bars did not decrease as sample size
+increased, but when outliers were removed, the error bars decreased as
+sample size increased.
+
+The median absolute deviation was used to identify outtliers. Equation
+\ref{eq:median-absolute-deviation} below shows the equation for
+computing the median absolute deviation:
+
+\begin{align}
+\text{Median absolute deviation} = b\Bigg(M_i\bigg(\mid x_i - M_j(x) \mid \bigg) \Bigg),
+(\#eq:median-absolute-deviation)
+\end{align}
+
+where $x_i$ is each data point, $M_j(x)$ is the median of the data,
+$M_i$ is the median of the median absolute deviations, and $b$ is a
+constant whose value is tied to the assumption that the data will be
+normally distributed after outliers are removed ($b = 1.4826$;
+@leys2013). More technically, the median absolute deviation is the
+median of median absolute deviations. The median absolute deviation was
+used for two reasons. First, the median absolute deviation is less
+impacted by outliers than the commonly used standard deviation . Second,
+the median absolute deviation is sensitive to detecting outliers in
+small samples such as the ones simulated in the Experiments 2--3 (*N* =
+30, 50, and 100).
+
+Estimates were identified as outliers if they lied outside of four
+median absolute deviations. For each parameter in each experimental
+condition, median absolute deviation values were computed and used to
+remove outliers (see Tables \ref{tab:exp1-alpha-theta-removed}--\ref{tab:exp2-theta-removed} in [Appendix B][Appendix B: Number of values removed from data cleaning procedure] for number of parameter estimates removed in each Experiments 1--3). 
+
+```{r example-unusual-variability, include=F}
+#data cleaning without outlier removal 
+exp_2 <- read_csv(file = 'data/exp_2.csv')
+exp_2_unfiltered <- convert_var_to_sd(data = exp_2)
+param_summary_exp_2_unfiltered <- compute_parameter_summary(data = exp_2_unfiltered, exp_num = 2)
+
+#necessary factor conversions
+param_summary_exp_2_unfiltered$number_measurements <- factor(param_summary_exp_2_unfiltered$number_measurements, 
+                                                             levels = c(5, 7, 9, 11))
+param_summary_exp_2_unfiltered$sample_size <- factor(param_summary_exp_2_unfiltered$sample_size, 
+                                                     levels = c(30, 50, 100, 200, 500, 1000))
+param_summary_exp_2_unfiltered$conv_fail <- factor(param_summary_exp_2_unfiltered$conv_fail, levels = c(0, 1))
+
+
+#generate likert and day data sets
+exp_2_analytical_unfiltered <- generate_likert_days_data_sets(summary_data = param_summary_exp_2_unfiltered, exp_num = 2)
+
+#combine analytical and unfiltered data sets 
+exp_2_analytical$days$origin <- 'filtered'
+exp_2_analytical_unfiltered$days$origin <- 'unfiltered'
+
+combined_data_exp_2 <- rbind(exp_2_analytical$days, exp_2_analytical_unfiltered$days)
+combined_data_exp_2$origin <- factor(combined_data_exp_2$origin, levels = c('unfiltered', 'filtered'))
+
+#create data set with gamma estimate from filtered and unfiltered data sets 
+gamma_data_combined <- combined_data_exp_2 %>% 
+  filter(measurement_spacing == 'Equal', grepl('gamma\\[fixed\\]', parameter)) %>%
+  arrange(origin)
+
+gamma_data_combined$parameter <- NA #NA overwrite needed for modifications below
+
+#modify parameter labels
+gamma_data_combined$parameter[gamma_data_combined$origin == 'unfiltered'] <- bquote(expr = 'bold(A:Unfiltered~gamma[random]~(Satiation~point))')
+gamma_data_combined$parameter[gamma_data_combined$origin == 'filtered'] <- bquote(expr ='bold(B:Filtered~gamma[random]~(Satiation~point))')
+gamma_data_combined$parameter <- factor(gamma_data_combined$parameter)
+
+#create ggplot with
+generate_filtered_unfiltered_facet_plot(parameter_data = gamma_data_combined, x_axis_name = 'Sample size (*N*)', x_axis_var = 'sample_size', 
+                                        beta_lower = 0, beta_upper = 40, file_name = 'Figures/filtered_unfiltered.pdf', ticks = 5, 
+                                        legend_direction = 'horizontal', legend_position = 'bottom')
+```
+
+```{=tex}
+\begin{figure}
+  \caption{Estimate Summary for Fixed-Effect Triquarter Point($\upgamma_{fixed}$) With and Without Outliers}
+  \label{fig:unusual_variability}
+  \includegraphics{Figures/filtered_unfiltered} \hfill{}
+  \caption*{Note. \textup{}}
+\end{figure}
+```
+## Appendix B: Parameter estimate plots for all parameter
+
+### Equal spacing
+
+```{r plots-equal-exp1, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Equal spacing',
+                                x_axis_name = 'Midpoint location (days)', 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -20, beta_upper = 20, ticks = 5)
+
+
+```
+
+```{r text-values-equal-exp1, echoF}
+gamma_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 7, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp1_plot_equal} shows the estimation accuracy (in terms
+of Likert-based or day-based units)each of the nine estimated parameters
+when equal spacing is used (error bars represent the middle 95% of
+estimated values and shaded horizontal lines indicate the population
+value). Panels A--E show the estimation accuracy for parameters measured
+in Likert scale units ($\uptheta$ and $\upalpha$; measured on a range of
+1--5) and Panels F--I show the estimation accuracy for parameters
+measured in day units ($\upbeta$ and $\upgamma$). Note that, in Panel F,
+estimates for $\upbeta_{fixed}$ are centered around their corresponding
+population values (80, 180, and 280 days), and so the y-axis represents
+error (in number of days) from the population value.
+
+Estimation of Likert-unit parameters appears to be unaffected, whereas
+the estimation of day-unit parameters appears to incur considerable
+variability. The estimation for the fixed- and random-effect values of
+the midpoint ($\upbeta_{fixed}$ and $\upbeta_{random}$; Figure
+\ref{fig:exp1_plot_equal}F--G) and the satiation point
+($\upgamma_{fixed}$ and $\upgamma_{random}$; Figure
+\ref{fig:exp1_plot_equal}H--I) incur considerable variability when five
+measurements are taken, but this variability largely diminishes when
+seven or more measurements are taken. For example, when five
+measurements are taken and the midpoint occurs at 80 days, the middle
+95% of values estimated for the fixed-effect parameter of the satiation
+point ($\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_equal}H) has a
+plausible range that spans
+`r gamma_equal_5_180$upper_ci - gamma_equal_5_180$lower_ci` days
+(`r gamma_equal_5_180$upper_ci` to `r gamma_equal_5_180$lower_ci` days),
+but the width of this range decreases to approximately
+`r gamma_equal_7_180$upper_ci - gamma_equal_7_180$lower_ci` days when
+seven measurements are taken (`r gamma_equal_7_180$upper_ci` to
+`r gamma_equal_7_180$lower_ci` days).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Day-Unit Parameter Estimates for Parameter Equal Spacing}
+  \label{fig:exp1_plot_equal}
+  \includegraphics{Figures/exp1_plot_days_equal spacing} \hfill{}
+  \caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Equal Spacing (continued)}
+  \includegraphics{Figures/exp1_plot_likert_equal spacing} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Time-interval increasing spacing
+
+```{r plots-time-increasing-exp1, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval increasing',
+                                x_axis_name = 'Midpoint location (days)', 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -70, beta_upper = 60, ticks = 10)
+
+exp_1_analytical$likert$measurement_spacing
+```
+
+```{r text-values-time-increasing-exp1, echoF}
+beta_time_inc_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_increasing} shows the estimation accuracy
+(in terms of Likert-based or day-based units)each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+As in the equal-spacing condition, estimation of Likert-unit parameters
+appears to be unaffected, whereas the estimation of day-unit parameters
+appears to incur considerable variability. Two general trends exist in
+the estimates of day-based parameters. First, for the fixed-effect
+midpoint and satiation point parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F--G),
+variability increases exponentially when five measurements are taken and
+the and the midpoint moves from 80 to 280 days. As an example, the
+middle 95% of values estimated for the fixed-effect midpoint parameter
+($\upbeta_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F) has
+widths of `r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci`
+(`r beta_time_inc_5_80$upper_ci` days to `r beta_time_inc_5_80$lower_ci`
+days) and
+`r beta_time_inc_5_180$upper_ci - beta_time_inc_5_180$lower_ci` days
+(`r beta_time_inc_5_180$lower_ci` days to
+`r beta_time_inc_5_180$upper_ci` days) when the midpoint occurs at 80
+and 180 days, respectively, but the width increases to
+`r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days
+(`r beta_time_inc_5_280$lower_ci` days to
+`r beta_time_inc_5_280$upper_ci` days) when the midpoint occurs at 280
+days. Second, the large amount of variability observed for the
+fixed-effect midpoint and satiation point parameters largely disappears
+when seven or more measurements are taken. As an example, the wide range
+of `r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days
+for the fixed-effect midpoint parameter decreases to
+`r beta_time_inc_7_280$upper_ci - beta_time_inc_7_280$lower_ci` days
+when seven measurements are taken (see (Figure
+\ref{fig:exp1_plot_time_increasing}F)).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Increasing Spacing}
+  \label{fig:exp1_plot_time_increasing}
+  \includegraphics{Figures/exp1_plot_likert_time increasing} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Increasing Spacing (continued)}
+  \includegraphics{Figures/exp1_plot_days_time increasing} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+### Time-interval decreasing spacing
+
+```{r plots-time-decreasing-exp1, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval decreasing',
+                                x_axis_name = 'Midpoint location (days)', 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -60, beta_upper = 70, ticks = 10)
+```
+
+```{r text-values-time-decreasing-exp1, echoF}
+beta_time_dec_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_decreasing} shows the estimation accuracy
+(in terms of Likert-based or day-based units)each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+As in the equal-spacing condition, estimation of Likert-unit parameters
+appears to be unaffected, whereas the estimation of day-unit parameters
+appears to incur considerable variability. Two general trends exist in
+the estimates of day-based parameters. First, for the fixed-effect
+midpoint and satiation point parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F--G),
+variability increases exponentially when five measurements are taken and
+the midpoint moves from 280 to 80 days. As an example, the middle 95% of
+values estimated for the fixed-effect midpoint parameter
+($\upbeta_{fixed}$; Figure \ref{fig:exp1_plot_time_decreasing}F) has
+widths of
+`r beta_time_dec_5_280$upper_ci - beta_time_dec_5_280$lower_ci`
+(`r beta_time_dec_5_280$upper_ci` days to
+`r beta_time_dec_5_280$lower_ci` days) and
+`r beta_time_dec_5_180$upper_ci - beta_time_dec_5_180$lower_ci` days
+(`r beta_time_dec_5_180$lower_ci` days to
+`r beta_time_dec_5_180$upper_ci` days) when the midpoint occurs at 280
+and 180 days, respectively, but the width increases to
+`r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci` days
+(`r beta_time_inc_5_80$lower_ci` days to `r beta_time_inc_5_80$upper_ci`
+days) when the midpoint occurs at 80 days. Second, the large amount of
+variability observed for the fixed-effect midpoint and satiation point
+parameters largely disappears when seven or more measurements are taken.
+As an example, the wide range of
+`r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci` days for
+the fixed-effect midpoint parameter decreases to
+`r beta_time_dec_7_280$upper_ci - beta_time_dec_7_280$lower_ci` days
+when seven measurements are taken (see (Figure
+\ref{fig:exp1_plot_time_increasing}F)).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Decreasing Spacing}
+  \label{fig:exp1_plot_time_decreasing}
+  \includegraphics{Figures/exp1_plot_likert_time decreasing} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Decreasing Spacing (continued)}
+  \includegraphics{Figures/exp1_plot_days_time decreasing} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+### Middle-and-extreme spacing
+
+```{r plots-mid-ext-exp1, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Middle-and-extreme spacing',
+                                x_axis_name = 'Midpoint location (days)', 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -20, beta_upper = 20, ticks = 5)
+```
+
+```{r text-values-mid-ext-exp1, echoF}
+beta_time_dec_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_mid_ext} shows the estimation accuracy
+(in terms of Likert-based or day-based units) each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Middle-and-Extreme Spacing}
+  \label{fig:exp1_plot_time_mid_ext}
+  \includegraphics{Figures/exp1_plot_likert_middle-and-extreme} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Middle-and-Extreme Spacing (continued)}
+  \includegraphics{Figures/exp1_plot_days_middle-and-extreme} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Summary of Experiment 1 
+```{r plot-summary-exp1, include=F}
+generate_summary_facet_plot(condition_data = cond_summary_exp_1, lower_y_limit = -6, upper_y_limit = 20, ticks = 2, exp_num = 'Figures/exp1_', 
+                            y_axis_var = 'mean_sd', y_axis_name = 'Parameter variability (standard deviations)')
+
+
+generate_summary_facet_plot(condition_data = cond_summary_exp_2, lower_y_limit = -6, upper_y_limit = 20, ticks = 2, exp_num = 'Figures/exp2_', 
+                            y_axis_var = 'mean_sd', y_axis_name = 'Parameter variability (standard deviations)',
+                            x_axis_var = 'sample_size', x_axis_name = 'Sample size (*N*)')
+
+
+generate_summary_facet_plot(condition_data = cond_summary_exp_3, lower_y_limit = -6, upper_y_limit = 20, ticks = 2, exp_num = 'Figures/exp3_', 
+                            y_axis_var = 'mean_sd', y_axis_name = 'Parameter variability (standard deviations)',
+                            x_axis_var = 'sample_size', x_axis_name = 'Sample size (*N*)', facet_var = 'time_structuredness')
+
+
+```
+
+
+```{=tex}
+\begin{figure}
+  \caption{Parameter Estimate Accuracy Across Measurement Spacing Conditions in Experiment 1}
+  \label{fig:exp1_plot_time_mid_ext}
+  \includegraphics{Figures/exp1_summary_plot} \hfill{}
+  \caption*{Note.}
+\end{figure}
+```
+
+
+
+
+## Experiment 2
+
+Experiment 2 investigated whether an optimal measurement spacing
+schedule exists to handle uncertainty in the pattern of change. Three
+variables were manipulated: measurement spacing, number of measurements,
+and pattern of change. Measurement spacing was manipulated by creating
+schedules defined by either equal, time-increasing, time-decreasing, or
+middle-and-extreme spacing. The levels for number of measurements were
+set to either 5, 7, 9, or 11 measurements, and the pattern of change was
+manipulated such that the halfway point occurred at either 80, 180, or
+280 days.
+
+### Equal spacing
+
+```{r plots-equal-exp2, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
+                               target_col = 'measurement_spacing', target_value = 'Equal spacing',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp2_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+```
+
+```{r text-values-equal-exp2, echoF}
+gamma_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 7, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp1_plot_equal} shows the estimation accuracy (in terms
+of Likert-based or day-based units)each of the nine estimated parameters
+when equal spacing is used (error bars represent the middle 95% of
+estimated values and shaded horizontal lines indicate the population
+value). Panels A--E show the estimation accuracy for parameters measured
+in Likert scale units ($\uptheta$ and $\upalpha$; measured on a range of
+1--5) and Panels F--I show the estimation accuracy for parameters
+measured in day units ($\upbeta$ and $\upgamma$). Note that, in Panel F,
+estimates for $\upbeta_{fixed}$ are centered around their corresponding
+population values (80, 180, and 280 days), and so the y-axis represents
+error (in number of days) from the population value.
+
+Estimation of Likert-unit parameters appears to be unaffected, whereas
+the estimation of day-unit parameters appears to incur considerable
+variability. The estimation for the fixed- and random-effect values of
+the midpoint ($\upbeta_{fixed}$ and $\upbeta_{random}$; Figure
+\ref{fig:exp1_plot_equal}F--G) and the satiation point
+($\upgamma_{fixed}$ and $\upgamma_{random}$; Figure
+\ref{fig:exp1_plot_equal}H--I) incur considerable variability when five
+measurements are taken, but this variability largely diminishes when
+seven or more measurements are taken. For example, when five
+measurements are taken and the midpoint occurs at 80 days, the middle
+95% of values estimated for the fixed-effect parameter of the satiation
+point ($\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_equal}H) has a
+plausible range that spans
+`r gamma_equal_5_180$upper_ci - gamma_equal_5_180$lower_ci` days
+(`r gamma_equal_5_180$upper_ci` to `r gamma_equal_5_180$lower_ci` days),
+but the width of this range decreases to approximately
+`r gamma_equal_7_180$upper_ci - gamma_equal_7_180$lower_ci` days when
+seven measurements are taken (`r gamma_equal_7_180$upper_ci` to
+`r gamma_equal_7_180$lower_ci` days).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Equal Spacing}
+  \label{fig:exp1_plot_equal}
+  \includegraphics{Figures/exp2_plot_likert_equal} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Equal Spacing (continued)}
+  \includegraphics{Figures/exp2_plot_days_equal} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Time-interval increasing spacing
+
+```{r plots-time-increasing-exp2, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
+                               target_col = 'measurement_spacing', target_value = 'Time-interval increasing',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp2_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+
+```
+
+```{r text-values-time-increasing-exp2, echoF}
+beta_time_inc_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time increasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp2_plot_time_increasing} shows the estimation accuracy
+(in terms of Likert-based or day-based units)each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+As in the equal-spacing condition, estimation of Likert-unit parameters
+appears to be unaffected, whereas the estimation of day-unit parameters
+appears to incur considerable variability. Two general trends exist in
+the estimates of day-based parameters. First, for the fixed-effect
+midpoint and satiation point parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F--G),
+variability increases exponentially when five measurements are taken and
+the and the midpoint moves from 80 to 280 days. As an example, the
+middle 95% of values estimated for the fixed-effect midpoint parameter
+($\upbeta_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F) has
+widths of `r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci`
+(`r beta_time_inc_5_80$upper_ci` days to `r beta_time_inc_5_80$lower_ci`
+days) and
+`r beta_time_inc_5_180$upper_ci - beta_time_inc_5_180$lower_ci` days
+(`r beta_time_inc_5_180$lower_ci` days to
+`r beta_time_inc_5_180$upper_ci` days) when the midpoint occurs at 80
+and 180 days, respectively, but the width increases to
+`r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days
+(`r beta_time_inc_5_280$lower_ci` days to
+`r beta_time_inc_5_280$upper_ci` days) when the midpoint occurs at 280
+days. Second, the large amount of variability observed for the
+fixed-effect midpoint and satiation point parameters largely disappears
+when seven or more measurements are taken. As an example, the wide range
+of `r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days
+for the fixed-effect midpoint parameter decreases to
+`r beta_time_inc_7_280$upper_ci - beta_time_inc_7_280$lower_ci` days
+when seven measurements are taken (see (Figure
+\ref{fig:exp1_plot_time_increasing}F)).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Increasing Spacing}
+  \label{fig:exp2_plot_time_increasing}
+  \includegraphics{Figures/exp2_plot_likert_time increasing} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Increasing Spacing (continued)}
+  \includegraphics{Figures/exp2_plot_days_time increasing} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Time-interval decreasing spacing
+
+```{r plots-time-decreasing-exp2, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
+                               target_col = 'measurement_spacing', target_value = 'Time-interval decreasing',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp2_', beta_lower = 155, beta_upper = 195,
+                               ticks = 5)
+```
+
+```{r text-values-time-decreasing-exp2, echoF}
+beta_time_dec_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp2_plot_time_decreasing} shows the estimation accuracy
+(in terms of Likert-based or day-based units)each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+As in the equal-spacing condition, estimation of Likert-unit parameters
+appears to be unaffected, whereas the estimation of day-unit parameters
+appears to incur considerable variability. Two general trends exist in
+the estimates of day-based parameters. First, for the fixed-effect
+midpoint and satiation point parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_time_increasing}F--G),
+variability increases exponentially when five measurements are taken and
+the midpoint moves from 280 to 80 days. As an example, the middle 95% of
+values estimated for the fixed-effect midpoint parameter
+($\upbeta_{fixed}$; Figure \ref{fig:exp1_plot_time_decreasing}F) has
+widths of
+`r beta_time_dec_5_280$upper_ci - beta_time_dec_5_280$lower_ci`
+(`r beta_time_dec_5_280$upper_ci` days to
+`r beta_time_dec_5_280$lower_ci` days) and
+`r beta_time_dec_5_180$upper_ci - beta_time_dec_5_180$lower_ci` days
+(`r beta_time_dec_5_180$lower_ci` days to
+`r beta_time_dec_5_180$upper_ci` days) when the midpoint occurs at 280
+and 180 days, respectively, but the width increases to
+`r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci` days
+(`r beta_time_inc_5_80$lower_ci` days to `r beta_time_inc_5_80$upper_ci`
+days) when the midpoint occurs at 80 days. Second, the large amount of
+variability observed for the fixed-effect midpoint and satiation point
+parameters largely disappears when seven or more measurements are taken.
+As an example, the wide range of
+`r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci` days for
+the fixed-effect midpoint parameter decreases to
+`r beta_time_dec_7_280$upper_ci - beta_time_dec_7_280$lower_ci` days
+when seven measurements are taken (see (Figure
+\ref{fig:exp1_plot_time_increasing}F)).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Decreasing Spacing}
+  \label{fig:exp2_plot_time_decreasing}
+  \includegraphics{Figures/exp1_plot_likert_time decreasing} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Decreasing Spacing (continued)}
+  \includegraphics{Figures/exp2_plot_days_time decreasing} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Middle-and-extreme spacing
+
+```{r plots-mid-ext-exp2, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
+                               target_col = 'measurement_spacing', target_value = 'Middle-and-extreme spacing',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp2_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+```
+
+```{r text-values-mid-ext-exp2, echoF}
+beta_time_dec_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time decreasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_mid_ext} shows the estimation accuracy
+(in terms of Likert-based or day-based units) each of the nine estimated
+parameters when time-increasing spacing is used (error bars represent
+the middle 95% of estimated values and shaded horizontal lines indicate
+the population value). Panels A--E show the estimation accuracy for
+parameters measured in Likert scale units ($\uptheta$ and $\upalpha$;
+measured on a range of 1--5) and Panels F--I show the estimation
+accuracy for parameters measured in day units ($\upbeta$ and
+$\upgamma$). Note that, in Panel F, estimates for $\upbeta_{fixed}$ are
+centered around their corresponding population values (80, 180, and 280
+days), and so the y-axis represents error from the population value (in
+number of days).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Middle-and-Extreme Spacing}
+  \label{fig:exp2_plot_time_mid_ext}
+  \includegraphics{Figures/exp1_plot_likert_middle-and-extreme} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Middle-and-Extreme Spacing (continued)}
+  \includegraphics{Figures/exp2_plot_days_middle-and-extreme} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Summary of Experiment 2
+```{r plot-summary-exp2, include=F}
+generate_summary_facet_plot(condition_data = cond_summary_exp_2, lower_y_limit = -6, upper_y_limit = 20, ticks = 2, exp_num = 'Figures/exp2_', 
+                            y_axis_var = 'mean_perc_error', y_axis_name = 'Parameter bias (percentage error)', 
+                            x_axis_var = 'sample_size', x_axis_name = 'Sample size (*N*)')
+
+```
+
+
+```{=tex}
+\begin{figure}
+  \caption{Parameter Estimate Accuracy Across Measurement Spacing Conditions in Experiment 1}
+  \label{fig:exp1_plot_time_mid_ext}
+  \includegraphics{Figures/exp2_summary_plot} \hfill{}
+  \caption*{Note.}
+\end{figure}
+```
+
+
+
+
+
+## Experiment 3
+
+Experiment 3 investigated whether an optimal measurement spacing
+schedule exists to handle uncertainty in the pattern of change. Three
+variables were manipulated: measurement spacing, number of measurements,
+and pattern of change. Measurement spacing was manipulated by creating
+schedules defined by either equal, time-increasing, time-decreasing, or
+middle-and-extreme spacing. The levels for number of measurements were
+set to either 5, 7, 9, or 11 measurements, and the pattern of change was
+manipulated such that the halfway point occurred at either 80, 180, or
+280 days.
+
+### Time-structured data
+
+```{r plots-time-structured-exp3, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_3_analytical, 
+                               target_col = 'time_structuredness', target_value = 'time_structured',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp3_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+```
+
+```{r text-values-time-structured-exp3, echoF}
+gamma_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 7, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp3_plot_equal} shows the estimation accuracy (in terms
+of Likert-based or day-based units)each of the nine estimated parameters
+when equal spacing is used (error bars represent the middle 95% of
+estimated values and shaded horizontal lines indicate the population
+value). Panels A--E show the estimation accuracy for parameters measured
+in Likert scale units ($\uptheta$ and $\upalpha$; measured on a range of
+1--5) and Panels F--I show the estimation accuracy for parameters
+measured in day units ($\upbeta$ and $\upgamma$). Note that, in Panel F,
+estimates for $\upbeta_{fixed}$ are centered around their corresponding
+population values (80, 180, and 280 days), and so the y-axis represents
+error (in number of days) from the population value.
+
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Stuctured Data}
+  \label{fig:exp1_plot_equal}
+  \includegraphics{Figures/exp3_plot_likert_time_structured} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Stuctured Data (continued)}
+  \includegraphics{Figures/exp3_plot_days_time_structured} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+### Time-unstructured data (fast response)
+
+```{r plots-fast-response-exp3, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_3_analytical, 
+                               target_col = 'time_structuredness', target_value = 'fast_response',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp3_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+```
+
+```{r text-values-fast-response-exp3, echoF}
+gamma_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 7, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp3_plot_equal} shows the estimation accuracy (in terms
+of Likert-based or day-based units)each of the nine estimated parameters
+when equal spacing is used (error bars represent the middle 95% of
+estimated values and shaded horizontal lines indicate the population
+value). Panels A--E show the estimation accuracy for parameters measured
+in Likert scale units ($\uptheta$ and $\upalpha$; measured on a range of
+1--5) and Panels F--I show the estimation accuracy for parameters
+measured in day units ($\upbeta$ and $\upgamma$). Note that, in Panel F,
+estimates for $\upbeta_{fixed}$ are centered around their corresponding
+population values (80, 180, and 280 days), and so the y-axis represents
+error (in number of days) from the population value.
+
+
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Unstructured Data (Fast Response)}
+  \label{fig:exp3_plot_fast_response}
+  \includegraphics{Figures/exp3_plot_likert_fast_response} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Unstructured Data (Fast Response; continued)}
+  \includegraphics{Figures/exp3_plot_days_fast_response} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+
+
+### Time-unstructured data (slow response)
+
+```{r plots-slow-response-exp3, include=F}
+generate_day_likert_facet_plot(analytical_data = exp_3_analytical, 
+                               target_col = 'time_structuredness', target_value = 'slow_response',
+                               x_axis_name = 'Sample size (*N*)', 
+                               x_axis_var = 'sample_size', exp_num = 'exp3_', beta_lower = 165, beta_upper = 205,
+                               ticks = 5)
+```
+
+```{r text-values-slow-response-exp3, echoF}
+gamma_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal', number_measurements == 7, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp3_plot_equal} shows the estimation accuracy (in terms
+of Likert-based or day-based units)each of the nine estimated parameters
+when equal spacing is used (error bars represent the middle 95% of
+estimated values and shaded horizontal lines indicate the population
+value). Panels A--E show the estimation accuracy for parameters measured
+in Likert scale units ($\uptheta$ and $\upalpha$; measured on a range of
+1--5) and Panels F--I show the estimation accuracy for parameters
+measured in day units ($\upbeta$ and $\upgamma$). Note that, in Panel F,
+estimates for $\upbeta_{fixed}$ are centered around their corresponding
+population values (80, 180, and 280 days), and so the y-axis represents
+error (in number of days) from the population value.
+
+
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Unstructured Data (Slow Response)}
+  \label{fig:exp3_plot_slow_response}
+  \includegraphics{Figures/exp3_plot_likert_slow_response} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Summary of Parameter Estimates for Time-Unstructured Data (Slow Response; continued)}
+  \includegraphics{Figures/exp3_plot_days_slow_response} \hfill{}
+\caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\uptheta_{fixed}$ = 3.00, $\upalpha_{fixed}$ = 3.32, $\upbeta_{fixed}$ = 180.00, $\upgamma_{fixed}$ = 20.00, $\uptheta_{random}$ = 0.05, $\upalpha_{random}$ = 0.05, $\upbeta_{random}$ = 10.00, $\upgamma_{random}$ = 4.00, $\upepsilon$ = 0.03. Sample size is fixed to 225 (\textit{N} = 225). In Panel F, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. Note that random-effect units are in standard deviations. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:exp1-alpha-theta-removed} for the number of values removed for each parameter.}}
+\end{figure}
+```
+
+
+
+
+### Experiment 1
+
+```{r exp1-alpha-theta-removed, echo=F}
+print_param_table(table_ready_data = exp_1_tables$removed_value_table, parameter_name = 'theta|alpha', 
+            caption_name = 'Number of Removed Values for Each Parameter Estimated in Experiment 1', 
+            col_header_name = c('$\\\\uptheta_{fixed}$(lower plateau)', '$\\\\uptheta_{random}$(lower plateau)',
+                                '$\\\\upalpha_{fixed}$(upper plateau)', '$\\\\upalpha_{random}$(upper plateau)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c(80, 180, 280))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp1-beta-gamma-removed, echo=F}
+print_param_table(table_ready_data = exp_1_tables$removed_value_table, parameter_name = 'beta|gamma', 
+            caption_name = 'Number of Removed Values for Each Parameter Estimated in Experiment 1 (continued)', 
+            col_header_name = c('$\\\\upbeta_{fixed}$(midpoint)', '$\\\\upbeta_{random}$(midpoint)',
+                                '$\\\\upgamma_{fixed}$(satiation point)', '$\\\\upgamma_{random}$(satiation point)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c(80, 180, 280))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp1-epsilon-removed, echo=F}
+print_param_table(table_ready_data = exp_1_tables$removed_value_table, parameter_name = 'epsilon', 
+            caption_name = 'Number of Removed Values for Each Parameter Estimated in Experiment 1 (continued)', 
+            col_header_name = c('$\\\\upepsilon$(error)'),
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c(80, 180, 280))
+```
+
+### Experiment 2
+
+```{r exp2-theta-removed, echo=F}
+print_param_table(table_ready_data = exp_2_tables$removed_value_table, parameter_name = 'theta', 
+            caption_name = 'Parameter Values Estimated in Experiment 2', 
+            col_header_name = c('$\\\\uptheta_{fixed}$(lower plateau)', '$\\\\uptheta_{random}$(lower plateau)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp2-alpha-removed, echo=F}
+print_param_table(table_ready_data = exp_2_tables$removed_value_table, parameter_name = 'theta', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('$\\\\upalpha_{fixed}$(upper plateau)', '$\\\\upalpha_{random}$(upper plateau)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp2-beta-removed, echo=F}
+print_param_table(table_ready_data = exp_2_tables$removed_value_table, parameter_name = 'beta', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('$\\\\upbeta_{fixed}$(midpoint)', '$\\\\upbeta_{random}$(midpoint)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp2-gamma-removed, echo=F}
+print_param_table(table_ready_data = exp_2_tables$removed_value_table, parameter_name = 'gamma', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('$\\\\upgamma_{fixed}$(midpoint)', '$\\\\upgamma_{random}$(midpoint)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"))
+```
+
+\addtocounter{table}{-1}
+
+```{r exp2-epsilon-removed, echo=F}
+print_param_table(table_ready_data = exp_2_tables$removed_value_table, parameter_name = 'epsilon', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('$\\\\upepsilon$(error)'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"))
+```
+

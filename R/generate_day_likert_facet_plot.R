@@ -3,8 +3,9 @@
 #' @param data experiment data
 #' @exp_condition experimental conditions
 #' @return
-generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measurement_spacing', target_value, x_axis_var, x_axis_name, exp_num,
-                                            beta_lower, beta_upper, ticks) {
+generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measurement_spacing',
+                                           target_value, x_axis_var, x_axis_name, exp_num,
+                                          beta_lower, beta_upper, ticks) {
 
   #if exp_num contains 1, center beta estimates
   if (str_detect(string = exp_num, pattern = '1')){
@@ -14,7 +15,6 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
   #filter for rows that match measurement spacing/time structuredness condition
   day_parameter_data <- analytical_data$days %>% filter(!!sym(target_col) == target_value)
   likert_parameter_data <- analytical_data$likert %>% filter(!!sym(target_col) == target_value)
-
 
   #file names for PDFs
   days_file_name = paste('Figures/', exp_num, 'plot_days_', tolower(target_value), '.pdf', sep = '')
@@ -62,10 +62,10 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
                                               y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
                                               grouping_var = 'number_measurements',
                                               facet_var = 'parameter',
-                                              fill_var = 'conv_fail',
+                                              #fill_var = 'conv_fail',
                                               fill_legend_title = 'Percentage \nRemoved Values',
                                               shape_legend_title = 'Number of \nMeasurements',
-                                              panel_spacing_y = 12, dodge_position,
+                                              panel_spacing_y = 14, dodge_position,
                                               #parameters that change across Experiments 1-3
                                               x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)',
                                               beta_lower, beta_upper, ticks, exp_num) {
@@ -77,11 +77,11 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
   }
 
   #create base plot
-  base_plot <- create_base_plot(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
-                                grouping_var = grouping_var, fill_var = fill_var)
+  base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
+                                grouping_var = grouping_var)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
-  plot_visualizations <- create_data_visualizations(dodge_position = dodge_position,
+  plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
                                                     error_bar_width = error_bar_width, h_line_alpha = h_line_alpha,
@@ -114,10 +114,10 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                           file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 15,
                                           point_size = 15, line_size = 2, error_bar_width = 0.8,
                                           error_bar_size = 2.5,
-                                          y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
+                                          y_axis_var = 'estimate',  y_axis_name = 'Estimate (Likert units [scale of 1-5])',
                                           grouping_var = 'number_measurements',
                                           facet_var = 'parameter',
-                                          fill_var = 'conv_fail',
+                                          #fill_var = 'conv_fail',
                                           fill_legend_title = 'Percentage \nRemoved Values',
                                           shape_legend_title = 'Number of \nMeasurements',
                                           panel_spacing_y = 4, dodge_position,
@@ -127,11 +127,11 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                           x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)') {
 
   #create base plot
-  base_plot <- create_base_plot(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
-                                grouping_var = grouping_var, fill_var = fill_var)
+  base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
+                                grouping_var = grouping_var)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
-  plot_visualizations <- create_data_visualizations(dodge_position = dodge_position,
+  plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
                                                     error_bar_width = error_bar_width, h_line_alpha = h_line_alpha,
@@ -149,7 +149,6 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
   thematic_details <- create_thematic_elements(legend_position = legend_position, legend_direction = legend_direction,
                                                panel_spacing_y = panel_spacing_y)
 
-
   #assemble plot
   likert_parameter_facet_plot <- base_plot + plot_visualizations + legend_details + facet_details + thematic_details
 
@@ -160,6 +159,56 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
 
 }
 
+
+generate_filtered_unfiltered_facet_plot <- function(parameter_data, num_rows = 1, num_cols = 2,
+                                              legend_position = c(0.50, .50), legend_direction = 'horizontal',
+                                              file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 15,
+                                              point_size = 15, line_size = 2, error_bar_width = 0.8,
+                                              error_bar_size = 2.5,
+                                              y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
+                                              grouping_var = 'number_measurements',
+                                              facet_var = 'parameter',
+                                              shape_legend_title = 'Number of \nMeasurements',
+                                              panel_spacing_y = 12, dodge_position,
+                                              #parameters that change across Experiments 1-3
+                                              x_axis_var = 'sample_size', x_axis_name = 'Sample size (*N*)',
+                                              beta_lower, beta_upper, ticks, exp_num) {
+
+  dodge_position <- position_dodge(width = dodge_width)
+
+  #create base plot
+  base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
+                                grouping_var = grouping_var)
+
+  #primary aesthetic specifications (points, lines, error bars, hline)
+  plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
+                                                    point_size = point_size, line_size =  line_size,
+                                                    lower_ci = lower_ci, upper_ci = upper_ci,
+                                                    error_bar_width = error_bar_width, h_line_alpha = h_line_alpha,
+                                                    h_line_size = h_line_size)
+
+  #create legend
+  legend_details <- create_legend_unfiltered(shape_legend_title = shape_legend_title, x_axis_name =  x_axis_name)
+
+  #facets
+  facet_details <- create_filtered_unfiltered_param_facets(facet_var = facet_var, num_rows = num_rows, num_cols = num_cols,
+                                            y_axis_name = y_axis_name, beta_lower = beta_lower, beta_upper = beta_upper, ticks = ticks)
+
+  #thematic elements
+  thematic_details <- create_thematic_elements(legend_position = legend_position, legend_direction = legend_direction,
+                                               panel_spacing_y = panel_spacing_y)
+
+
+  #assemble plot
+  day_parameter_facet_plot <- base_plot + plot_visualizations + legend_details + facet_details + thematic_details
+
+  #create PDF of faceted plot
+  set_panel_size(p = day_parameter_facet_plot, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  file_name)
+}
+
+
 #ggplot base plot
 create_base_plot <- function(parameter_data, x_axis_var, y_axis_var, grouping_var, fill_var) {
 
@@ -168,15 +217,42 @@ create_base_plot <- function(parameter_data, x_axis_var, y_axis_var, grouping_va
                                                   linetype = !!sym(grouping_var),
                                                   shape = !!sym(grouping_var),
                                                   fill = !!sym(fill_var)))
-
   return(base_plot)
 
 }
 
+#create base plot
+create_base_plot_unfiltered <- function(parameter_data, x_axis_var, y_axis_var, grouping_var) {
+
+  base_plot <-  ggplot(data = parameter_data, aes(x = !!sym(x_axis_var), y = !!sym(y_axis_var),
+                                                  group = !!sym(grouping_var),
+                                                  linetype = !!sym(grouping_var),
+                                                  shape = !!sym(grouping_var)))
+  return(base_plot)
+
+}
+
+
+
 #primary aesthetic specifications (points, lines, error bars, hline)
-create_data_visualizations <- function(dodge_position, point_size, line_size,
+create_data_visualizations_unfiltered <- function(dodge_position, point_size, line_size,
                                 lower_ci, upper_ci, error_bar_width,
                                 h_line_alpha, h_line_size) {
+
+  primary_plot <- list(
+    geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = h_line_alpha, size = h_line_size),
+    geom_point(position = dodge_position, size = point_size, fill = 'black'),
+    geom_line(size = line_size,  position = dodge_position),
+    geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci),
+                  width = error_bar_width, position = dodge_position, size = 2.5)
+    )
+
+  return(primary_plot)
+}
+
+create_data_visualizations <- function(dodge_position, point_size, line_size,
+                                       lower_ci, upper_ci, error_bar_width,
+                                       h_line_alpha, h_line_size) {
 
   primary_plot <- list(
     geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = h_line_alpha, size = h_line_size),
@@ -189,6 +265,7 @@ create_data_visualizations <- function(dodge_position, point_size, line_size,
   return(primary_plot)
 }
 
+
 #creates legend
 create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
 
@@ -196,21 +273,32 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
   legend_details <- list(
     scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23)),
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
-    scale_fill_manual(name = fill_legend_title,
-                    values = c('black', 'white'),
-                    labels = c('Below 10%', 'Above 10%'), drop = FALSE), #set drop =FALSE so that unused levels are included
-    guides(fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
-         shape = guide_legend(override.aes = list(fill = "black"))),
+   # scale_fill_manual(name = fill_legend_title,
+   #                 values = c('black', 'white'),
+   #                 labels = c('Below 10%', 'Above 10%'), drop = FALSE), #set drop =FALSE so that unused levels are included
+    guides(shape = guide_legend(override.aes = list(fill = "black"))),
+    #fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
     scale_x_discrete(name = x_axis_name))
 
 
   return(legend_details)
 }
 
+create_legend_unfiltered <- function(shape_legend_title, x_axis_name) {
+
+  #legend details + x-axis name
+  legend_details <- list(
+    scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23)),
+    scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
+    guides(shape = guide_legend(override.aes = list(fill = "black"))),
+    scale_x_discrete(name = x_axis_name))
+
+  return(legend_details)
+}
+
 #create facets for day-based parameters
 create_days_param_facets<- function(facet_var, num_rows, num_cols, y_axis_name,
-
-                                                                  beta_lower, beta_upper, ticks) {
+                                    beta_lower, beta_upper, ticks) {
 
   day_facet_details <- facet_wrap_custom( ~ get(facet_var), scales = "free", ncol = num_cols, nrow = num_rows ,
                                           dir = 'h', labeller = label_parsed,
@@ -219,14 +307,14 @@ create_days_param_facets<- function(facet_var, num_rows, num_cols, y_axis_name,
                                                                                                    breaks = seq(from = beta_lower, to = beta_upper, by = ticks),
                                                                                                    limits = c(beta_lower, beta_upper))),
                                                                  scale_override(2, scale_y_continuous(name =  y_axis_name,
-                                                                                                      breaks = seq(from = 0, to = 40, by = 5),
-                                                                                                      limits = c(0, 40))),
+                                                                                                      breaks = seq(from = 0, to = 50, by = 5),
+                                                                                                      limits = c(0, 50))),
                                                                  scale_override(3,scale_y_continuous(name =  y_axis_name,
-                                                                                                     breaks = seq(from = 0, to = 40, by = 5),
-                                                                                                     limits = c(0, 40))),
+                                                                                                     breaks = seq(from = 0, to = 50, by = 5),
+                                                                                                     limits = c(0, 50))),
                                                                  scale_override(4, scale_y_continuous(name =  y_axis_name,
-                                                                                                      breaks = seq(from = 0, to = 40, by = 5),
-                                                                                                      limits = c(0, 40)))))
+                                                                                                      breaks = seq(from = 0, to = 50, by = 5),
+                                                                                                      limits = c(0, 50)))))
 
   return(day_facet_details)
 
@@ -266,6 +354,23 @@ create_likert_param_facets <- function(facet_var, num_rows, num_cols, y_axis_nam
 
 }
 
+#create facets for day-based parameters
+create_filtered_unfiltered_param_facets <- function(facet_var, num_rows, num_cols, y_axis_name,
+                                    beta_lower, beta_upper, ticks) {
+
+  day_facet_details <- facet_wrap_custom( ~ get(facet_var), scales = "free", ncol = num_cols, nrow = num_rows ,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,
+                                                                                scale_y_continuous(name =  y_axis_name,
+                                                                                                   breaks = seq(from = beta_lower, to = beta_upper, by = ticks),
+                                                                                                   limits = c(beta_lower, beta_upper))),
+                                                                 scale_override(2, scale_y_continuous(name =  y_axis_name,
+                                                                                                      breaks = seq(from = 0, to = 40, by = 5),
+                                                                                                      limits = c(0, 40)))))
+  return(day_facet_details)
+}
+
+
 #thematic elements
 create_thematic_elements <- function(legend_position, legend_direction, panel_spacing_y) {
 
@@ -274,7 +379,8 @@ create_thematic_elements <- function(legend_position, legend_direction, panel_sp
     theme(
       #panel details
       strip.background = element_rect(fill = "white", color = "white"),
-      strip.text.x = element_text(face = 'bold', hjust = 0, size = 65, margin = unit(c(0, 0, 1, 0), "cm")),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 60, margin = unit(c(t = 0, r = 0, b = 1, l = 0), "cm")),
 
       #axis details
       axis.text = element_text(size = 60, color = 'black'),
@@ -302,6 +408,8 @@ create_thematic_elements <- function(legend_position, legend_direction, panel_sp
 
   return(thematic_elements)
 }
+
+
 
 
 ##functions needed to create customized facet plots
