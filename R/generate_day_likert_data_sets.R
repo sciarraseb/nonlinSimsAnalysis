@@ -3,6 +3,9 @@
 #generates data sets likert- and day-based parameters
 generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
 
+  #convert vars to SDs
+  summary_data <- convert_var_to_sd(param_summary_data = summary_data)
+
   #compute necessary conversions for beta-fixed (if necessary) + appends labels
   analytical_data <- append_parameter_labels(summary_data = summary_data)
 
