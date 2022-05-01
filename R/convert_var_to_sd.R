@@ -13,3 +13,16 @@ convert_var_to_sd <- function(param_summary_data) {
 
   return(param_summary_data)
 }
+
+
+convert_raw_var_to_sd <- function(raw_data) {
+
+  raw_data <- raw_data %>% filter (code == 0)
+
+  #identify rows with random-effects parameter data
+  rand_effects_cols <- str_detect(string = names(raw_data), pattern = 'rand|epsilon')
+
+  raw_data[ ,rand_effects_cols] <- sqrt(raw_data[ ,rand_effects_cols])
+
+  return(raw_data)
+}

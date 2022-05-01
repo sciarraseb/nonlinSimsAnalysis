@@ -31,11 +31,6 @@ compute_parameter_summary <- function(data, exp_num) {
                                                levels = c('time_structured', 'fast_response', 'slow_response'))
   }
 
-  #compute necessary factor conversions
-
-
-
-
   return(summary_data)
 }
 
@@ -46,7 +41,7 @@ compute_statistics <- function(data) {
       #compute statistics for each parameter for each experimental variable
       group_by(parameter, .dots = locate_ivs(data)) %>%
       summarize(
-       bias = (mean(pop_value) - mean(estimate, na.rm = T))/sd(estimate, na.rm = T),
+       #bias = (mean(pop_value) - mean(estimate, na.rm = T))/sd(estimate, na.rm = T),
        num_removed_values = sum(is.na(estimate)),
        sd_estimate = sd(estimate),
 
@@ -55,13 +50,14 @@ compute_statistics <- function(data) {
        upper_ci = compute_middle_95_estimate(param_data = estimate)[2],
 
        ##lower and upper CI for percentage change
-       lower_ci_perc = compute_middle_95_perc_change(param_data = estimate, pop_value = pop_value)[1],
-       upper_ci_perc = compute_middle_95_perc_change(param_data = estimate, pop_value = pop_value)[2],
+       #lower_ci_perc = compute_middle_95_perc_change(param_data = estimate, pop_value = pop_value)[1],
+       #upper_ci_perc = compute_middle_95_perc_change(param_data = estimate, pop_value = pop_value)[2],
 
        estimate = mean(estimate, na.rm = T),
        num_converged_values = sum(code == 0),
        pop_value = mean(pop_value),
        perc_error = ((pop_value - mean(estimate, na.rm = T))/pop_value)*100)
+
       ##not returning this table at the moment
       #estimate_summary <- intermediate_table_2 %>%
       #  pivot_wider(names_from = 'parameter',

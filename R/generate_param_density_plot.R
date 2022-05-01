@@ -6,7 +6,7 @@ generate_param_density_plot <- function(raw_exp_data, param_summary_data,
   file_name <- paste('Figures/beta_fixed_', spacing,'_', num_measurements, '_', sample_size, ".pdf", sep = '')
 
   #remove parameter estimates from non-converged models; convert var to SD
-  cleaned_data <- convert_var_to_sd(data = raw_exp_data)
+  cleaned_data <- convert_raw_var_to_sd(raw_data = raw_exp_data)
 
   #convert IV columns to factors with same level order and level names
   cleaned_data <- recode_factor_vars(cleaned_data = cleaned_data, param_summary_data = param_summary_data)
@@ -16,7 +16,8 @@ generate_param_density_plot <- function(raw_exp_data, param_summary_data,
                                                        spacing = spacing, num_measurements = num_measurements, sample_size = sample_size)
 
   base_density_plot <- ggplot(data = param_ind_data_ls$ind_data, mapping = aes(x = beta_fixed)) +
-    geom_density(size = 1)
+    geom_density(size = 1) +
+    coord_flip()
 
   plot_building_elements <- compute_param_hist_elements(base_density_plot = base_density_plot,
                                                         param_ind_data_ls = param_ind_data_ls)
@@ -29,8 +30,7 @@ generate_param_density_plot <- function(raw_exp_data, param_summary_data,
   ggsave(filename = file_name, plot = param_density, width = 9, height = 6)
 }
 
-generate_param_histogram <- function(base_density_plot, plot_building_elements, param_ind_data_ls,
-                                     lower_x_range, upper_x_range, ticks, file_name) {
+generate_param_histogram <- function(base_density_plot, plot_building_elements, param_ind_data_ls) {
 
   param_density <- base_density_plot +
     scale_x_continuous(name = 'Value of parameter estimate (days)',
@@ -78,7 +78,8 @@ compute_param_hist_elements <- function(base_density_plot, param_ind_data_ls) {
 
   return(list('lower_ci' = lower_ci, 'upper_ci' = upper_ci,
               #'density_lower_x' = density_lower_x, 'density_upper_x' = density_upper_x,
-              'max_density_value' = max_density_value, 'density_df' = density_df))
+              'max_density_value' = max_density_value,
+              'density_df' = density_df))
 }
 
 extract_cond_data_param_and_ind <- function(cleaned_data, param_summary_data,

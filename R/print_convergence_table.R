@@ -80,8 +80,8 @@ recode_target_col <- function(conv_table, exp_num, recode_var) {
     conv_table <- conv_table %>%
       mutate(!!sym(recode_var) := fct_recode(!!sym(recode_var),
                                       'Equal' = 'bold(A:~Equal)',
-                                      'Time increasing' = 'bold(B:~Time~Increasing)',
-                                      'Time decreasing' = 'bold(C:~Time~Decreasing)',
+                                      'Time-interval increasing' = ' bold(B:~`Time-Interval`~Increasing)',
+                                      'Time-interval decreasing' = 'bold(C:~`Time-Interval`~Decreasing)',
                                       'Middle-and-extreme' = 'bold(D:~`Middle-and-Extreme`)'))
   }
 
