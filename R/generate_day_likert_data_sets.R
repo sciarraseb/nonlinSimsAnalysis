@@ -53,6 +53,8 @@ center_beta_fixed_data <- function(summary_data) {
     mutate(estimate = pop_value - estimate,
            lower_ci = pop_value - lower_ci,
            upper_ci = pop_value - upper_ci,
+           lower_ci_90 = pop_value - lower_ci_90,
+           upper_ci_90 = pop_value - upper_ci_90,
            pop_value = 0)
 
   #overwrite beta_fixed data
@@ -77,8 +79,8 @@ append_parameter_labels <- function(summary_data) {
                                               bquote(expr = 'bold(H:~alpha[random]~(Maximal~elevation))'),
                                               bquote(expr = 'bold(A:~beta[fixed]~(`Days-to-halfway`~elevation))'),
                                               bquote(expr = 'bold(B:~beta[random]~(`Days-to-halfway`~elevation))'),
-                                              bquote(expr = 'bold(C:~gamma[fixed]~(`Triquarter-halfway`~duration))'),
-                                              bquote(expr = 'bold(D:~gamma[random]~(`Triquarter-halfway`~duration))'),
+                                              bquote(expr = bold(C:~gamma[fixed]~(`Triquarter-halfway`~'delta'))),
+                                              bquote(expr = bold(D:~gamma[random]~(`Triquarter-halfway`~'delta'))),
                                               bquote(expr = 'bold(I:~epsilon~(Error))')))
 
                                   #labels = c(bquote(expr = 'bold(theta[fixed])'),
@@ -102,6 +104,10 @@ convert_var_to_sd <- function(param_summary_data) {
   param_summary_data[rand_effects_rows, ] <- param_summary_data[rand_effects_rows, ] %>%
     mutate(upper_ci = sqrt(upper_ci),
            lower_ci = sqrt(lower_ci),
+
+           upper_ci_90 = sqrt(upper_ci_90),
+           lower_ci_90 = sqrt(lower_ci_90),
+
            estimate = sqrt(estimate),
            perc_error = ((pop_value - mean(estimate, na.rm = T))/pop_value)*100,
            sd_estimate = sd(estimate))

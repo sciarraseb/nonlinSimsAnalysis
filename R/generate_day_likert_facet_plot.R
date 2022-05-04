@@ -278,9 +278,7 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
    #                 labels = c('Below 10%', 'Above 10%'), drop = FALSE), #set drop =FALSE so that unused levels are included
     guides(shape = guide_legend(override.aes = list(fill = "black"))),
     #fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
-    scale_x_discrete(name = x_axis_name))
-
-
+   labs(x = x_axis_name))
   return(legend_details)
 }
 
@@ -291,7 +289,8 @@ create_legend_unfiltered <- function(shape_legend_title, x_axis_name) {
     scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23)),
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
     guides(shape = guide_legend(override.aes = list(fill = "black"))),
-    scale_x_discrete(name = x_axis_name))
+    #scale_x_discrete(name = x_axis_name))
+    labs(x = x_axis_name))
 
   return(legend_details)
 }
@@ -385,7 +384,7 @@ create_thematic_elements <- function(legend_position, legend_direction, panel_sp
       #axis details
       axis.text = element_text(size = 60, color = 'black'),
       axis.title = element_text(size = 70),
-      axis.title.x.bottom = element_markdown(),
+      #axis.title.x.bottom = element_markdown(),
       axis.line = element_line(size = 2),
       axis.ticks.length.x = unit(x = 1, units = 'cm'),
       axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),

@@ -46,7 +46,7 @@ print_param_table <- function(table_ready_data, parameter_name,
 create_table_data_sets <- function(param_summary_data, wide_var, first_col, second_col){
 
   #extract all columns names before bias column
-  bias_col_num <- which(names(param_summary_data) == 'bias')
+  bias_col_num <- which(names(param_summary_data) == 'num_removed_values')
 
   parameter_est_data <- generate_parameter_est_data(param_summary_data = param_summary_data,
                                                     bias_col_num = bias_col_num,

@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.3.26)  30 APR 2022 17:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2022.3.26)  4 MAY 2022 17:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpJFLDwN/preview-3
-f45d73a9c8.dir/sample_writeup.tex
+**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpYVDpfW/preview-1
+330b23227476.dir/sample_writeup.tex
 
-(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpJFLDwN/preview-3f
-45d73a9c8.dir/sample_writeup.tex
+(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpYVDpfW/preview-13
+30b23227476.dir/sample_writeup.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (/Users/sebastiansciarra/Library/TinyTeX/texm
 f-dist/tex/latex/apa7/apa7.cls
@@ -1338,347 +1338,303 @@ File: Figures/param_estimation_ex.png Graphic file (type png)
 Package pdftex.def Info: Figures/param_estimation_ex.png  used on input line 38
 9.
 (pdftex.def)             Requested size: 426.81047pt x 395.63286pt.
-[11] [12 <./Figures/param_estimation_ex.png>]
-<Figures/exp1_plot_days_equal spacing.pdf, id=283, 2728.1925pt x 2544.50626pt>
+[11] [12 <./Figures/param_estimation_ex.png>] [13]
+<Figures/exp1_plot_days_equal spacing.pdf, id=289, 2713.13625pt x 2568.59625pt>
+
 File: Figures/exp1_plot_days_equal spacing.pdf Graphic file (type pdf)
 <use Figures/exp1_plot_days_equal spacing.pdf>
 Package pdftex.def Info: Figures/exp1_plot_days_equal spacing.pdf  used on inpu
-t line 433.
-(pdftex.def)             Requested size: 469.73952pt x 438.11246pt.
+t line 427.
+(pdftex.def)             Requested size: 469.75528pt x 444.72946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
+Underfull \hbox (badness 10000) in paragraph at lines 427--428
 
  []
 
-[13] [14 <./Figures/exp1_plot_days_equal spacing.pdf>]
-<Figures/exp1_plot_days_time-interval increasing.pdf, id=310, 2728.1925pt x 254
-4.50626pt>
+[14] [15 <./Figures/exp1_plot_days_equal spacing.pdf>]
+<Figures/exp1_plot_days_time-interval increasing.pdf, id=311, 2713.13625pt x 25
+68.59625pt>
 File: Figures/exp1_plot_days_time-interval increasing.pdf Graphic file (type pd
 f)
 <use Figures/exp1_plot_days_time-interval increasing.pdf>
 Package pdftex.def Info: Figures/exp1_plot_days_time-interval increasing.pdf  u
-sed on input line 479.
-(pdftex.def)             Requested size: 469.73952pt x 438.11246pt.
+sed on input line 464.
+(pdftex.def)             Requested size: 469.75528pt x 444.72946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 464--465
 
  []
 
-[15] [16 <./Figures/exp1_plot_days_time-interval increasing.pdf>]
-<Figures/exp1_plot_days_time-interval decreasing.pdf, id=337, 2728.1925pt x 254
-4.50626pt>
+[16] [17 <./Figures/exp1_plot_days_time-interval increasing.pdf>]
+<Figures/exp1_plot_days_time-interval decreasing.pdf, id=336, 2713.13625pt x 25
+68.59625pt>
 File: Figures/exp1_plot_days_time-interval decreasing.pdf Graphic file (type pd
 f)
 <use Figures/exp1_plot_days_time-interval decreasing.pdf>
 Package pdftex.def Info: Figures/exp1_plot_days_time-interval decreasing.pdf  u
-sed on input line 524.
-(pdftex.def)             Requested size: 469.73952pt x 438.11246pt.
+sed on input line 500.
+(pdftex.def)             Requested size: 469.75528pt x 444.72946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 524--525
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 524--525
+Underfull \hbox (badness 10000) in paragraph at lines 500--501
 
  []
 
-[17] [18 <./Figures/exp1_plot_days_time-interval decreasing.pdf>] [19]
-<Figures/exp1_plot_days_middle-and-extreme spacing.pdf, id=369, 2728.1925pt x 2
-544.50626pt>
+[18] [19 <./Figures/exp1_plot_days_time-interval decreasing.pdf>] [20]
+<Figures/exp1_plot_days_middle-and-extreme spacing.pdf, id=365, 2713.13625pt x 
+2568.59625pt>
 File: Figures/exp1_plot_days_middle-and-extreme spacing.pdf Graphic file (type 
 pdf)
 <use Figures/exp1_plot_days_middle-and-extreme spacing.pdf>
 Package pdftex.def Info: Figures/exp1_plot_days_middle-and-extreme spacing.pdf 
- used on input line 578.
-(pdftex.def)             Requested size: 469.73952pt x 438.11246pt.
+ used on input line 547.
+(pdftex.def)             Requested size: 469.75528pt x 444.72946pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 578--579
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 578--579
+Underfull \hbox (badness 10000) in paragraph at lines 547--548
 
  []
 
-[20] [21 <./Figures/exp1_plot_days_middle-and-extreme spacing.pdf>] [22]
+[21 <./Figures/exp1_plot_days_middle-and-extreme spacing.pdf>]
 
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 605.
+LaTeX Warning: Reference `fig:spacing_example-examples' on page 22 undefined on
+ input line 566.
 
-[23]
-<Figures/exp2_plot_days_equal spacing.pdf, id=408, 2726.185pt x 2544.50626pt>
-File: Figures/exp2_plot_days_equal spacing.pdf Graphic file (type pdf)
-<use Figures/exp2_plot_days_equal spacing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_equal spacing.pdf  used on inpu
-t line 631.
-(pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
+[22] [23]
+<Figures/spacing_example.pdf, id=393, 650.43pt x 433.62pt>
+File: Figures/spacing_example.pdf Graphic file (type pdf)
+<use Figures/spacing_example.pdf>
+Package pdftex.def Info: Figures/spacing_example.pdf  used on input line 592.
+(pdftex.def)             Requested size: 469.76817pt x 313.17879pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 631--632
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 631--632
+Underfull \hbox (badness 10000) in paragraph at lines 592--593
 
  []
 
 [24]
-<Figures/density_plots_exp2.pdf, id=415, 2726.185pt x 2245.38875pt>
-File: Figures/density_plots_exp2.pdf Graphic file (type pdf)
-<use Figures/density_plots_exp2.pdf>
-Package pdftex.def Info: Figures/density_plots_exp2.pdf  used on input line 638
-.
-(pdftex.def)             Requested size: 469.72665pt x 386.88458pt.
+<Figures/exp1_summary_plot.pdf, id=406, 2693.06125pt x 2487.2925pt>
+File: Figures/exp1_summary_plot.pdf Graphic file (type pdf)
+<use Figures/exp1_summary_plot.pdf>
+Package pdftex.def Info: Figures/exp1_summary_plot.pdf  used on input line 599.
 
-Underfull \hbox (badness 10000) in paragraph at lines 638--639
+(pdftex.def)             Requested size: 469.73126pt x 433.8405pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 599--600
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 638--639
+Underfull \hbox (badness 10000) in paragraph at lines 599--600
 
  []
 
-[25 <./Figures/exp2_plot_days_equal spacing.pdf>] [26 <./Figures/density_plots_
+[25 <./Figures/spacing_example.pdf>] [26 <./Figures/exp1_summary_plot.pdf>] [27
+]
+<Figures/exp2_plot_days_equal spacing.pdf, id=442, 2726.185pt x 2544.50626pt>
+File: Figures/exp2_plot_days_equal spacing.pdf Graphic file (type pdf)
+<use Figures/exp2_plot_days_equal spacing.pdf>
+Package pdftex.def Info: Figures/exp2_plot_days_equal spacing.pdf  used on inpu
+t line 640.
+(pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 640--641
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 640--641
+
+ []
+
+[28]
+<Figures/density_plots_exp2.pdf, id=448, 2725.18124pt x 2240.37pt>
+File: Figures/density_plots_exp2.pdf Graphic file (type pdf)
+<use Figures/density_plots_exp2.pdf>
+Package pdftex.def Info: Figures/density_plots_exp2.pdf  used on input line 647
+.
+(pdftex.def)             Requested size: 469.72003pt x 386.15657pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+
+ []
+
+[29 <./Figures/exp2_plot_days_equal spacing.pdf>] [30 <./Figures/density_plots_
 exp2.pdf>]
-<Figures/exp2_plot_days_time-interval increasing.pdf, id=447, 2726.185pt x 2544
+
+LaTeX Warning: Reference `figdensity_plots_fixed_exp2' on page 31 undefined on 
+input line 658.
+
+<Figures/density_plots_equal_fixed_exp2.pdf, id=484, 2726.185pt x 2233.34375pt>
+
+File: Figures/density_plots_equal_fixed_exp2.pdf Graphic file (type pdf)
+<use Figures/density_plots_equal_fixed_exp2.pdf>
+Package pdftex.def Info: Figures/density_plots_equal_fixed_exp2.pdf  used on in
+put line 663.
+(pdftex.def)             Requested size: 469.72665pt x 384.8092pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 663--664
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 663--664
+
+ []
+
+[31]
+<Figures/exp2_fixed_plot_days_equal spacing.pdf, id=491, 2726.185pt x 2544.5062
+6pt>
+File: Figures/exp2_fixed_plot_days_equal spacing.pdf Graphic file (type pdf)
+<use Figures/exp2_fixed_plot_days_equal spacing.pdf>
+Package pdftex.def Info: Figures/exp2_fixed_plot_days_equal spacing.pdf  used o
+n input line 670.
+(pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 670--671
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 670--671
+
+ []
+
+[32 <./Figures/density_plots_equal_fixed_exp2.pdf>] [33 <./Figures/exp2_fixed_p
+lot_days_equal spacing.pdf>]
+<Figures/exp2_plot_days_time-interval increasing.pdf, id=522, 2726.185pt x 2544
 .50626pt>
 File: Figures/exp2_plot_days_time-interval increasing.pdf Graphic file (type pd
 f)
 <use Figures/exp2_plot_days_time-interval increasing.pdf>
 Package pdftex.def Info: Figures/exp2_plot_days_time-interval increasing.pdf  u
-sed on input line 661.
+sed on input line 693.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 661--662
+Underfull \hbox (badness 10000) in paragraph at lines 693--694
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 661--662
+Underfull \hbox (badness 10000) in paragraph at lines 693--694
 
  []
 
-[27] [28 <./Figures/exp2_plot_days_time-interval increasing.pdf>]
-<Figures/exp2_plot_days_time-interval decreasing.pdf, id=470, 2726.185pt x 2544
+[34] [35 <./Figures/exp2_plot_days_time-interval increasing.pdf>]
+<Figures/exp2_plot_days_time-interval decreasing.pdf, id=546, 2726.185pt x 2544
 .50626pt>
 File: Figures/exp2_plot_days_time-interval decreasing.pdf Graphic file (type pd
 f)
 <use Figures/exp2_plot_days_time-interval decreasing.pdf>
 Package pdftex.def Info: Figures/exp2_plot_days_time-interval decreasing.pdf  u
-sed on input line 684.
+sed on input line 716.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 684--685
+Underfull \hbox (badness 10000) in paragraph at lines 716--717
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 684--685
+Underfull \hbox (badness 10000) in paragraph at lines 716--717
 
  []
 
-[29] [30 <./Figures/exp2_plot_days_time-interval decreasing.pdf>]
-<Figures/exp2_plot_days_middle-and-extreme spacing.pdf, id=494, 2726.185pt x 25
+[36] [37 <./Figures/exp2_plot_days_time-interval decreasing.pdf>]
+<Figures/exp2_plot_days_middle-and-extreme spacing.pdf, id=571, 2726.185pt x 25
 44.50626pt>
 File: Figures/exp2_plot_days_middle-and-extreme spacing.pdf Graphic file (type 
 pdf)
 <use Figures/exp2_plot_days_middle-and-extreme spacing.pdf>
 Package pdftex.def Info: Figures/exp2_plot_days_middle-and-extreme spacing.pdf 
- used on input line 708.
+ used on input line 740.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 708--709
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 708--709
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
 
  []
 
-[31] [32 <./Figures/exp2_plot_days_middle-and-extreme spacing.pdf>] [33] [34]
-<Figures/exp3_plot_days_time_structured.pdf, id=534, 2726.185pt x 2544.50626pt>
+[38] [39 <./Figures/exp2_plot_days_middle-and-extreme spacing.pdf>] [40] [41]
+<Figures/exp3_plot_days_time_structured.pdf, id=610, 2726.185pt x 2544.50626pt>
 
 File: Figures/exp3_plot_days_time_structured.pdf Graphic file (type pdf)
 <use Figures/exp3_plot_days_time_structured.pdf>
 Package pdftex.def Info: Figures/exp3_plot_days_time_structured.pdf  used on in
-put line 758.
+put line 787.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 758--759
+Underfull \hbox (badness 10000) in paragraph at lines 787--788
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 758--759
+Underfull \hbox (badness 10000) in paragraph at lines 787--788
 
  []
 
 
-LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 35 undefined 
-on input line 759.
+LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 42 undefined 
+on input line 788.
 
-[35] [36 <./Figures/exp3_plot_days_time_structured.pdf>] [37]
-<Figures/exp3_plot_days_fast_response.pdf, id=564, 2726.185pt x 2544.50626pt>
+[42] [43 <./Figures/exp3_plot_days_time_structured.pdf>] [44]
+<Figures/exp3_plot_days_fast_response.pdf, id=639, 2726.185pt x 2544.50626pt>
 File: Figures/exp3_plot_days_fast_response.pdf Graphic file (type pdf)
 <use Figures/exp3_plot_days_fast_response.pdf>
 Package pdftex.def Info: Figures/exp3_plot_days_fast_response.pdf  used on inpu
-t line 780.
+t line 809.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 780--781
+Underfull \hbox (badness 10000) in paragraph at lines 809--810
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 780--781
+Underfull \hbox (badness 10000) in paragraph at lines 809--810
 
  []
 
 
-LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 38 undefined 
-on input line 781.
+LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 45 undefined 
+on input line 810.
 
-[38 <./Figures/exp3_plot_days_fast_response.pdf>] [39]
-<Figures/exp3_plot_days_slow_response.pdf, id=586, 2726.185pt x 2544.50626pt>
+[45 <./Figures/exp3_plot_days_fast_response.pdf>] [46]
+<Figures/exp3_plot_days_slow_response.pdf, id=661, 2726.185pt x 2544.50626pt>
 File: Figures/exp3_plot_days_slow_response.pdf Graphic file (type pdf)
 <use Figures/exp3_plot_days_slow_response.pdf>
 Package pdftex.def Info: Figures/exp3_plot_days_slow_response.pdf  used on inpu
-t line 803.
+t line 832.
 (pdftex.def)             Requested size: 469.72665pt x 438.42307pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 803--804
+Underfull \hbox (badness 10000) in paragraph at lines 832--833
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 803--804
+Underfull \hbox (badness 10000) in paragraph at lines 832--833
 
  []
 
 
-LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 40 undefined 
-on input line 804.
+LaTeX Warning: Reference `tab:exp3-alpha-theta-param-est' on page 47 undefined 
+on input line 833.
 
-[40]
-<Figures/exp2_summary_plot.pdf, id=591, 2693.06125pt x 2472.23625pt>
-File: Figures/exp2_summary_plot.pdf Graphic file (type pdf)
-<use Figures/exp2_summary_plot.pdf>
-Package pdftex.def Info: Figures/exp2_summary_plot.pdf  used on input line 813.
-
-(pdftex.def)             Requested size: 469.73126pt x 431.21436pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 813--814
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 813--814
-
- []
-
-[41 <./Figures/exp3_plot_days_slow_response.pdf>] [42 <./Figures/exp2_summary_p
-lot.pdf>] [43]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 8
-25.
-(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [44] [45]
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##    number_measurements measurement_spaci~ midpoint mean_pe
-rc_error mean_lower_ci[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##    <fct>               <fct>              <fct>           
-   <dbl>         <dbl>[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  1 5                   Equal              80              
-  -10.4          -365.[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  2 5                   Equal              180             
-  -10.6          -258.[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  3 5                   Equal              280             
-  -10.6          -387.[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  4 5                   bold(B:~`Time-Int~ 80              
-   -3.15          420.[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  5 5                   bold(B:~`Time-Int~ 180             
-   -3.14         -222.[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  6 5                   bold(B:~`Time-Int~ 280             
-   -2.71         -884.[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  7 5                   Time-interval dec~ 80              
-   -2.75         -653.[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  8 5                   Time-interval dec~ 180             
-   -3.08         -254.[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ##  9 5                   Time-interval dec~ 280             
-   -2.81          454.[] 
- []
-
-
-Overfull \hbox (42.74922pt too wide) in paragraph at lines 908--908
-[]\T1/lmtt/m/n/12 ## 10 5                   Middle-and-extreme 80              
-   -6.42         -686.[] 
- []
-
-[46] [47] [48]
-Overfull \hbox (16.53192pt too wide) in paragraph at lines 972--972
+[47] [48 <./Figures/exp3_plot_days_slow_response.pdf>] [49]
+Overfull \hbox (16.53192pt too wide) in paragraph at lines 875--875
 \T1/lmr/m/n/12 Interval` Increasing)|  
  []
 
-[49]
-Overfull \hbox (16.53192pt too wide) in paragraph at lines 1022--1022
+[50]
+Overfull \hbox (16.53192pt too wide) in paragraph at lines 925--925
 \T1/lmr/m/n/12 Interval` Increasing)|  
  []
 
-[50] [51]
+[51] [52]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1711,10 +1667,10 @@ Overfull \hbox (16.53192pt too wide) in paragraph at lines 1022--1022
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-[52
+[53
 
 
-] [53]
+] [54]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1751,13 +1707,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1156 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [54
+l.1059 ...right\arraybackslash}p{3cm}cccccccccccc}
+                                                   [55
 
 
 
 
-] [55]
+] [56]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1794,13 +1750,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1210 ...>{\raggedright\arraybackslash}p{3cm}ccc}
-                                                   [56
+l.1113 ...>{\raggedright\arraybackslash}p{3cm}ccc}
+                                                   [57
 
 
 
 
-] [57] [58
+] [58] [59
 
 
 ]
@@ -1836,10 +1792,10 @@ l.1210 ...>{\raggedright\arraybackslash}p{3cm}ccc}
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-[59
+[60
 
 
-] [60]
+] [61]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1876,13 +1832,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1319 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [61
+l.1222 ...right\arraybackslash}p{3cm}cccccccccccc}
+                                                   [62
 
 
 
 
-] [62]
+] [63]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1919,13 +1875,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1373 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [63
+l.1276 ...right\arraybackslash}p{3cm}cccccccccccc}
+                                                   [64
 
 
 
 
-] [64]
+] [65]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1962,13 +1918,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1427 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [65
+l.1330 ...right\arraybackslash}p{3cm}cccccccccccc}
+                                                   [66
 
 
 
 
-] [66]
+] [67]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -2005,13 +1961,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1481 ...raggedright\arraybackslash}p{3cm}cccccc}
-                                                   [67
+l.1384 ...raggedright\arraybackslash}p{3cm}cccccc}
+                                                   [68
 
 
 
 
-] [68] AED endfloat: Processing end Figures and Tables [69
+] [69] AED endfloat: Processing end Figures and Tables [70
 
 
 ] (./sample_writeup.aux)
@@ -2019,16 +1975,16 @@ l.1481 ...raggedright\arraybackslash}p{3cm}cccccc}
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `sample_writeup.out' has not changed.
-(rerunfilecheck)             Checksum: 96E16ECB253BC91102CD5A4615C9560A;6782.
+(rerunfilecheck)             Checksum: E28E94C7E3650F8D1924C4C7D94FB97A;6764.
  ) 
 Here is how much of TeX's memory you used:
- 28022 strings out of 480236
- 527803 string characters out of 5894131
- 832574 words of memory out of 5000000
- 45208 multiletter control sequences out of 15000+600000
- 584152 words of font info for 109 fonts, out of 8000000 for 9000
+ 28021 strings out of 480236
+ 528522 string characters out of 5894131
+ 833074 words of memory out of 5000000
+ 45200 multiletter control sequences out of 15000+600000
+ 583834 words of font info for 108 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,11n,103p,2063b,565s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 99i,12n,103p,2065b,559s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -2036,41 +1992,43 @@ pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
 , replaced by a fixed one
 
 {/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.en
-c}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mat
-hit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/bas
-e/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm
-/lm-rm.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/
-lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/
-dvips/lm/lm-ts1.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/t
-ype1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/
-texmf-dist/fonts/type1/public/amsfonts/euler/eurm7.pfb></Users/sebastiansciarra
-/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastians
-ciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/seba
-stiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Use
-rs/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb
-></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi
-12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/l
-m/lmmi6.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/pub
-lic/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type
-1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts
-/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/
-fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-
-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/te
-xmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTe
-X/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sebastiansciarra/Library/
-TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/sebastiansciarra/Li
-brary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciar
-ra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastia
-nsciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/seb
-astiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></Use
-rs/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.
-pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helveti
-c/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/ur
-w/helvetic/uhvro8a.pfb>
-Output written on sample_writeup.pdf (69 pages, 926108 bytes).
+c}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.
+enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-m
+athex.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/l
+m/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/d
+vips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts
+/enc/dvips/base/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/font
+s/enc/dvips/lm/lm-ts1.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/f
+onts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/Ti
+nyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm7.pfb></Users/sebastians
+ciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/seba
+stiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></User
+s/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb
+></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex
+10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/l
+m/lmmi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/pu
+blic/lm/lmmi12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/ty
+pe1/public/lm/lmmi6.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fon
+ts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dis
+t/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texm
+f-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX
+/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/Ti
+nyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Librar
+y/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Li
+brary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sebastianscia
+rra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/sebasti
+ansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/se
+bastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Us
+ers/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb
+></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy
+8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helve
+tic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/
+urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fon
+ts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on sample_writeup.pdf (70 pages, 950353 bytes).
 PDF statistics:
- 900 PDF objects out of 1000 (max. 8388607)
- 736 compressed objects within 8 object streams
- 170 named destinations out of 1000 (max. 500000)
- 375 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 946 PDF objects out of 1000 (max. 8388607)
+ 772 compressed objects within 8 object streams
+ 178 named destinations out of 1000 (max. 500000)
+ 390 words of extra memory for PDF output out of 10000 (max. 10000000)
 

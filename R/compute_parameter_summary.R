@@ -48,6 +48,8 @@ compute_statistics <- function(data) {
        #lower and upper CI for estimates
        lower_ci = compute_middle_95_estimate(param_data = estimate)[1],
        upper_ci = compute_middle_95_estimate(param_data = estimate)[2],
+       lower_ci_90 = compute_middle_90_estimate(param_data = estimate)[1],
+       upper_ci_90 = compute_middle_90_estimate(param_data = estimate)[2],
 
        ##lower and upper CI for percentage change
        #lower_ci_perc = compute_middle_95_perc_change(param_data = estimate, pop_value = pop_value)[1],
@@ -162,9 +164,31 @@ compute_middle_95_estimate <- function(param_data) {
   parameter_values_ordered <- param_data[order(param_data, na.last = NA)]
 
   #extract appropriate percentiles
-  perc_95_estimate <- quantile(parameter_values_ordered, probs = c(.025, .975))
+  perc_95_estimate <- quantile(parameter_values_ordered, probs = c(.025, .975), type = 7)
 
   return(perc_95_estimate)
+}
+
+compute_middle_80_estimate <- function(param_data) {
+
+  #order data; remove NA values by setting na.last = NA
+  parameter_values_ordered <- param_data[order(param_data, na.last = NA)]
+
+  #extract appropriate percentiles
+  perc_80_estimate <- quantile(parameter_values_ordered, probs = c(.1, .9), type = 7)
+
+  return(perc_80_estimate)
+}
+
+compute_middle_90_estimate <- function(param_data) {
+
+  #order data; remove NA values by setting na.last = NA
+  parameter_values_ordered <- param_data[order(param_data, na.last = NA)]
+
+  #extract appropriate percentiles
+  perc_90_estimate <- quantile(parameter_values_ordered, probs = c(.05, .95), type = 7)
+
+  return(perc_90_estimate)
 }
 
 #computes middle 95% of percentage bias values
