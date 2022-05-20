@@ -28,7 +28,8 @@ compute_parameter_summary <- function(data, exp_num) {
   #set levels for time structuredness in exp 3
   if (exp_num == 3){
     summary_data$time_structuredness <- factor(summary_data$time_structuredness,
-                                               levels = c('time_structured', 'fast_response', 'slow_response'))
+                                               levels = c('time_structured', 'fast_response', 'slow_response'),
+                                               labels = c('Time structured', 'Time unstructured (fast response)', 'Time unstructured (slow response)'))
   }
 
   return(summary_data)

@@ -332,12 +332,12 @@ create_likert_param_facets <- function(facet_var, num_rows, num_cols, y_axis_nam
                                                                                  breaks = seq(from = 2.9, to = 3.1, by = .05),
                                                                                  limits = c(2.9, 3.1))),
                                                #theta_random
-                                               scale_override(2, scale_y_continuous(name =  y_axis_name,
+                                               scale_override(3, scale_y_continuous(name =  y_axis_name,
                                                                                     breaks = seq(from = 0, to = 0.20, by = .05),
                                                                                     limits = c(0, 0.20))),
 
                                                #alpha_fixed
-                                               scale_override(3,scale_y_continuous(name =  y_axis_name,
+                                               scale_override(2,scale_y_continuous(name =  y_axis_name,
                                                                                    breaks = seq(from = 3.2, to = 3.4, by = .05),
                                                                                    limits = c(3.2, 3.4))),
                                                #alpha_random

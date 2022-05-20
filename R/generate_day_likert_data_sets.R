@@ -68,18 +68,18 @@ append_parameter_labels <- function(summary_data) {
 
   #convert parameter to a factor and provide panel names in labels
   summary_data$parameter <- factor(summary_data$parameter,
-                                   levels =  c("theta_fixed", "theta_rand",
-                                               "alpha_fixed", "alpha_rand",
-                                               "beta_fixed", "beta_rand",
-                                               "gamma_fixed", "gamma_rand",
+                                   levels =  c("theta_fixed", "alpha_fixed",
+                                               "theta_rand", "alpha_rand",
+                                               "beta_fixed", "gamma_fixed",
+                                               "beta_rand","gamma_rand",
                                                "epsilon"),
                                    labels = c(bquote(expr = 'bold(E:~theta[fixed]~(Baseline))'),
-                                              bquote(expr = 'bold(F:~theta[random]~(Baseline))'),
-                                              bquote(expr = 'bold(G:~alpha[fixed]~(Maximal~elevation))'),
+                                              bquote(expr = 'bold(F:~alpha[fixed]~(Maximal~elevation))'),
+                                              bquote(expr = 'bold(G:~theta[random]~(Baseline))'),
                                               bquote(expr = 'bold(H:~alpha[random]~(Maximal~elevation))'),
                                               bquote(expr = 'bold(A:~beta[fixed]~(`Days-to-halfway`~elevation))'),
-                                              bquote(expr = 'bold(B:~beta[random]~(`Days-to-halfway`~elevation))'),
                                               bquote(expr = bold(C:~gamma[fixed]~(`Triquarter-halfway`~'delta'))),
+                                              bquote(expr = 'bold(B:~beta[random]~(`Days-to-halfway`~elevation))'),
                                               bquote(expr = bold(D:~gamma[random]~(`Triquarter-halfway`~'delta'))),
                                               bquote(expr = 'bold(I:~epsilon~(Error))')))
 

@@ -33,8 +33,8 @@ print_param_table <- function(table_ready_data, parameter_name,
     column_spec(column = c(1, 2), width = '3cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
-    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}',
-             general = 'Cells shaded in gray indicate instances where less than 90\\\\% of models converged.') %>%
+    #footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-0.25pc}',
+      #       general = 'Cells shaded in gray indicate instances where less than 90\\\\% of models converged.') %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
     kable_styling(position = 'left') %>%
     landscape(margin = '1cm')
@@ -44,6 +44,8 @@ print_param_table <- function(table_ready_data, parameter_name,
 
 #generates table-ready data sets
 create_table_data_sets <- function(param_summary_data, wide_var, first_col, second_col){
+
+  param_summary_data <- convert_var_to_sd(param_summary_data = param_summary_data)
 
   #extract all columns names before bias column
   bias_col_num <- which(names(param_summary_data) == 'num_removed_values')
@@ -62,7 +64,7 @@ create_table_data_sets <- function(param_summary_data, wide_var, first_col, seco
   parameter_est_data <- round_two_decimal_places(parameter_est_data = parameter_est_data)
 
   #add latex information to param_estimate_table
-  removed_value_table <- generate_num_removed_value_latex(parameter_est_data = removed_value_table)
+  #removed_value_table <- generate_num_removed_value_latex(parameter_est_data = removed_value_table)
 
 
   return(list('estimate_table' = parameter_est_data,

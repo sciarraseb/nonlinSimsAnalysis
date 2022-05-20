@@ -30,10 +30,10 @@ print_conv_table <- function(table_ready_data,
     column_spec(column = c(3:nrow(table_ready_data)), width = '1cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
-    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}',
-             general = 'Cells shaded in gray indicate instances where less than 90\\\\% of models converged.') %>%
+    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.25pc}',
+             general = 'Cells shaded in gray indicate conditions where less than 90\\\\% of models converged. \\\\phantom{ indicate conditions where less than 90\\\\% of models converged.}', footnote_as_chunk = F) %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
-    kable_styling(position = 'left')
+    kable_styling(position = 'left', bootstrap_options = )
     #landscape(margin = '1cm')
 
   return(table)
@@ -77,12 +77,11 @@ recode_target_col <- function(conv_table, exp_num, recode_var) {
 
   #modify correct column
   if (exp_num != 3) {
-    conv_table <- conv_table %>%
-      mutate(!!sym(recode_var) := fct_recode(!!sym(recode_var),
-                                      'Equal' = 'bold(A:~Equal)',
-                                      'Time-interval increasing' = ' bold(B:~`Time-Interval`~Increasing)',
-                                      'Time-interval decreasing' = 'bold(C:~`Time-Interval`~Decreasing)',
-                                      'Middle-and-extreme' = 'bold(D:~`Middle-and-Extreme`)'))
+    conv_table$measurement_spacing <-  factor(conv_table$measurement_spacing,
+                                              levels = levels(conv_table$measurement_spacing),
+                                              labels = c('Equal', 'Time-interval increasing', 'Time-interval decreasing', 'Middle-and-extreme'))
+
+
   }
 
   else {
