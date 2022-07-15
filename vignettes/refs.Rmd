@@ -1,0 +1,996 @@
+---
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{textcomp} #for copyright symbol on title page
+  - \usepackage{longtable}
+  - \usepackage{setspace}
+  - \usepackage{biblatex}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm} 
+  - \usepackage{amsmath} ##needed for argmax
+  - \DeclareMathOperator*{\argmax}{arg\,max}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionJustification{double}{\DoubleSpacing}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\footnotesize} #set caption font size to footnote 
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification=raggedright}
+  - \captionsetup[table]{font = {figCaptionFont,figCaptionSize,figCaptionStyle}, labelfont={bf}, labelsep=captionSep, justification = raggedright, margin = {0cm,0cm}}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{} \renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+  
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{example}[theorem]{Example}
+  
+  #modifies heading levels of 4-5 to follow apa7
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+
+  
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation: 
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+linkcolor         : blue
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: dissertation_references.bib
+---
+
+```{r package_loading, include=F}
+#load packages
+library(easypackages)
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 
+              'ggbrace', 'cowplot')
+libraries(packages)
+load_all()
+```
+
+# Experiment 1
+
+```{=tex}
+\nointerlineskip
+\vfill
+\newpage
+```
+
+Experiment 1 investigated how the modelling accuracy of a nonlinear pattern was affected by using different schedules of measurement spacing and measurement numbers. To provide a more comprehensive investigation of modelling accuracy under each measurement spacing schedule, the nature of the nonlinear curve was also manipulated by changing the value of the days-to-halfway elevation parameter (specifically, the fixed-effect days-to-halfway elevation parameter [$\upbeta_{fixed}$]). Manipulating the nature of change provided insight into which measurement spacing schedules led to the most accurate modelling of each pattern. Therefore, Experiment 1 investigated how the modelling accuracy of a nonlinear pattern was affected under cells characterized by different measurement spacing schedules, measurement numbers, and natures of change. Before providing an overview of the methods used for Experiment 1, two points need to be mentioned. First, because sample size was not manipulated in Experiment 1, it was set to the average sample size observed in organizational research of *N* = 225 [@bosco2015]. Second, each sample size used for each cell was 1000 in Experiment 1 (*n* = 1000; i.e., 1000 data sets were generated for each cell).\footnote{Given that Experiment 1 had 48 cells, a total of 48 000 data sets were generated.} 
+
+
+## Methods
+
+### Variables Used in Simulation Experiment 
+
+#### Independent Variables
+
+To build on current research, Experiment 1 (in addition to all the simulation experiments in my dissertation) largely used independent variable manipulations from a select number of studies. In looking at the summary of the simulation literature in Table \ref{tab:systematicReview}, the study by @coulombe2016 was the only one to investigate three longitudinal issues of interest to my dissertation, and so represented the most comprehensive investigation. Because my dissertation was also interested in investigating measurement spacing, manipulations were inspired from the only other simulation study to manipulate measurement spacing [the study by @timmons2015]. The sections that follow will discuss each of the variables manipulated in Experiment 1. 
+
+##### Number of Measurements
+
+(ref:loehlin2017) [(\textit{p}[{\textit{p} + 1}]/2\; see @loehlin2017]
+
+The exact set of values used by @coulombe2016 for the number of
+measurements could not be used in Experiment 1 (or any other simulation experiment that manipulated measurement number in my dissertation) because doing so would have created non-identified models. Specifically, the smallest value
+used for the number of measurements in @coulombe2016 of 3 measurements
+could not be used because it would not have provided
+sufficient degrees of freedom for estimating the nonlinear latent growth
+curve model in my simulations. The model used in my simulations
+estimated 9 parameters (*p* = 9; 4 fixed-effects + 4 random-effects + 1
+error) and so the minimum number of measurements (or observed variables)
+required for model identification (and to allow model comparison)
+was 4.\footnote{Degrees of freedom is
+calculated by multiplying the number of observed variables (\textit{p})
+by \textit{p} + 1 and dividing it by 2 (ref:loehlin2017)} Although a measurement number of three could not be used in my manipulation of measurement number, the next highest measurement number values in @coulombe2016 of 5, 7, and 9 were used. Importantly, a larger value of 11 was added to test for a possible effect of a high measurement number. Therefore, my simulation
+experiments used the following values in manipulating the number of
+measurements: 5, 7, 9, and 11. 
+
+##### Spacing of Measurements
+
+The only simulation study identified by my systematic review that manipulated measurement spacing was
+@timmons2015. Measurement spacing in @timmons2015 was manipulated in the
+following four ways:
+
+1)  **Equal spacing**: measurements were divided by intervals of
+    equivalent lengths.
+    
+2)  **Time-interval increasing spacing**: intervals that divided measurements
+    increased in length over time.
+
+3)  **Time-interval decreasing spacing**: intervals that divided measurements
+    decreased in length over time.
+
+4)  **Middle-and-extreme spacing**: measurements were clustered near the
+    beginning, middle, and end of the data collection period.
+
+\noindent To maintain consistency with the established literature, my
+experiments manipulated measurement spacing in the same way as
+@timmons2015 presented above. Importantly, because @timmons2015 did not create their measurement spacing schedules with any systematicity, I developed a replicable procedure for generating measurement schedules for each of the four measurement spacing conditions (see [Appendix A][Appendix A: Procedure for generating measurement schedules in measurement spacing conditions]). 
+
+Table \@ref(tab:measurementDays) lists the measurement days that were
+used for all measurement spacing-measurement number cells. The first
+column lists the type of measurement spacing (i.e., equal, time-interval
+increasing, time-interval decreasing, or middle-and-extreme); the second
+column lists the number of measurements (5, 7, 9, or 11); the third
+column lists the measurement days that correspond to each measurement
+number-measurement spacing condition; and the fourth column lists the
+interval lengths that characterize each set of measurements. Note that
+the interval lengths are equal for the equal spacing, increase over time
+for the time-interval increasing spacing, and decrease over time for the
+time-interval decreasing spacing, For cells with middle-and-extreme
+spacing, the measurement days and and interval lengths corresponding to
+the middle of the measurement window have been emboldened.
+
+```{r measurementDays, echo=F}
+time_period <- 360
+num_measurements <- seq(from = 5, to = 11, by = 2)
+smallest_int_length <- 30
+
+#meausurement days 
+equal_5 <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'equal')$measurement_days
+equal_7 <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'equal')$measurement_days
+equal_9 <- compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'equal')$measurement_days
+equal_11 <- compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'equal')$measurement_days
+
+time_inc_5 <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'time_inc')$measurement_days
+time_inc_7 <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'time_inc')$measurement_days
+time_inc_9 <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'time_inc')$measurement_days, 2)
+time_inc_11 <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'time_inc')$measurement_days, 2)
+
+time_dec_5 <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'time_dec')$measurement_days
+time_dec_7 <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'time_dec')$measurement_days
+time_dec_9 <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'time_dec')$measurement_days, 2)
+time_dec_11 <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'time_dec')$measurement_days, 2)
+
+mid_ext_5 <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'mid_ext')$measurement_days
+mid_ext_7 <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'mid_ext')$measurement_days
+mid_ext_9 <- compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'mid_ext')$measurement_days
+mid_ext_11 <- compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'mid_ext')$measurement_days
+
+
+#measurement intervals
+equal_5_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'equal')$interval_lengths
+equal_7_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'equal')$interval_lengths
+equal_9_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'equal')$interval_lengths
+equal_11_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'equal')$interval_lengths
+
+time_inc_5_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'time_inc')$interval_lengths
+time_inc_7_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'time_inc')$interval_lengths
+time_inc_9_int <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'time_inc')$interval_lengths, 2)
+time_inc_11_int <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'time_inc')$interval_lengths, 2)
+
+time_dec_5_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'time_dec')$interval_lengths
+time_dec_7_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'time_dec')$interval_lengths
+time_dec_9_int <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'time_dec')$interval_lengths, 2)
+time_dec_11_int <- round(compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'time_dec')$interval_lengths, 2)
+
+mid_ext_5_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 5, smallest_int_length,measurement_spacing = 'mid_ext')$interval_lengths
+mid_ext_7_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 7, smallest_int_length,measurement_spacing = 'mid_ext')$interval_lengths
+mid_ext_9_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 9, smallest_int_length,measurement_spacing = 'mid_ext')$interval_lengths
+mid_ext_11_int <- compute_measurement_schedule(time_period = time_period, num_measurements = 11, smallest_int_length,measurement_spacing = 'mid_ext')$interval_lengths
+
+
+measurement_days_df <- data.frame('Measurement spacing' = c('Equal', '', '', '', 
+                                                            'Time-interval increasing', '', '', '', 
+                                                            'Time-interval decreasing', '', '', '', 
+                                                            'Middle-and-extreme', '', '', ''), 
+                                  'Number of measurements' = rep(num_measurements, times = 4), 
+                                  'Measurement days' = c(paste(equal_5, collapse = ', '), 
+                                                         paste(equal_7, collapse = ', '), 
+                                                         paste(equal_9, collapse = ', '), 
+                                                         paste(equal_11, collapse = ', '), 
+                                                         
+                                                         paste(time_inc_5, collapse = ', '),
+                                                         paste(time_inc_7, collapse = ', '),
+                                                         paste(time_inc_9, collapse = ', '),
+                                                         paste(time_inc_11, collapse = ', '),
+                                                         
+                                                         paste(time_dec_5, collapse = ', '),
+                                                         paste(time_dec_7, collapse = ', '),
+                                                         paste(time_dec_9, collapse = ', '),
+                                                         paste(time_dec_11, collapse = ', '),
+                                                         
+                                                        '1, \\textbf{150, 180, 210}, 360',
+                                                        '1, 30, \\textbf{150, 180, 210}, 330, 360',
+                                                        '1, 30, 60, \\textbf{150, 180, 210}, 300, 330, 360',
+                                                        '1, 30, 60, \\textbf{120, 150, 180, 210, 240,} 300, 330, 360'), 
+                                  
+                                  'Interval lengths' = c(paste(equal_5_int, collapse = ', '), 
+                                                         paste(equal_7_int, collapse = ', '), 
+                                                         paste(equal_9_int, collapse = ', '), 
+                                                         paste(equal_11_int, collapse = ', '), 
+                                                         
+                                                         paste(time_inc_5_int, collapse = ', '),
+                                                         paste(time_inc_7_int, collapse = ', '),
+                                                         paste(time_inc_9_int, collapse = ', '),
+                                                         paste(time_inc_11_int, collapse = ', '),
+                                                         
+                                                         paste(time_dec_5_int, collapse = ', '),
+                                                         paste(time_dec_7_int, collapse = ', '),
+                                                         paste(time_dec_9_int, collapse = ', '),
+                                                         paste(time_dec_11_int, collapse = ', '),
+                                                         
+                                                        '150, \\textbf{30, 30}, 150',
+                                                         '30, 120, \\textbf{30, 30}, 120, 30',
+                                                         '30, 30, 90, \\textbf{30, 30}, 90, 30, 30',
+                                                         '30, 30, 60, \\textbf{30, 30, 30, 30}, 60, 30, 30'),
+                                  check.names = F)
+
+kbl(x = measurement_days_df, booktabs = TRUE, format = 'latex', longtable = T, 
+      align = c('l', 'l'), 
+    linesep = c(rep('', times = 3),
+            '\\cmidrule{1-4}\\addlinespace'), 
+      caption = 'Measurement Days Used for All Measurement Number-Measurement Spacing Conditions ', 
+    escape=F) %>%
+   kable_styling(latex_options= c('hold_position'), font_size = 10, position = 'left') %>%  
+    footnote(general =  "For conditions with middle-and-extreme spacing, the measurement days and and interval lengths corresponding to the middle of the measurement window have been emboldened.",  threeparttable = T,  escape = F, general_title = '\\\\textit{Note.}\\\\hspace{-1.25pc}')%>%
+  landscape(margin = '1cm')
+
+```
+
+
+##### Population Values Set for The Fixed-Effect Days-to-Halfway Elevation Parameter $\upbeta_{fixed}$ (Nature of Change)
+
+The nature of change was manipulated by setting the days-to-halfway elevation parameter ($\upbeta_{fixed}$) to a value of either 80, 180, or 280 days (see Figure \ref{fig:combined_plot}A). Note that no other study manipulated nature of change and so its manipulation in Experiment 1 was no informed by prior research. 
+
+#### Dependent Variables
+
+##### Convergence Success Rate
+
+The proportion of iterations in a cell where models converged defined
+the **convergence success rate**.\footnote{Specifically, convergence was obtained if the convergence code returned by OpenMx was 0.} Equation \@ref(eq:convergence) below shows the calculation used to compute the convergence success rate:
+
+```{=tex}
+\begin{align}
+  \text{Convergence success rate} =  \frac{\text{Number of models that successfully converged}}{n},
+  (\#eq:convergence) 
+\end{align}
+```
+\noindent where *n* represents the cell size.
+
+
+##### Bias
+
+Bias was calculated to evaluate the accuracy with which each logistic
+function parameter was estimated. As shown below in Equation
+\@ref(eq:bias), *bias* was obtained by calculating the difference
+between the population value set for a parameter and the average
+estimated value in each cell.
+
+\useshortskip
+
+```{=tex}
+\begin{align}
+  \text{Bias} =  \text{Population value for parameter} - \text{Average estimated value}
+  (\#eq:bias) 
+\end{align}
+```
+
+##### Variability
+
+In addition to computing bias, variability was calculated to evaluate the confidence with which each parameter was estimated in a given cell. *Variability* was obtained by finding the average squared deviation of  
+
+### Overview of Data Generation and Analysis of Dependent Variables 
+
+#### Data Generation
+##### Function Used to Generate Each Data Set
+
+Data for each simulation experiment were generated using R [@rstudio].
+To generate the data, the **multilevel logistic function** shown below
+in Equation \@ref(eq:logFunction-generation) was used:
+
+```{=tex}
+\begin{align}
+  y_{ij} = \uptheta_j + \frac{\upalpha_j - \uptheta_j}{{1 + e^\frac{\upbeta_j - time_i}{\upgamma_j}}} + \upepsilon_{ij}, 
+(\#eq:logFunction-generation)
+\end{align}
+```
+
+\noindent where $\uptheta$ represents the baseline parameter, $\upalpha$
+represents the maximal elevation parameter, $\upbeta$ represents the
+days-to-halfway elevation parameter, and $\upgamma$ represents
+triquarter-halfway delta parameter. Note that, values for $\uptheta$,
+$\upalpha$, $\upbeta$, and $\upgamma$ were generated for each *j* person
+across all *i* time points, with an error value being randomly generated
+at each *i* time point($\upepsilon_{ij}$). In other words, unique
+response patterns were generated for each person in each of the 1000
+data sets generated per cell.
+
+Figure \ref{fig:combined_plot}A shows that the baseline parameter
+($\uptheta$) sets the starting value of the curve, which in the current
+example has a value of 3.00 ($\uptheta$ = 3.00). Figure
+\ref{fig:combined_plot}B shows that the maximal elevation parameter
+($\upalpha$) sets the ending value of the curve, which in the current
+example has a value of 3.32 ($\upalpha$ = 3.32). Note that a difference
+of 0.32 was selected to represent the average effect size in
+organizational research [@bosco2015\; for more information, see section on [population values][Population Values Used for Logistic Function Parameters]]. Figure \ref{fig:combined_plot}C shows that the days-to-halfway elevation
+parameter ($\upbeta$) sets the number of days needed to reach 50% of the
+difference between the baseline and maximal elevation. In the current
+example, the baseline-maximal elevation difference is 0.32
+($\upalpha - \uptheta$ = 3.32 - 3.00 = 0.32), and so the days-to-halfway
+elevation parameter defines the number of days needed to reach a value
+of 3.16. Given that the days-to-halfway elevation parameter is set to
+180 in the current example ($\upbeta = 180$), then 180 days are needed
+to go from a value of 3.00 to a value of 3.16. Figure
+\ref{fig:combined_plot}D shows that the halfway-triquarter delta
+parameter ($\upgamma$) sets the number of days needed to go from halfway
+elevation to approximately 73% of the baseline-maximal elevation
+difference of 0.32. Given that 73% of the baseline-maximal elevation
+difference is 0.23 and the halfway-triquarter delta is set to 40 days
+($\upgamma = 40$), then 40 days are needed to go from the halfway point
+of 3.16 to the triquarter point of approximately 3.23.
+
+```{r logistic-interpretation-plot1, eval=F, include=F}
+#setup variables for logistic curve 
+time <- seq(from = 1, to = 360, by = 1)
+theta <- 3
+alpha <- 3.32
+beta <- 180
+gamma <- 40
+
+logistic_data <- data.frame('day' = time, 
+                            'curve_score' = theta + (alpha - theta)/(1 + exp((beta - time)/gamma))) 
+
+#make first and last values exactly equal to theta and alpha 
+logistic_data$curve_score[c(1, 360)] <- c(theta, alpha)
+
+baseline <- logistic_data$curve_score[logistic_data$day == 1]
+halfway_value <- logistic_data$curve_score[logistic_data$day == beta]
+triquarter_value <- logistic_data$curve_score[logistic_data$day == beta + gamma]
+maximal_elevation <- logistic_data$curve_score[logistic_data$day == 360]
+
+#df for points 
+point_df <- data.frame('day' = c(1, beta, beta+gamma, 360), 
+                       'curve_score' = c(baseline, halfway_value, triquarter_value, maximal_elevation), 
+                       'beta_brace' = factor(c('beta', 'beta', 'NA', 'NA')),
+                       'beta_label' = rep('d[beta]', times = 4), 
+                       
+                       'gamma_brace' = factor(c('NA', 'gamma', 'gamma', 'NA')), 
+                       'gamma_label' = rep('d[gamma]', times = 4),
+                       
+                       'total_brace' = factor(c('total', 'NA', 'NA', 'total')), 
+                       'total_label' = rep('d[total]', times = 4))
+
+font_size <- 8
+title_font <- 30
+axis_text_size <- 20
+axis_title_size <- 24
+
+theta_plot <- ggplot(data = logistic_data, aes(x = day, y = curve_score)) + 
+  geom_line(size = 2) + 
+  theme_classic(base_family = 'Helvetica') +
+  scale_y_continuous(name = 'Curve value', limits = c(3, 3.35), breaks = c(3, 3.16, 3.23, 3.32)) + 
+  scale_x_continuous(name = 'Day', breaks = c(0, beta, beta + gamma, 360)) +
+  annotate(geom = 'text', x = 80, y = 3.28, label = 'y == theta + frac(alpha - theta, 1 + e^(frac(beta-time, gamma)))', parse = T, size = font_size) + 
+  geom_point(data = point_df, mapping = aes(x = day, y = curve_score), size = 5) +
+  coord_cartesian(clip = 'off') + 
+  
+  ggtitle(label = expression(bold(A:~Baseline~(theta)))) + 
+  #theta 
+  geom_segment(x = 10, xend = 360, y = baseline, yend = baseline, linetype = 5, size = 1) + #horizontal dashed line  
+  geom_segment(x = 400, xend = 365, y = baseline, yend = baseline, size = 1, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  annotate(geom = 'text', x = 440, y = 3.05, label = 'Baseline \n(y-axis)', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 440, y = 3.00, label = 'theta == 3.00', parse = T, size = font_size) + 
+
+   #themes
+  theme_classic(base_family = 'Helvetica', base_size = 13) +
+  theme(plot.margin = unit(c(0, 1, 0.1, 0.1), units="cm"), 
+        plot.title = element_text(face='bold', size = title_font,  hjust = 0), 
+        axis.title = element_text(size = axis_title_size), 
+        axis.text = element_text(size = axis_text_size, colour = 'black'), 
+        plot.tag = element_text(face = 'bold'))
+
+
+alpha_plot <- ggplot(data = logistic_data, aes(x = day, y = curve_score)) + 
+  geom_line(size = 2) + 
+  theme_classic(base_family = 'Helvetica') +
+  scale_y_continuous(name = 'Curve value', limits = c(3, 3.35), breaks = c(3, 3.16, 3.23, 3.32)) + 
+  scale_x_continuous(name = 'Day', breaks = c(0, beta, beta + gamma, 360)) +
+  annotate(geom = 'text', x = 80, y = 3.28, label = 'y == theta + frac(alpha - theta, 1 + e^(frac(beta-time, gamma)))', parse = T, size = font_size) + 
+  geom_point(data = point_df, mapping = aes(x = day, y = curve_score), size = 5) +
+  coord_cartesian(clip = 'off') + 
+  
+  ggtitle(label = expression(bold(B:~Maximal~elevation~(alpha)))) + 
+  #theta 
+  geom_segment(x = -3, xend = 360, y = maximal_elevation, yend = maximal_elevation, linetype = 5, size = 1) + #horizontal dashed line  
+  geom_segment(x = 400, xend = 365, y = maximal_elevation, yend = maximal_elevation, size = 1, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  annotate(geom = 'text',  x = 440, y = 3.27, label = 'Maximal \nelevation \n(y-axis)', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 440, y = 3.20, label = 'alpha == 3.32', parse = T, size = font_size) + 
+
+   #themes
+  theme_classic(base_family = 'Helvetica', base_size = 13) +
+  theme(plot.margin = unit(c(0, 1, 0.1, 0.1), units="cm"), 
+        plot.title = element_text(face='bold', size = title_font,  hjust = 0), 
+        axis.title = element_text(size = axis_title_size), 
+        axis.text = element_text(size = axis_text_size, colour = 'black'), 
+        plot.tag = element_text(face = 'bold'))
+
+
+beta_plot <- ggplot(data = logistic_data, aes(x = day, y = curve_score)) + 
+  geom_line(size = 2) + 
+  theme_classic(base_family = 'Helvetica') +
+  scale_y_continuous(name = 'Curve value', limits = c(3, 3.35), breaks = c(3, 3.16, 3.23, 3.32)) + 
+  scale_x_continuous(name = 'Day', breaks = c(0, beta, beta + gamma, 360)) +
+  annotate(geom = 'text', x = 80, y = 3.28, label = 'y == theta + frac(alpha - theta, 1 + e^(frac(beta-time, gamma)))', parse = T, size = font_size) + 
+  geom_point(data = point_df, mapping = aes(x = day, y = curve_score), size = 5) +
+  coord_cartesian(clip = 'off') + 
+  
+  ggtitle(label =  expression(bold(C:~Days~to~halfway~elevation~(beta)))) + 
+  #theta 
+    geom_segment(x = 130, xend = 175, y = 3.16, yend = 3.16, size = 1, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  geom_segment(x = 180, xend = 180, y = 3.16, yend = 2.98, linetype = 2, size = 1) + #vertical dashed line 
+  annotate(geom = 'text', x = 55, y = 3.14, label = 'Days to halfway \nelevation', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 55, y = 3.08, label = 'beta == 180~days', parse = T, size = font_size) + 
+  
+   #themes
+  theme_classic(base_family = 'Helvetica', base_size = 13) +
+  theme(plot.margin = unit(c(0, 1, 0.1, 0.1), units="cm"), 
+        plot.title = element_text(face='bold', size = title_font,  hjust = 0), 
+        axis.title = element_text(size = axis_title_size), 
+        axis.text = element_text(size = axis_text_size, colour = 'black'), 
+        plot.tag = element_text(face = 'bold'))
+
+gamma_plot <- ggplot(data = logistic_data, aes(x = day, y = curve_score)) + 
+  geom_line(size = 2) + 
+  theme_classic(base_family = 'Helvetica') +
+  scale_y_continuous(name = 'Curve value', limits = c(3, 3.35), breaks = c(3, 3.16, 3.23, 3.32)) + 
+  scale_x_continuous(name = 'Day', breaks = c(0, beta, beta + gamma, 360)) +
+  annotate(geom = 'text', x = 80, y = 3.28, label = 'y == theta + frac(alpha - theta, 1 + e^(frac(beta-time, gamma)))', parse = T, size = font_size) + 
+  geom_point(data = point_df, mapping = aes(x = day, y = curve_score), size = 5) +
+  coord_cartesian(clip = 'off') + 
+  
+  ggtitle(label = expression(bold(D:~`Halfway-triquarter`~'delta'~(gamma)))) +
+  
+  #gamma 
+  geom_segment(x = 175, xend = 215, y = 3.233, yend = 3.233, size = 1, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  geom_segment(x = 220, xend = 220, y = 3.233, yend = 2.98, linetype = 2, size = 1) + #vertical dashed line 
+  annotate(geom = 'text', x = 100, y = 3.21, label = 'Halfway-triquarter delta', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 105, y = 3.15, label = 'gamma == 40~days', parse = T, size = font_size) + 
+  
+  #themes
+  theme_classic(base_family = 'Helvetica', base_size = 13) +
+  theme(plot.margin = unit(c(0, 1, 0.1, 0.1), units="cm"), 
+        plot.title = element_text(face='bold', size = title_font,  hjust = 0), 
+        axis.title = element_text(size = axis_title_size), 
+        axis.text = element_text(size = axis_text_size, colour = 'black'), 
+        plot.tag = element_text(face = 'bold'))
+
+combined_plot <- ggarrange(theta_plot, alpha_plot, beta_plot, gamma_plot)
+ggsave(plot = combined_plot, filename = 'Figures/combined_plot.pdf', width = 18, height = 12)
+
+
+complete_plot <- ggplot(data = logistic_data, aes(x = day, y = curve_score)) + 
+  geom_line(size = 1) + 
+  theme_classic(base_family = 'Helvetica') +
+  scale_y_continuous(name = 'Curve value', limits = c(3, 3.35), breaks = c(3, 3.16, 3.23, 3.32)) + 
+  scale_x_continuous(name = 'Day', breaks = c(0, beta, beta + gamma, 360))+
+  annotate(geom = 'text', x = 50, y = 3.28, label = 'y == theta + frac(alpha - theta, 1 + e^(frac(beta-time, gamma)))', parse = T, size = 5) + 
+  geom_point(data = point_df, mapping = aes(x = day, y = curve_score), size = 3) +
+
+  #beta
+  annotate(geom = 'text', x = 85, y = 3.15, label = 'Days to halfway \nelevation', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 90, y = 3.12, label = 'beta == 180~days', parse = T, size = font_size) +
+  geom_segment(x = 130, xend = 175, y = 3.16, yend = 3.16, size = 0.2, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  geom_segment(x = 180, xend = 180, y = 3.16, yend = 2.98, linetype = 2, size = 0.3) + #vertical dashed line 
+  
+  #gamma
+  annotate(geom = 'text', x = 97, y = 3.233, label = 'Halfway-triquarter delta', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 105, y = 3.21, label = 'gamma == 40~days', parse = T, size = font_size) + 
+  geom_segment(x = 175, xend = 215, y = 3.233, yend = 3.233, size = 0.2, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  geom_segment(x = 220, xend = 220, y = 3.233, yend = 2.98, linetype = 2, size = 0.3)+  #vertical dashed line  
+  
+  coord_cartesian(clip = 'off') + 
+  #theta 
+  geom_segment(x = 10, xend = 360, y = baseline, yend = baseline, linetype = 3, size = 0.3) + #horizontal dashed line  
+  geom_segment(x = 400, xend = 365, y = baseline, yend = baseline, size = 0.2, arrow = arrow(length = unit(0.3, 'cm'))) + #horizontal arrow
+  annotate(geom = 'text', x = 425, y = 3.03, label = 'Baseline \n(y-axis)', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 425, y = 3.00, label = 'theta == 3.00', parse = T, size = font_size) + 
+
+  #alpha 
+  geom_segment(x = -3, xend = 360, y = maximal_elevation, yend = maximal_elevation, linetype = 3, size = 0.3) + #vertical dashed line  
+  geom_segment(x = 400, xend = 365, y = maximal_elevation, yend = maximal_elevation, size = 0.2, arrow = arrow(length = unit(0.3, 'cm'))) +      #horizontal arrow
+  annotate(geom = 'text', x = 430, y = 3.30, label = 'Maximal \nelevation \n(y-axis)', size = font_size, fontface = 'bold') +
+  annotate(geom = 'text', x = 430, y = 3.26, label = 'alpha == 3.32', parse = T, size = font_size) + 
+  
+   #themes
+  theme_classic(base_family = 'Helvetica', base_size = 13) +
+  theme(plot.margin = unit(c(0, 1, 0.1, 0.1), units="cm"), 
+        plot.title = element_text(face='bold',size = title_font), 
+        axis.title = element_text(size = 16), 
+        axis.text = element_text(size = 13, colour = 'black'))
+  
+    ##brace information
+  #stat_brace(data = point_df %>% filter(beta_brace == 'beta'), 
+  #           mapping = aes(group = beta_brace, label = beta_label), labelsize = 4.5, parse = T,  width = 15, rotate = 90) + 
+  #
+  #stat_brace(data = point_df %>% filter(gamma_brace == 'gamma'), 
+  #           mapping = aes(group = gamma_brace, label = gamma_label), labelsize = 4.5, parse = T,  width = 15, rotate = 90) +
+  #
+  #stat_brace(data = point_df %>% filter(total_brace == 'total'), 
+  #           mapping = aes(group = total_brace, label = total_label), labelsize = 4.5, parse = T,  width = 15, rotate = 90) + 
+  #
+  #description box 
+  #annotate(geom = 'rect', xmin = 235, xmax = 355, ymin = 3.02, ymax = 3.15, alpha = 0.1, color = 'black') + 
+  #annotate(geom = 'text', x = 295, y = 3.13, label = 'd[total] == alpha~-~theta == 0.32', parse = T, size = 4.5) + 
+  #annotate(geom = 'text', x = 295, y = 3.09, label = 'd[beta] == 0.5~(d[total]) == 0.16', parse = T, size = 4.5) + 
+  #annotate(geom = 'text', x = 295, y = 3.06, label = 'd[gamma] == 0.23~(d[total]) == 0.07', parse = T, size = 4.5) + 
+  #annotate(geom = 'text', x = 295, y = 3.03, label = 'd[beta]~+~d[gamma] == 0.73~(d[total]) == 0.23', parse = T, size = 4.5) + 
+
+ggsave(plot = complete_plot, filename = 'Figures/complete_logistic_exp_plot.pdf', width = 9, height = 6)
+```
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Description of Each Parameter of Four-Parameter Logistic Function}
+  \label{fig:combined_plot}
+  \includegraphics{Figures/combined_plot} \hfill{}
+  \caption*{Note. \textup{Panel A shows that the baseline parameter ($\uptheta$) sets the starting value of the of curve, which 
+in the current example has a value of 3.00 ($\uptheta$ = 3.00). Panel B shows that the maximal elevation parameter ($\upalpha$) sets the ending value of the curve, which in the current example has a value of 3.32 ($\upalpha$ = 3.32). Panel C shows that the days-to-halfway elevation parameter ($\upbeta$) sets the number of days needed to reach 50\% of the difference between the baseline and maximal elevation. In the current example, the baseline-maximal elevation difference is 0.32 ($\upalpha - \uptheta$ = 3.32 - 3.00 = 0.32), and so the days-to-halfway elevation parameter defines the number of days needed to reach a value of 3.16. Given that the days-to-halfway elevation parameter is set to 180 in the current example ($\upbeta = 180$), then 180 days are neededto go from a value of 3.00 to a value of 3.16. Panel D shows that the halfway-triquarter delta parameter ($\upgamma$) sets the number of days needed to go from halfway elevation to approximately 73\% of the baseline-maximal elevation difference of 0.32 ($\upalpha - \uptheta$ = 3.32 - 3.00 = 0.32). Given that 73\% of the baseline-maximal elevation difference is 0.23 and the halfway-triquarter delta is set to 40 days ($\upgamma = 40$), then 40 days are needed to go from the halfway point of 3.16 to the triquarter point of approximately 3.23).}}
+\end{figure}
+```
+
+The logistic growth function (Equation \ref{eq:logFunction-generation}
+was used because it is a common pattern of organizational change [or
+institutionalization\; @lawrence2001]. Institutionalization curves follow
+an s-shaped pattern of the logistic growth function, and so their rates
+of change can be represented by the days-to-halfway elevation and
+triquarter-halfway delta parameters ($\upbeta$, $\upgamma$,
+respectively), and the success of the change can be defined by the
+magnitude of the difference between baseline and maximal elevation
+parameters ($\upalpha$ - $\uptheta$, respectively).
+
+##### Population Values Used for Function Parameters
+
+(ref:bosco2015) [@bosco2015]
+
+Table \@ref(tab:parameterValues) lists the parameter values that will be
+used for the population parameters. Given that the decisions for setting the values for the baseline, maximal elevation, and residual variance parameters were informed by past research, the discussion that follows highlights how these decisions were made. The difference between the baseline and maximal elevation
+parameters ($\uptheta$ and $\upalpha$, respectively) corresponded to the effect size most commonly observed in organizational research [i.e., the 50^th^ percentile effect size value\; @bosco2015]. Because the meta-analysis of @bosco2015 computed effect sizes as correlations, the the 50^th^ percentile effect size value of $r = .16$ was computed to a standardized effect size using the following conversion function shown in Equation \ref{eq:conversion-effect} [@borenstein2009, Chapter 7]:
+
+\begin{align}
+d = \frac{2r}{\sqrt{1 - r^2}}, 
+(\#eq:conversion-effect)
+\end{align}
+
+\noindent where $r$ is the correlation effect size. Using Equation \ref{eq:conversion-effect}, a correlation value of $r = .16$ becomes a standardized effect size value of $d = 0.32$. For the value residual variance parameter, its value in @coulombe2016 was set to the value used for the value of the intercept variance parameter. In the current context, the intercept of the logistic function (Equation \ref{eq:logistic1}) is the baseline parameter.\footnote{The definition of an intercept parameter is the value of a curve when no time has elapsed, and this is precisely the definition of the baseline parameter ($\uptheta$). Therefore, the variance of the intercept parameter carries the same meaning as the variance of the baseline parameter ($\uptheta_{random}$).} Given that the value for the variability of the baseline parameter was 0.05 (albeit in standard deviation units), the value used for the residual variance parameter was 0.05 ($\upepsilon = 0.05$). Because justification for the other parameters could not be found in any of the simulation studies identified in my systematic review, values set for the other parameters was largely arbitrary. 
+
+To facilitate interpretation of the results, data were generated to resemble the commonly used Likert (range of 1--5) by using a standard deviation of 1.00 and change was assumed to occur over a
+period of 360 days. The decision to generate data in the context of a
+360-day period was made because many organizational processes are often
+governed by annual events (e.g., performance reviews, annual returns,
+regulations, etc.). Importantly, because @coulombe2016 set covariances
+between parameters to zero, all the simulation experiments used
+zero-value covariances.
+
+```{r parameterValues, echo=F}
+#specify parameters for parameter table 
+theta <- 3
+alpha <- 3 + .32*1
+beta <- 180
+gamma <- 20
+
+sd_alpha <- 0.05
+sd_theta <- 0.05
+sd_beta <- 10
+sd_gamma <- 4
+
+sd_error <- 0.05
+
+
+#table of parameter values
+parameterValues_df <- data.frame('Parameter' = c('Parameter means',
+                                         'Baseline, $\\uptheta$',
+                                         'Maximal elevation, $\\upalpha$', 
+                                         'Days-to-halfway elevation, $\\upbeta$', 
+                                         'Triquarter-halfway delta, $\\upgamma$', 
+                                         
+                         'Variability and covariability (in standard deviations)', 
+                              'Baseline standard deviation, $\\uppsi_{\\uptheta}$',
+                              'Maximal elevation standard deviation, $\\uppsi_{\\upalpha}$', 
+                              'Days-to-halfway elevation standard deviation, $\\uppsi_{\\upbeta}$',
+                              'Triquarter-halfway delta standard deviation, $\\uppsi_{\\upgamma}$',
+                         
+                              'Baseline-maximal elevation covariability, $\\uppsi_{\\uptheta\\upalpha}$',
+                              'Baseline-days-to-halfway elevation covariability, $\\uppsi_{\\uptheta\\upbeta}$',
+                              'Baseline-triquarter-halfway delta covariability, $\\uppsi_{\\uptheta\\upgamma}$',
+                         
+                              'Maximal elevation-days-to-halfway elevation covariability, $\\uppsi_{\\upalpha\\upbeta}$',
+                              'Maximal elevation-triquarter-halfway delta covariability, $\\uppsi_{\\upalpha\\upgamma}$',
+                         
+                              'Days-to-halfway elevation-triquarter-halfway delta covariability, $\\uppsi_{\\upbeta\\upgamma}$',
+                          
+                              'Residual standard deviation, $\\uppsi_{\\upepsilon}$'), 
+                         'Value' = c('', theta, alpha, beta, gamma, 
+                                     '', sd_theta, sd_alpha, sd_beta, sd_gamma, 
+                                     0, 0, 0, 0, 0,0,  sd_error), check.names = F)
+
+#round numbers to that they print with two significant numbers
+parameterValues_df$Value <- round(as.numeric(as.character(parameterValues_df$Value)), 3)
+parameterValues_df$Value <- formatC(round(parameterValues_df$Value, 3), format='f', digits=2)
+
+#replace '  NA' with empty string 
+parameterValues_df$Value[parameterValues_df$Value ==" NA"] <- ''
+
+
+kbl(parameterValues_df, booktabs = TRUE, format = 'latex', longtable = T, 
+    linesep = c(rep('', times = 4), '\\addlinespace\\addlinespace', 
+                rep('', times = 11))
+    , 
+    align = c('l', 'c'), 
+    caption = "Values Used for Multilevel Logistic Function Parameters", 
+    escape = F) %>%
+   add_indent(positions = c(2:5, 7:16, 17), level_of_indent = 2) %>%
+   kable_styling(latex_options= c('hold_position', 'repeat_header'), position = 'left', font_size = 10) %>%
+  footnote(general =  "The difference between $\\\\alpha$ and $\\\\theta$ corresponds to the 50$\\\\mathrm{^{th}}$ percentile Cohen's $d$ value of 0.32 in organizational psychology (Bosco et al., 2015).",  threeparttable = T,  escape = F, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}') %>%
+   column_spec(column = 1, width = '12 cm')
+```
+
+##### Modelling of Each Generated Data Set
+
+Each data set generated by the multilevel logistic function (Equation \ref{eq:logFunction-generation}) was analyzed using a modified latent growth curve model known as a structure latent growth curve model [@preacher2015]. To fit the logistic function (Equation \ref{eq:logistic1}) to a given data set, a linear approximation of the logistic function was needed so that it could fit within the structural equation modelling framework---a linear framework.\footnote{The logistic function (Equation \ref{eq:logistic1}) cannot be directly inserted into the structural equation modelling framework because it is a linear framework: It on allows matrix-matrix, matrix-vector, and vector-vector operations. Unfortunately, the algebraic operations permitted in a linear framework cannot directly reproduce logistic function operations and so a linear approximation of the logistic function must be constructed so that the logistic function can be inserted into the structural equation modelling framework.} To construct a linear approximation of the logistic function, a first-order Taylor series was constructed for the logistic function. For a detailed explanation of how the logistic function was fit into the structural equation modelling framework, see [Technical Appendix B](#structured-latent). 
+
+##### Nonlinear Latent Growth Curve Model Used to Analyze Each Generated Data Set{#structured-latent}
+#### Analysis of Dependent Variables 
+
+Explain that analysis had two components. Using minimal effect sizes of interest and computing effect size measures. 
+
+##### Minimal Effect Sizes of Interest for Bias and Variability 
+###### Minimal Effect Size for Bias 
+
+In accordance with several simulation studies, a parameter estimate that lied within a margin of error of 10% of the parameter's value was deemed as an acceptably accurate estimate [@muthen1997]. 
+
+###### Minimal Effect Size for Variability
+##### Variance-Accounted-For Effect 
+
+Among the several effect size metrics---at a broad level, effect size
+metrics can represent standardized differences or variance-accounted-for
+measures that are corrected or uncorrected for sampling error---the corrected
+variance-accounted-for effect size metric of partial $\upomega^2$ was
+chosen because of two desirable properties. First, partial
+$\upomega^2$ provides a less biased estimate of effect size than other
+variance-accounted-for measures [@okada2013]. Second, partial $\upomega^2$ is more
+robust to assumption violations of normality and homogeneity of variance
+[@yigit2018]. Given that the variability of parameter estimates was
+often non-normally distributed across cells, effect size values computed
+with using partial $\upomega^2$ should be relatively less biased than
+other variance-accounted-for effect size metrics (e.g., $\eta^2$). To
+compute partial $\upomega^2$ value for each experimental effect,
+Equation \ref{eq:partial-omega} shown below was used:
+
+```{=tex}
+\begin{align}
+\text{partial} \upomega^2 = \frac{\sigma^2_{effect}}{\sigma^2_{effect} + MSE} 
+(\#eq:partial-omega)
+\end{align}
+```
+
+\noindent where $\sigma^2_{effect}$ represents the variance attributable
+to an effect and $MSE$ is the mean squared error.
+
+##### Computation of Variance-Acccounted-For Effect Sizes for Variability in Parameter Estimation
+
+To compute partial $\upomega^2$ values for variability in parameter
+estimation, a Brown-Forsythe test was computed and the appropriate
+sum-of-squares terms were used to compute partial $\upomega^2$ values.
+To compute the Brown-Forsythe test, median absolute values were computed
+from the median value of each estimated value in each cell as shown in
+Equation \ref{eq:brown-forsythe} shown below:
+
+$$\text{Median absolute deviation}_{cell} = |\text{Parameter estimate}_i - \text{Median parameter estimate}_{cell}| $$
+\begin{align}
+
+\text{Median absolute deviation} = |\text{Parameter estimate} - \text{Median parameter estimate}_{cell}|.
+(\#eq:brown-forsythe)
+\end{align}
+
+\noindent An ANOVA was then computed on the median absolute deviation
+values (using the independent variables of the experiment as predictors), with the terms in Equation \ref{eq:partial-omega} extracted from
+the ANOVA output to compute partial $\upomega^2$ values. Note that
+deviations from the median value in each cell were used because using
+the median protects against the biasing effects of skewed distributions
+that were observed in the parameter estimate distributions current simulation experiments [@brown1974]. 
+
+
+
+##### Analysis of Convergence Success Rate
+
+For the analysis of convergence success rate, the mean convergence
+success rate was computed for each cell in each experiment (see section on
+[convergence success rate][Convergence Success Rate]). Because convergence rates exhibited little
+variability across cells due to the nearly unanimous high rates,
+examining the effects of any independent variable on these rates using
+partial $\upomega^2$ values would have provided little information, and so
+only the average convergence success rate for each cell was reported (see [Appendix B](#appendix-a-convergence-rates)). 
+
+
+## Results of Experiment 1
+### Overview of Data Processing and Modelling Procedure
+
+Due to the considerable number of analyses conducted in each
+experiment, the sections that follow serve to equip
+the reader with a framework to efficiently navigate the results sections of each experiment. In the sections that follow , I will present overviews of the following topics: a) Data pre-processing and model convergence, b) meaning of logistic function parameters, c) presentation of variability in parameter estimation, d) interpretation of parameter estimation plots, and e) the model estimation procedure. 
+
+#### Pre-Processing of Data and Model Convergence
+
+After collecting the output from the simulations, non-converged models
+(and their corresponding parameter estimates) were removed from
+subsequent analyses. Tables \ref{tab:conv-exp-1}--\ref{tab:conv-exp-3}
+in [Appendix B](#appendix-a-convergence-rates) provide the convergence
+success rates for each cell in each of the three simulation experiments.
+Model convergence was almost always above 90% and convergence rates
+rates below 90% only occurred in the following frequencies in each
+experiment:
+
+-   Experiment 1: two instances of sub-90% model convergence rates (see
+    Table \ref{tab:conv-exp-1})
+-   Experiment 2: two instances of sub-90% model convergence rates (see
+    Table \ref{tab:conv-exp-2})
+-   Experiment 3: two instances of sub-90% model convergence rates (see
+    Table \ref{tab:conv-exp-3})
+
+\noindent Note that all instances of sub-90% model convergence occurred
+with five measurements.
+
+#### Review of Logistic Function Parameters Used to Generate Data
+
+Data in each experimental condition were generated using the the
+logistic function shown below in Equation
+\ref{eq:logFunction-generation2}:
+
+```{=tex}
+\begin{align}
+y_{pi} = \uptheta_p + \frac{\upalpha_p - \uptheta_p}{{1 + e^\frac{\upbeta_p - time_i}{\upgamma_p}}} + \upepsilon_{pi}.
+(\#eq:logFunction-generation2)
+\end{align}
+```
+
+\noindent where $\uptheta$ represents the baseline parameter, $\upalpha$
+represents the maximal elevation parameter, $\upbeta$ represents the
+days-to-halfway elevation parameter, and $\upgamma$ represents
+triquarter-halfway delta parameter. Note that, values for $\uptheta$,
+$\upalpha$, $\upbeta$, and $\upgamma$ were generated for each *p* person
+across all *i* time points, with an error value being randomly generated
+at each *i* time point ($\upepsilon_{ij}$). In other words, unique
+response patterns were generated for each person in each of the 1000
+data sets generated per cell. For a review of the logistic function, see
+the section on [data generation](#generation)..
+
+#### Presentation of Variability
+
+Given that sampling error causes any population parameter to be
+estimated with some degree of variability and that two of the three
+simulation experiments manipulated sample size, variability was expected
+to occur in the estimation of the logistic function parameters. Even in
+situations where sample size was not manipulated (as in Experiment 1) and
+where it may have seemed unusual for other independent variables to affect the
+variability with which a parameter was estimated, variables outside of
+sample size have been shown to affect the variability of parameter
+estimation on occasion (e.g., @coulombe2016). Given that the variability
+of parameter estimation may be affected in each simulation experiment,
+the paragraphs that follow explain how variability was
+operationalized and visualized.
+
+Variability in the estimation of each logistic function parameter for
+each experimental condition was operationalized as the range covered
+by the middle 95% of estimated values. Consider an example where
+variability in the days-to-halfway elevation parameter ($\upbeta$) is
+being modelled in an experimental condition. Figure
+\ref{fig:beta-histogram} shows a density distribution of values
+estimated for the days-to-halfway elevation parameter ($\upbeta$). The
+region of the density distribution shaded in gray represents the middle
+95% of values estimated for the days-to-halfway elevation parameter
+($\upbeta$) and the upper and lower values of this region set the upper
+and lower values of the error bar that lies above the density
+distribution. Therefore, I used error bars to represent variability in parameter estimation because using density distributions for each of the nine
+parameters in each experimental cell would have been impractical given the
+large number of cells in each experiment.
+
+To visualize variability across multiple experimental conditions for one
+logistic function parameter, parameter estimation plots were
+constructed. Figure \ref{fig:beta-density-to-param-plot} shows the
+procedure that was followed to create a parameter estimation plot. For
+each measurement number-sample size condition, a density distribution was
+computed for the values estimated for the days-to-halfway elevation
+parameter ($\upbeta$), and the range covered by the middle 95% of values
+in the density distribution was used to set the length of each error bar.
+The plot at the bottom of Figure \ref{fig:beta-density-to-param-plot} is
+a *parameter estimation plot* for the days-to-halfway elevation
+parameter (specifically, the fixed-effect days-to-halfway elevation
+parameter [$\upbeta_{fixed}$]) with the error bars showing the
+variability with which $\upbeta_{fixed}$ is modelled in each sample
+size-measurement number condition. This style of error bar was used
+to represent variability for each parameter in each experimental
+condition.
+
+```{r variability-histograms, eval=F, include=F}
+exp_2 <- read_csv(file = 'data/exp_2.csv')
+
+generate_param_density_plot(raw_exp_data = exp_2, param_summary_data = param_summary_exp_2, spacing = 'Equal', num_measurements = 5, sample_size = 30)
+
+```
+
+```{=tex}
+\begin{figure}
+  \caption{Density Distribution of Values Estimated for the Days-to-Halfway Elevation Parameter ($\upbeta$)}
+  \label{fig:beta-histogram}
+  \includegraphics[height = 8cm, width = 20cm]{Figures/beta_fixed_Equal_5_30} \hfill{}
+  \caption*{Note. \textup{Area shaded in gray represents the middle 95\% of estimated values. The upper and lower limits of the shaded areay define the upper and lower limits of the error bar on top of the density distribution.}}
+\end{figure}
+```
+```{r beta-density-to-param-plot, eval=F, include=F}
+num_measurements_levels <- as.numeric(levels(param_summary_exp_2$number_measurements))
+sample_size_levels <- range(as.numeric(levels(param_summary_exp_2$sample_size)))
+exp_2 <- read_csv(file = 'data/exp_2.csv')
+
+for (num_measurements in num_measurements_levels) {
+  
+  for(sample_size in sample_size_levels){
+    
+    generate_param_density_plot(raw_exp_data = exp_2, param_summary_data = param_summary_exp_2, 
+                                spacing = 'Equal', num_measurements = num_measurements,
+                                sample_size = sample_size)
+  }
+}
+```
+
+```{=tex}
+\begin{figure}
+  \caption{Depiction of Modelling Procedure for Generating Error Bars on Parameter Estimation Plots}
+  \label{fig:beta-density-to-param-plot}
+  \includegraphics[height = 25cm, width = 10cm]{Figures/density_to_param_plot} \hfill{}
+  \caption*{Note. \textup{Density distributions are generated for each experimental condition and the range covered by the middle 95\% of values in each frequnecy distribution is used to create an error bar. The plot at the bottom is a \textit{parameter estimation plot} for the days-to-halfway elevation parameter ($\upbeta$) and it shows the accuracy with which $\upbeta$ is estimated across all sample size-measurement number combinations when measurement spacing is equal.}}
+\end{figure}
+```
+
+#### Interpreting a Parameter Estimation Plot
+
+Given that several parameter estimation plots were presented in the
+results sections of each experiment, I will provide an overview of how
+to interpret these plots. Parameter estimation plots show two indicators
+of estimation accuracy: bias and variability. In the sections that
+follow, these two accuracy indicators are shown in parameter estimation
+plots.
+
+##### Bias
+
+Figure \ref{fig:param-estimation-ex} shows a parameter estimation plot
+for the fixed-effect days-to-halfway elevation parameter
+($\upbeta_{fixed}$). Estimates for the fixed-effect days-to-halfway
+elevation parameter ($\upbeta_{fixed}$) are shown across all measurement
+number-sample size combinations and the shaded gray line indicates the
+population value set for the parameter ($\upbeta_{fixed}$ = 180). The
+black shapes (squares, circles, triangles, diamonds) indicate the
+average estimated value and the error bars show the range of values
+covered by the middle 95% of estimated parameters (for a review, see
+[Presentation of variability]).
+
+**Bias** describes the extent to which an estimate either over- or
+underestimates the population value. Looking at the parameter estimation
+plot in Figure \ref{fig:param-estimation-ex}, systematic bias is
+represented by the extent to which a black shape lies away from the gray
+line (i.e., the population value). In the current example, the average
+estimated values in each measurement number-sample size condition lie
+close to the population value (the gray line), and so bias is nearly
+trivial in each condition.
+
+##### Variability
+
+**Variability** describes by the length of the error bars in the
+parameter estimation plot. In the current example of Figure
+\ref{fig:param-estimation-ex}, variability decreases monotonically as
+sample size and measurement number increase.
+
+```{=tex}
+\begin{figure}
+  \caption{Parameter Estimation Plot for Fixed-Effect Days-to-Halfway Elevation Parameter ($\upbeta_{fixed}$)}
+  \label{fig:param-estimation-ex}
+  \includegraphics[height = 33cm, width = 15cm]{Figures/param_estimation_ex} \hfill{}
+  \caption*{Note. \textup{The shaded gray line indicates the population value set for the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$). Estimates for the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$) parameter are shown across all measurement number-sample size combinations and the shaded gray line indicates the population value set for the parameter ($\upbeta_{fixed}$ = 180). The black shapes (squares, circles, triangles, diamonds) indicate the average estimated value and the error bars show the range of values covered by the middle 95\% of estimated parameters. Parameter estimation plots show two markers of estimation accuracy: systematic bias and variability. \textbf{Systematic bias} describes the extent to which an estimate either over- or underestimates the population value. In the parameter estimation plot, systematic bias is represented by the extent to which a black shape falls off from the gray line (i.e., the population value). \textbf{Variability} is described by the length of the error bars in the parameter estimation plot. In the current example, systematic bias is very low because all of the average estimated values lie close to the population value (i.e., shaded gray line) and variability decreases monotonically as sample size increases.}}
+\end{figure}
+```
+
+
+#### Model Estimation Procedure
+
+Because a considerable number of parameters were estimated in each cell,
+I will review the modelling procedure as a whole. Figure
+\ref{fig:results-plot-primer} shows that each parameter of the logistic
+function (for each parameter, see Figure \ref{fig:combined_plot}) was
+modelled as a fixed and random effect. Values predicted for fixed-effect
+parameters are constant across all individuals, whereas values predicted
+for random-effect parameters represent the variability with which a
+parameter is
+estimated.\footnote{Estimating a random-effect for a parameter allows person-specific values to be computed for the parameter.}
+In addition to the random- and fixed-effects estimated for each logistic
+function parameter, an error term ($\upepsilon$) was also estimated. For
+each cell, parameter estimation plots were be created for each logistic
+function parameter that showed the accuracy with which that parameter
+was modelled.
+
+One important point to mention is that the results of Experiments 1--3
+focused on the effects of experimental variables on day-unit parameters
+(days-to-halfway elevation [$\upbeta$; Figure
+\ref{fig:combined_plot}C] and halfway-triquarter delta
+parameters[$\upgamma$; Figure \ref{fig:combined_plot}D]. Across all
+three experiments, experimental variables had little effect on the
+estimation of Likert-unit parameters (baseline [$\uptheta$; Figure
+\ref{fig:combined_plot}A] and maximal elevation [$\upalpha$]; Figure
+\ref{fig:combined_plot}B), and so including their estimation plots would
+have added unnecessary length and complexity to the results sections of
+each experiment. Note that the parameter estimation plots for
+Likert-unit parameters were been included in [Appendix
+C](#appendix-c-parameter-estimation-plots-for-likert-unit-parameters).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Set of Parameters Estimated in Each Simulation Experiment}
+  \label{fig:results-plot-primer}
+  \includegraphics[height = 17cm, width = 15cm]{Figures/logistic_results_plot} \hfill{}
+  \caption*{Note. \textup{Each parameter of the logistic function (for a review, see Figure \ref{fig:combined_plot}) is modelled as a fixed and random effect. Values predicted for fixed-effect parameters are constant across all individuals, whereas values predicted for random-effect parameters are unique across individuals. In addition the random- and fixed-effects estimated for each logistic function parameter, an error term ($\upepsilon$) is also estimated. For each experimental condition, parameter estimation plots will be created for each logistic function parameter that show the accuracy with which each parameter is modelled.}}
+\end{figure}
+```
+
+
+## Discussion of Experiment 1
+
+```{=tex}
+\newpage
+\vspace*{-\topskip}
+\vspace*{\fill}
+\nointerlineskip
+```
+

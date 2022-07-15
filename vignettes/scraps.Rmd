@@ -1,0 +1,1311 @@
+---
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{textcomp} #for copyright symbol on title page
+  - \usepackage{longtable}
+  - \usepackage{setspace}
+  - \usepackage{biblatex}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm} 
+  - \usepackage{amsmath} ##needed for argmax
+  - \DeclareMathOperator*{\argmax}{arg\,max}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionJustification{double}{\DoubleSpacing}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\footnotesize} #set caption font size to footnote 
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification=raggedright}
+  - \captionsetup[table]{font = {figCaptionFont,figCaptionSize,figCaptionStyle}, labelfont={bf}, labelsep=captionSep, justification = raggedright, margin = {0cm,0cm}}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{} \renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+  
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{example}[theorem]{Example}
+  
+  #modifies heading levels of 4-5 to follow apa7
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+
+  
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation: 
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+linkcolor         : blue
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: dissertation_references.bib
+---
+
+```{r package_loading, include=F}
+#load packages
+library(easypackages)
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 
+              'ggbrace', 'cowplot')
+libraries(packages)
+load_all()
+```
+
+```{r knitting_setup, echo=F, message = F, warning = F, eval=F}
+#import raw data files (needed for computing variances)
+exp_1_raw <-convert_raw_var_to_sd(raw_data = read_csv('Data/exp_1A.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
+  
+exp_2_raw <-convert_raw_var_to_sd(raw_data = read_csv('Data/exp_2.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "sample_size"), factor)
+
+exp_3_raw <-convert_raw_var_to_sd(raw_data = read_csv('Data/exp_3.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+#unfiltered data 
+param_summary_exp_1 <- readRDS(file = 'data/uf_param_summary_exp_1.RData')
+param_summary_exp_2 <- readRDS(file = 'data/uf_param_summary_exp_2.RData')
+param_summary_exp_3 <- readRDS(file = 'data/uf_param_summary_exp_3.RData')
+
+#create analytical versions of summary data 
+exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = 1)
+exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = 2)
+exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = 3)
+
+#create condition summary data sets 
+cond_summary_exp_1 <- compute_condition_summary(param_summary_data = param_summary_exp_1, facet_var = 'measurement_spacing', 
+                          ind_vars = c('number_measurements', 'measurement_spacing', 'midpoint'))
+cond_summary_exp_2 <- compute_condition_summary(param_summary_data = param_summary_exp_2, facet_var = 'measurement_spacing', 
+                  ind_vars = c('number_measurements', 'measurement_spacing', 'sample_size'))
+cond_summary_exp_3 <- compute_condition_summary(param_summary_data = param_summary_exp_3, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+```
+
+```{r ergodicity, include=F, eval=F}
+num_people <- 100 
+num_occasions <- 100
+
+data_set_1 <- matrix(data = list('ID' = NA, 
+           'occasion' = NA), 
+           nrow = num_people, ncol = num_occasions) 
+
+data_set_2 <- matrix(data = list('ID' = NA, 
+           'occasion' = NA), 
+           nrow = num_people, ncol = num_occasions) 
+
+for (person in 1:num_people) {
+  
+  #homogeneity = same mean and SD across all people 
+  #stationarity = constant mean and variance over time 
+  data_set_1[person, ] <- rnorm(n = num_occasions, mean = runif(n = 1, min = 5, max = 50), 
+                              sd = runif(n = 1, min = 2, max = 5))
+}
+
+for (person in 1:num_people) {
+  
+  #homogeneity = same mean and SD across all people 
+  #stationarity = constant mean and variance over time 
+  data_set_2[person, ] <- rnorm(n = num_occasions, mean = runif(n = 1, min = 5, max = 50), 
+                              sd = runif(n = 1, min = 2, max = 5))
+}
+
+mode(data_set_1) <- 'numeric'
+data_df <- as.data.frame(x = data_set_1)
+
+mode(data_set_2) <- 'numeric'
+data2_df <- as.data.frame(x = data_set_2)
+
+var(rowMeans(data_df))
+var(colMeans(data_df))
+
+##BETWEEN PERSON VARIANCE
+mean_value <- mean(colMeans(data_df)) 
+between_var <- sum((rowMeans(data_df) - mean_value)^2)/100
+
+##WITHIN PERSON VARIANCE
+within_var <- mean(apply(X = data_df, MARGIN = 1, FUN = var)) #person 
+
+##total_variance
+total_var <- var(unlist(data_df))
+
+
+
+within_cors <- rep(NA, times = num_people)
+
+#compute correlations within people 
+for(person in 1:num_people) {
+  
+  within_cors[person] <- cor(as.numeric(data_df[person, ]), as.numeric(data2_df[person, ]))
+}
+
+between_cors <- rep(NA, times = num_people)
+
+#compute correlations between people 
+for(occasion in 1:num_occasions) {
+  
+  between_cors[occasion] <- cor(as.numeric(data_df[ ,occasion]), as.numeric(data2_df[ ,occasion]))
+}
+
+sd(within_cors)
+sd(between_cors)
+
+mean(within_cors)
+mean(between_cors)
+
+mean(rowMeans(data_df))
+mean(colMeans(data_df[sample(x = 1:100, size = 60, replace = F), ]))
+
+sqrt(mean(apply(X = data_df, MARGIN = 2, FUN = var))) #variable sds
+sqrt(mean(apply(X = data_df, MARGIN = 1, FUN = var))) #person sds
+```
+
+```{=tex}
+\newpage
+\vspace*{-\topskip}
+\vspace*{\fill}
+\nointerlineskip
+```
+
+10.1037/a0019365
+
+### Results 
+#### Equal Spacing
+
+```{r plots-equal-exp1, include=F, eval=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Equal spacing',
+                                x_axis_name = expression("Population value set for"~beta[fixed]), 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -20, beta_upper = 20, ticks = 5)
+
+```
+
+```{r text-values-equal-exp1, echoF, eval=F}
+gamma_rand_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal spacing', number_measurements == 7, midpoint == 180, grepl('gamma\\[random\\]', parameter)) %>%
+  select(lower_ci, upper_ci, estimate) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci),
+         estimate = as.integer(estimate)) 
+
+gamma_fixed_equal_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, midpoint == 80, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_fixed_equal_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, midpoint == 180, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_fixed_equal_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, midpoint == 280, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+gamma_fixed_equal_7_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Equal spacing', number_measurements == 7, midpoint == 180, grepl('gamma\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci)) 
+```
+
+Figure \ref{fig:exp1_plot_equal} shows the parameter estimation plots
+for the day-unit parameters when equal spacing was used (error bars
+represent the middle 95% of estimated values and shaded horizontal lines
+indicate the population values). Panels A--B show the parameter
+estimation plots for the fixed- and random-effect days-to-halfway
+elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$,
+respectively. Panels C--D show the parameter estimation plots for the
+fixed- and random-effect triquarter-halfway elevation parameters
+($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively. Note that, in
+Panel A, estimates for $\upbeta_{fixed}$ are centered around their
+corresponding population values (80, 180, and 280 days), and so the
+y-axis represents error (in number of days) from the population value. Note that Table \ref{tab:omega-exp1-equal} provides the partial $\upomega^2$ values for the experimental variables for the day-unit parameters under equal spacing. 
+
+For all simulations presented in Figure \ref{fig:exp1_plot_equal}, only
+one instance of bias occurred. With five measurements and a population
+value for the fixed-effect days-to-halfway elevation parameter
+($\upbeta_{fixed}$) set to 180, the random-effect triquarter-halfway
+delta parameter ($\upgamma_{random}$; Figure \ref{fig:exp1_plot_equal}D)
+was overestimated, with the average estimated value being
+`r gamma_rand_equal_5_180$estimate` days (relative to a population value
+of 4.00 days). Across all other conditions in Figure
+\ref{fig:exp1_plot_equal}, no instance of bias occurred, as the average
+estimated values for all day-unit parameters (as indicated by the black
+dots) were close to their respective population values (indicated by the
+gray lines).
+
+With respect to variability, two general patterns of results emerged in
+the estimation of day-unit parameters with equal spacing. First,
+estimation of all day-unit parameters incurred considerable variability
+with five measurements across all population values set for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$ =
+{80, 180, 280}). For example, the fixed-effect halfway-triquarter delta
+parameter ($\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_equal}B) had an
+error bar length of approximately
+`r gamma_fixed_equal_5_80$upper_ci - gamma_fixed_equal_5_80$lower_ci`
+days when $\upbeta_{fixed}$ was 80 (upper bound of
+`r gamma_fixed_equal_5_80$upper_ci` days to lower bound of
+`r gamma_fixed_equal_5_80$lower_ci` days), an error bar length of
+approximately
+`r gamma_fixed_equal_5_180$upper_ci - gamma_fixed_equal_5_180$lower_ci`
+days when $\upbeta_{fixed}$ was 180 (upper bound of
+`r gamma_fixed_equal_5_180$upper_ci` days to lower bound of
+`r gamma_fixed_equal_5_180$lower_ci` days), and an error bar length of
+approximately
+`r gamma_fixed_equal_5_280$upper_ci - gamma_fixed_equal_5_280$lower_ci`
+days (upper bound of `r gamma_fixed_equal_5_280$upper_ci` days to lower
+bound of `r gamma_fixed_equal_5_280$lower_ci` days) when
+$\upbeta_{fixed}$ was 280. Note that, in contrast, estimation for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$;
+Figure \ref{fig:exp1_plot_equal}A) showed considerably low variability
+with five measurements and a population value of 180. Second, the
+considerable variability in parameter estimation observed with five
+measurements largely diminished with seven measurements. As an example,
+with a population value for $\upbeta_{fixed}$ of 180, the error bar
+length for the fixed-effect triquarter-halfway delta parameter
+($\upgamma_{fixed}$; Figure \ref{fig:exp1_plot_equal}B) spanned
+approximately
+`r gamma_fixed_equal_5_180$upper_ci - gamma_fixed_equal_5_180$lower_ci`
+days with five measurements (upper bound of
+`r gamma_fixed_equal_5_180$upper_ci` to a upper bound of
+`r gamma_fixed_equal_5_180$lower_ci` days), but the length of this error
+bar decreased to approximately
+`r gamma_fixed_equal_7_180$upper_ci - gamma_fixed_equal_7_180$lower_ci`
+days with seven measurements (upper bound of
+`r gamma_fixed_equal_7_180$upper_ci` to a lower bound
+`r gamma_fixed_equal_7_180$lower_ci` days).
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Equal Spacing in Experiment 1}
+  \label{fig:exp1_plot_equal}
+  \includegraphics{Figures/exp1_plot_days_equal spacing} \hfill{}
+  \caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Panels A--B show the parameter estimation plots for
+the fixed- and random-effect days-to-halfway elevation  parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively. Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively. Note that, in Panel A, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp1-equal} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+```{r omega-exp1-equal, echo=F}
+print_bias_var_omega_table(exp_data = exp_1_raw, target_col = 'measurement_spacing', target_value = 'equal', 
+ind_vars = c('number_measurements', 'midpoint'), 
+ind_var_acronyms = c('NM', 'M', 'NM x M'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Equal Spacing in Experiment 1',
+footnote = 'NM = number of measurements (5, 7, 9, 11), M = population value set for $\\\\upbeta_{fixed}$ (80, 180, 280), NM x M = interaction between number of measurements and population value set for $\\\\upbeta_{fixed}$. \\\\phantom{ indicate conditions where}', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_equal}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_equal}D)'))
+```
+
+\newpage
+
+#### Time-Interval Increasing Spacing
+
+```{r plots-time-increasing-exp1, include=F, eval=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval increasing',
+                                x_axis_name = expression("Population value set for"~beta[fixed]), 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -70, beta_upper = 60, ticks = 10)
+```
+
+```{r density-plot-functions, include=F, eval=F}
+compute_ind_param_error_bar_range <- function(param_search_name, param_data) {
+  
+  #extract estimates from single parameter
+  ind_param_data <-  param_data %>%
+    filter(str_detect(string = param_data$parameter, pattern = param_search_name)) %>% 
+    pull(estimate)
+  
+  param_range <- as.numeric(compute_middle_95_estimate(param_data = ind_param_data))
+  
+  return(param_range)
+}
+
+compute_80_ind_param_error_bar_range <- function(param_search_name, param_data) {
+  
+  #extract estimates from single parameter
+  ind_param_data <-  param_data %>%
+    filter(str_detect(string = param_data$parameter, pattern = param_search_name)) %>% 
+    pull(estimate)
+  
+  param_range <- as.numeric(compute_middle_80_estimate(param_data = ind_param_data))
+  
+  return(param_range)
+}
+
+compute_90_ind_param_error_bar_range <- function(param_search_name, param_data) {
+  
+  #extract estimates from single parameter
+  ind_param_data <-  param_data %>%
+    filter(str_detect(string = param_data$parameter, pattern = param_search_name)) %>% 
+    pull(estimate)
+  
+  param_range <- as.numeric(compute_middle_90_estimate(param_data = ind_param_data))
+  
+  return(param_range)
+}
+
+compute_density <- function(error_bar_range, group, param_name, density_data) { 
+  
+  density_data <- density_data[density_data$group == group , ]
+  
+  density_lower_x <- min(which(density_data$x >= error_bar_range[1]))
+  density_upper_x <- max(which(density_data$x <= error_bar_range[2]))
+  
+  day_values <- density_data$x[density_lower_x:density_upper_x]
+  
+  
+  density_df <- data.frame('parameter' = param_name,
+                           'day_value' = day_values,
+                           'probability' = density_data$y[density_lower_x:density_upper_x], 
+                           'max_density_value' = max(density_data$y),
+                           'lower_ci' = error_bar_range[1], 
+                           'upper_ci' = error_bar_range[2])
+
+    return(density_df)
+}
+```
+
+```{r exp1-density-plot-time-inc, include=F, eval=F}
+##generate figure showing density distributions if gamma_fizxd at N = 500 and N = 1000 with middle 95% area shaded. Emphasize
+##that longer error bars in  N = 1000 are likely a statistical artifact of the random number generating procedure. 
+exp_1 <- read_csv('data/exp_1A.csv') %>% filter(code == 0) #load data 
+exp_1 <- convert_raw_var_to_sd(raw_data = exp_1) #var to sd conversion 
+
+parameter_names <- c(bquote(expr = bold(A:~gamma[random]~(beta[fixed]~" = 280, 5 measurements"))),
+                     bquote(expr =bold(B:~gamma[random]~(beta[fixed]~" = 280, 7 measurements"))))
+                     
+#1) Extract estimates for four parameter gamma_fixed and beta_rand when N =500 or 1000, num_measurements == 5, spacing == equal. 
+##Convert to long format, with parameter name going into unique column and estimate becoming new column 
+param_data <- exp_1 %>%
+  filter(number_measurements <= 7, measurement_spacing == 'time_inc', midpoint == 280) %>%
+  select(locate_ivs(exp_1),'gamma_rand') %>%
+  pivot_longer(cols = c(gamma_rand), values_to = 'estimate') %>%
+  unite(col = 'parameter', c(number_measurements,name))
+
+#2) Replace parameter values with tag labels. 
+param_data$parameter <- factor(param_data$parameter, 
+                               levels = c("5_gamma_rand", "7_gamma_rand"), 
+                               labels = parameter_names)
+
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+density_data <- ggplot_build(plot = base_density_plot)$data[[1]]
+
+param_search_names <- c("A\\:", "B\\:")
+
+param_error_bar_ranges <- lapply(X = param_search_names, compute_ind_param_error_bar_range, param_data = param_data)
+
+#3) Create base density plot so that density data can be created
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
+               group = 1:length(param_error_bar_ranges), 
+               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
+plot_ready_data$parameter <- factor(plot_ready_data$parameter)
+
+
+example_plot <- base_density_plot +
+    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
+                       name = 'Value of parameter estimate (days)') + 
+  
+  #shaded filling
+      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
+                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
+    #error bar
+    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
+                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
+                                 y = max_density_value, height = 0.05), size = 3) + 
+
+    #vertical dashed lines for error bars
+    ##lower limit 
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+    ##upper limit
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
+    
+    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
+    
+    facet_wrap_custom( ~ parameter, scales = "free", ncol = 1, nrow = 2 ,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,
+                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))),
+                                                                 scale_override(2, scale_y_continuous(name = 'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))))) + 
+  
+    #plot aesthetics
+    theme_classic() +
+
+    theme(
+      #panel details
+      strip.background = element_rect(fill = "white", color = "white"),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 55, margin = unit(c(t = 0, r = 6, b = 1, l = 0), "cm")),
+
+      #axis details
+      axis.text = element_text(size = 60, color = 'black'),
+      axis.title = element_text(size = 70),
+      axis.title.x.bottom = element_markdown(),
+      axis.line = element_line(size = 2),
+      axis.ticks.length.x = unit(x = 1, units = 'cm'),
+      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
+      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
+      axis.ticks = element_line(size = 2, colour = 'black'),
+      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
+
+      #panel details
+      panel.spacing.y = unit(x = 4, units = 'cm'),
+      panel.spacing.x = unit(x = 2, units = 'cm'))
+  
+  
+  #create PDF of faceted plot
+  set_panel_size(p = example_plot, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  'Figures/density_plots_time_inc_exp1.pdf')
+
+```
+
+```{r exp1-density-plot-time-inc-fixed, include=F, eval=F}
+param_error_bar_ranges <- lapply(X = param_search_names, compute_80_ind_param_error_bar_range, param_data = param_data)
+
+#3) Create base density plot so that density data can be created
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
+               group = 1:length(param_error_bar_ranges), 
+               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
+plot_ready_data$parameter <- factor(plot_ready_data$parameter)
+
+
+time_inc_fixed_density <- base_density_plot +
+    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
+                       name = 'Value of parameter estimate (days)') + 
+  
+  #shaded filling
+      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
+                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
+    #error bar
+    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
+                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
+                                 y = max_density_value, height = 0.05), size = 3) + 
+
+    #vertical dashed lines for error bars
+    ##lower limit 
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+    ##upper limit
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
+    
+    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
+    
+    facet_wrap_custom( ~ parameter, scales = "free", ncol = 1, nrow = 2 ,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,
+                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, .60))),
+                                                                 scale_override(2, scale_y_continuous(name = 'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))))) + 
+  
+    #plot aesthetics
+    theme_classic() +
+
+    theme(
+      #panel details
+      strip.background = element_rect(fill = "white", color = "white"),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 55, margin = unit(c(t = 0, r = 6, b = 1, l = 0), "cm")),
+
+      #axis details
+      axis.text = element_text(size = 60, color = 'black'),
+      axis.title = element_text(size = 70),
+      axis.title.x.bottom = element_markdown(),
+      axis.line = element_line(size = 2),
+      axis.ticks.length.x = unit(x = 1, units = 'cm'),
+      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
+      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
+      axis.ticks = element_line(size = 2, colour = 'black'),
+      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
+
+      #panel details
+      panel.spacing.y = unit(x = 4, units = 'cm'),
+      panel.spacing.x = unit(x = 2, units = 'cm'))
+  
+  
+  #create PDF of faceted plot
+  set_panel_size(p = time_inc_fixed_density, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  'Figures/density_plots_time_inc_exp1_fixed.pdf')
+
+```
+
+```{r text-values-time-increasing-exp1, echoF}
+beta_time_inc_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval increasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval increasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval increasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_inc_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval increasing', number_measurements == 7, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+
+Figure \ref{fig:exp1_plot_time_increasing} shows the parameter
+estimation plots for the day-unit parameters when equal spacing was used
+(error bars represent the middle 95% of estimated values and shaded
+horizontal lines indicate the population values). Panels A--B show the
+parameter estimation plots for the fixed-effect days-to-halfway
+elevation and triquarter-halfway delta parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$), respectively. Panels C--D show the parameter
+estimation plots for the random-effect days-to-halfway elevation and
+triquarter-halfway delta parameters ($\upbeta_{random}$ and
+$\upgamma_{random}$), respectively. Note that, in Panel A, estimates for
+$\upbeta_{fixed}$ are centered around their corresponding population
+values (80, 180, and 280 days), and so the y-axis represents error (in
+number of days) from the population value. Note that Table \ref{tab:omega-exp1-time-inc} provides the partial $\upomega^2$ values for the experimental variables for the day-unit parameters under time-interval increasing spacing. 
+
+For all simulations presented in Figure
+\ref{fig:exp1_plot_time_increasing}, no instance of bias occurred, as
+the average estimated values for all day-unit parameters (as indicated
+by the black dots) were close to their respective population values
+(indicated by the gray lines).
+
+With respect to variability, two general patterns of results emerged in
+the estimation of day-unit parameters with time-interval increasing
+spacing. First, for all day-unit parameters except the random-effect
+halfway-triquarter delta parameter ($\upgamma_{random}$; Figure
+\ref{fig:exp1_plot_time_increasing}D), variability increased
+considerably with five measurements as the population value set for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$)
+increased from 80 to 280. As an example, the error bar length for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$;
+Figure \ref{fig:exp1_plot_time_increasing}A) spanned approximately
+`r beta_time_inc_5_80$upper_ci - beta_time_inc_5_80$lower_ci` (upper
+bound of `r beta_time_inc_5_80$upper_ci` days to a lower bound of
+`r beta_time_inc_5_80$lower_ci` days) and
+`r beta_time_inc_5_180$upper_ci - beta_time_inc_5_180$lower_ci` days
+(upper bound of `r beta_time_inc_5_180$lower_ci` days to a lower bound
+of `r beta_time_inc_5_180$upper_ci` days) when the $\upbeta_{fixed}$ had
+a population value of 80 and 180 days, respectively, but the length
+increased to
+`r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days
+when the population value for $\upbeta_{fixed}$ was set to 280 (upper
+bound of `r beta_time_inc_5_280$upper_ci` days to a lower bound of
+`r beta_time_inc_5_280$lower_ci` days). Second, the large amounts of
+variability observed for the parameters with five measurements largely
+disappeared with seven or more measurements. As an example, when the
+population value for the days-to-halfway elevation parameter
+($\upbeta_{fixed}$) was set to 280, the long error bar range of
+`r beta_time_inc_5_280$upper_ci - beta_time_inc_5_280$lower_ci` days for
+the estimation of $\upbeta_{fixed}$ (Figure
+\ref{fig:exp1_plot_time_increasing}A) with five measurements decreased
+to a shorter length of
+`r beta_time_inc_7_280$upper_ci - beta_time_inc_7_280$lower_ci` days
+with seven measurements.
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Time-Interval Increasing Spacing in Experiment 1}
+  \label{fig:exp1_plot_time_increasing}
+  \includegraphics{Figures/exp1_plot_days_time-interval increasing.png} \hfill{}
+  \caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Panels A--B show the parameter estimation plots for
+the fixed- and random-effect days-to-halfway elevation  parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively. Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively. Note that, in Panel A, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp1-time-inc} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+```{r omega-exp1-time-inc, echo=F}
+print_bias_var_omega_table(exp_data = exp_1_raw, target_col = 'measurement_spacing', target_value = 'time_inc', 
+ind_vars = c('number_measurements', 'midpoint'), 
+ind_var_acronyms = c('NM', 'M', 'NM x M'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Time-Interval Increasing Spacing in Experiment 1',
+footnote = 'NM = number of measurements (5, 7, 9, 11), M = population value set for $\\\\upbeta_{fixed}$ (80, 180, 280), NM x M = interaction between number of measurements and population value set for $\\\\upbeta_{fixed}$. \\\\phantom{ indicate conditions where}', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_time_increasing}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_time_increasing}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_time_increasing}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_time_increasing}D)'))
+```
+
+One additional minor point should be mentioned. In Figure
+\ref{fig:exp1_plot_time_increasing}D, the variability of values
+estimated for the random-effect triquarter-halfway delta
+($\upgamma_{fixed}$) parameter counterintuitively increased as the
+number of measurements increased from five to seven. Inspection of the
+underlying density plots for the random-effect triquarter-halfway delta
+parameter ($\upgamma_{fixed}$) in Figure
+\ref{fig:exp1_density_time_increasing} showed that the increase was not
+due to outliers and, rather, occurred because of a slight increase in
+the variability of the parameter estimates (see the estimates located
+within the dashed rectangle). When the fixed-effect days-to-halfway
+elevation parameter ($\upbeta_{fixed}$) was set to 80, the density
+distribution for the random-effect triquarter-halfway delta parameter
+($\upgamma_{fixed}$) became slightly flatter as the number of
+measurements increased from five (Figure
+\ref{fig:exp1_density_time_increasing}A) to seven (Figure
+\ref{fig:exp1_density_time_increasing}B).
+
+```{=tex}
+\begin{figure} [H]
+  \caption{Density Plots of the Random-Effect Halfway-Triquarter Delta ($\upgamma_{random}$; Figure \ref{fig:exp1_plot_time_increasing}D) With Time-Interval Increasing Spacing in Experiment 1 (95\% Error Bars)}
+  \label{fig:exp1_density_time_increasing}
+  \includegraphics[height = 15cm, width = 25cm]{Figures/density_plots_time_inc_exp1} \hfill{}
+  \caption*{Note. \textup{Regions shaded in in gray represent the the middle 95\% of estimated values and the width of the shaded regions is indicated by the length of the horizontal error bars. The error bar length increases as the number of measurements increases from five to seven.}}
+\end{figure}
+```
+
+
+#### Time-Interval Decreasing Spacing
+
+```{r plots-time-decreasing-exp1, include=F, eval=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval decreasing',
+                                x_axis_name = expression("Population value set for"~beta[fixed]),
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -60, beta_upper = 70, ticks = 10)
+```
+
+```{r exp1-density-plot-time-dec, include=F, eval=F}
+##generate figure showing density distributions if gamma_fizxd at N = 500 and N = 1000 with middle 95% area shaded. Emphasize
+##that longer error bars in  N = 1000 are likely a statistical artifact of the random number generating procedure. 
+exp_1 <- read_csv('data/exp_1_zero.csv') %>% filter(code == 0) #load data 
+exp_1 <- convert_raw_var_to_sd(raw_data = exp_1) #var to sd conversion 
+
+parameter_names <- c(bquote(expr = bold(A:~gamma[random]~(beta[fixed]~" = 80, 5 measurements"))),
+                     bquote(expr =bold(B:~gamma[random]~(beta[fixed]~" = 80, 7 measurements"))))
+                     
+#1) Extract estimates for four parameter gamma_fixed and beta_rand when N =500 or 1000, num_measurements == 5, spacing == equal. 
+##Convert to long format, with parameter name going into unique column and estimate becoming new column 
+param_data <- exp_1 %>%
+  filter(number_measurements <= 7, measurement_spacing == 'time_dec', midpoint == 80) %>%
+  select(locate_ivs(exp_1),'gamma_rand') %>%
+  pivot_longer(cols = c(gamma_rand), values_to = 'estimate') %>%
+  unite(col = 'parameter', c(number_measurements,name))
+
+#2) Replace parameter values with tag labels. 
+param_data$parameter <- factor(param_data$parameter, 
+                               levels = c("5_gamma_rand", "7_gamma_rand"), 
+                               labels = parameter_names)
+
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3, alpha = 0) 
+
+##create density data for each parameter 
+density_data <- ggplot_build(plot = base_density_plot)$data[[1]]
+
+param_search_names <- c("A\\:", "B\\:")
+
+param_error_bar_ranges <- lapply(X = param_search_names, compute_ind_param_error_bar_range, param_data = param_data)
+
+#3) Create base density plot so that density data can be created
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
+               group = 1:length(param_error_bar_ranges), 
+               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
+plot_ready_data$parameter <- factor(plot_ready_data$parameter)
+
+
+density_time_dec_exp_1 <- base_density_plot +
+    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
+                       name = 'Value of parameter estimate (days)') + 
+  
+  #shaded filling
+      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
+                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
+    #error bar
+    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
+                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
+                                 y = max_density_value, height = 0.05), size = 3) + 
+
+    #vertical dashed lines for error bars
+    ##lower limit 
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+    ##upper limit
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
+    
+    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
+    
+    facet_wrap_custom( ~ parameter, scales = "free", ncol = 1, nrow = 2 ,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,
+                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, .60))),
+                                                                 scale_override(2, scale_y_continuous(name = 'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))))) + 
+  
+    #plot aesthetics
+    theme_classic() +
+
+    theme(
+      #panel details
+      strip.background = element_rect(fill = "white", color = "white"),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 55, margin = unit(c(t = 0, r = 6, b = 1, l = 0), "cm")),
+
+      #axis details
+      axis.text = element_text(size = 60, color = 'black'),
+      axis.title = element_text(size = 70),
+      axis.title.x.bottom = element_markdown(),
+      axis.line = element_line(size = 2),
+      axis.ticks.length.x = unit(x = 1, units = 'cm'),
+      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
+      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
+      axis.ticks = element_line(size = 2, colour = 'black'),
+      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
+
+      #panel details
+      panel.spacing.y = unit(x = 4, units = 'cm'),
+      panel.spacing.x = unit(x = 2, units = 'cm'))
+  
+  
+  #create PDF of faceted plot
+  set_panel_size(p = density_time_dec_exp_1, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  'Figures/density_plots_time_dec_exp1.pdf')
+
+```
+
+```{r exp1-density-plot-time-dec-fixed, include=F, eval=F}
+param_error_bar_ranges <- lapply(X = param_search_names, compute_80_ind_param_error_bar_range, param_data = param_data)
+
+#3) Create base density plot so that density data can be created
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
+               group = 1:length(param_error_bar_ranges), 
+               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
+plot_ready_data$parameter <- factor(plot_ready_data$parameter)
+
+
+time_dec_fixed_density <- base_density_plot +
+    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
+                       name = 'Value of parameter estimate (days)') + 
+  
+  #shaded filling
+      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
+                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
+    #error bar
+    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
+                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
+                                 y = max_density_value, height = 0.05), size = 3) + 
+
+    #vertical dashed lines for error bars
+    ##lower limit 
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+    ##upper limit
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
+    
+    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
+    
+    facet_wrap_custom( ~ parameter, scales = "free", ncol = 1, nrow = 2 ,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,
+                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, .60))),
+                                                                 scale_override(2, scale_y_continuous(name = 'Density (proportion of estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))))) + 
+  
+    #plot aesthetics
+    theme_classic() +
+
+    theme(
+      #panel details
+      strip.background = element_rect(fill = "white", color = "white"),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 55, margin = unit(c(t = 0, r = 6, b = 1, l = 0), "cm")),
+
+      #axis details
+      axis.text = element_text(size = 60, color = 'black'),
+      axis.title = element_text(size = 70),
+      axis.title.x.bottom = element_markdown(),
+      axis.line = element_line(size = 2),
+      axis.ticks.length.x = unit(x = 1, units = 'cm'),
+      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
+      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
+      axis.ticks = element_line(size = 2, colour = 'black'),
+      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
+
+      #panel details
+      panel.spacing.y = unit(x = 4, units = 'cm'),
+      panel.spacing.x = unit(x = 2, units = 'cm'))
+  
+  
+  #create PDF of faceted plot
+  set_panel_size(p = time_dec_fixed_density, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  'Figures/density_plots_time_dec_exp1_fixed.pdf')
+
+```
+
+```{r text-values-time-decreasing-exp1, echoF}
+beta_time_dec_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval decreasing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval decreasing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval decreasing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_time_dec_7_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Time-interval decreasing', number_measurements == 7, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_decreasing} shows the parameter
+estimation plots for the day-unit parameters when equal spacing was used
+(error bars represent the middle 95% of estimated values and shaded
+horizontal lines indicate the population values). Panels A--B show the
+parameter estimation plots for the fixed-effect days-to-halfway
+elevation and triquarter-halfway delta parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$), respectively. Panels C--D show the parameter
+estimation plots for the random-effect days-to-halfway elevation and
+triquarter-halfway delta parameters ($\upbeta_{random}$ and
+$\upgamma_{random}$), respectively. Note that, in Panel A, estimates for
+$\upbeta_{fixed}$ are centered around their corresponding population
+values (80, 180, and 280 days), and so the y-axis represents error (in
+number of days) from the population value. Note that Table \ref{tab:omega-exp1-time-dec} provides the partial $\upomega^2$ values for the experimental variables for the day-unit parameters under time-interval decreasing spacing. 
+
+For all simulations presented in Figure
+\ref{fig:exp1_plot_time_decreasing}, no instance of bias occurred, as
+the average estimated values for all day-unit parameters (as indicated
+by the black dots) were close to their respective population values
+(indicated by the gray lines).
+
+With respect to variability, two general patterns of results emerged in
+the estimation of day-unit parameters with time-interval decreasing
+spacing. First, for all day-unit parameters except the random-effect
+halfway-triquarter delta ($\upgamma_{random}$; Figure
+\ref{fig:exp1_plot_time_decreasing}D), variability increased
+considerably with five measurements and the population value set for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$)
+decreased from 280 to 80 days. As an example, the error bar length for
+the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$;
+Figure \ref{fig:exp1_plot_time_decreasing}A) spanned approximately
+`r beta_time_dec_5_280$upper_ci - beta_time_dec_5_280$lower_ci`(upper
+bound of `r beta_time_dec_5_280$upper_ci` days to a lower bound of
+`r beta_time_dec_5_280$lower_ci` days) and
+`r beta_time_dec_5_180$upper_ci - beta_time_dec_5_180$lower_ci` days
+(upper bound of `r beta_time_dec_5_180$upper_ci` days to a lower bound
+of `r beta_time_inc_5_180$lower_ci` days) when $\upbeta_{fixed}$ had a
+population value of 280 and 180 days, respectively, but the error bar
+length increased to
+`r beta_time_dec_5_80$upper_ci - beta_time_dec_5_80$lower_ci` days
+(upper bound of `r beta_time_dec_5_80$upper_ci` days to a lower bound of
+`r beta_time_dec_5_80$lower_ci` days) $\upbeta_{fixed}$ had a population
+value of 80. Second, the large amounts of variability observed for the
+parameters with five measurements largely disappeared with seven or more
+measurements. As an example, when the population value for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$;
+Figure \ref{fig:exp1_plot_time_decreasing}A) was set to 80, the long
+error bar range of
+`r beta_time_dec_5_80$upper_ci - beta_time_dec_5_80$lower_ci` days with
+five measurements decreased to a shorter length of
+`r beta_time_dec_7_80$upper_ci - beta_time_dec_7_80$lower_ci` days with
+seven measurements.
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Time-Interval Decreasing Spacing in Experiment 1}
+  \label{fig:exp1_plot_time_decreasing}
+  \includegraphics{Figures/exp1_plot_days_time-interval decreasing.png} \hfill{}
+  \caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Panels A--B show the parameter estimation plots for
+the fixed- and random-effect days-to-halfway elevation  parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively. Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively. Note that, in Panel A, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp1-time-dec} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+```{r omega-exp1-time-dec, echo=F}
+print_bias_var_omega_table(exp_data = exp_1_raw, target_col = 'measurement_spacing', target_value = 'time_dec', 
+ind_vars = c('number_measurements', 'midpoint'), 
+ind_var_acronyms = c('NM', 'M', 'NM x M'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Time-Interval Decreasing Spacing in Experiment 1',
+footnote = 'NM = number of measurements (5, 7, 9, 11), M = population value set for $\\\\upbeta_{fixed}$ (80, 180, 280), NM x M = interaction between number of measurements and population value set for $\\\\upbeta_{fixed}$. \\\\phantom{ indicate conditions where}', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_time_decreasing}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_time_decreasing}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_time_decreasing}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_time_decreasing}D)'))
+```
+
+```{=tex}
+\begin{figure} [H]
+  \caption{Density Plots of the Random-Effect Halfway-Triquarter Delta ($\upgamma_{random}$; Figure \ref{fig:exp1_plot_time_decreasing}D) With Time-Interval Decreasing Spacing in Experiment 1 (95\% Error Bars)}
+  \label{fig:exp1_density_time_decreasing}
+  \includegraphics[height = 15cm, width = 30cm]{Figures/density_plots_time_dec_exp1} \hfill{}
+  \caption*{Note. \textup{Regions shaded in in gray represent the the middle 95\% of estimated values and the width of the shaded regions is indicated by the length of the horizontal error bars. The error bar length increases as the number of measurements increases from five to seven.}}
+\end{figure}
+```
+One additional minor point should be mentioned. In Figure
+\ref{fig:exp1_density_time_decreasing}D, the variability of values
+estimated for the random-effect triquarter-halfway delta
+($\upgamma_{fixed}$) parameter counterintuitively increased as the
+number of measurements increased from five to seven (see the estimates
+located within the dashed rectangle). Inspection of the underlying
+density plots for the random-effect triquarter-halfway delta parameter
+($\upgamma_{fixed}$) in Figure \ref{fig:exp1_density_time_decreasing}
+showed that the increase was not due to outliers and, rather, occurred
+because of a slight increase in the variability of the parameter
+stimates. When the fixed-effect days-to-halfway elevation parameter
+($\upbeta_{fixed}$) was set to 280, the density distribution for the
+random-effect triquarter-halfway delta parameter ($\upgamma_{fixed}$)
+became slightly flatter as the number of measurements increased from
+five (Figure \ref{fig:exp1_density_time_decreasing}A) to seven (Figure
+\ref{fig:exp1_density_time_decreasing}B).
+
+#### Middle-and-Extreme Spacing
+
+```{r plots-mid-ext-exp1, include=F, eval=F}
+generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Middle-and-extreme spacing',
+                                x_axis_name = expression("Population value set for"~beta[fixed]), 
+                                x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -80, beta_upper = 80, ticks = 10)
+```
+
+```{r text-values-mid-ext-exp1, echoF}
+beta_mid_ext_5_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 5, midpoint == 80, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci, estimate) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci), 
+         estimate = as.integer(estimate))
+
+beta_mid_ext_5_180 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 5, midpoint == 180, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta_mid_ext_5_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 5, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci, estimate) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci), 
+         estimate = as.integer(estimate))
+
+
+beta_mid_ext_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 7, midpoint == 280, grepl('beta\\[fixed\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+
+beta__rand_mid_ext_7_280 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 7, midpoint == 280, grepl('beta\\[random\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+
+beta__rand_mid_ext_7_80 <- exp_1_analytical$days %>% 
+  filter(measurement_spacing == 'Middle-and-extreme spacing', number_measurements == 7, midpoint == 80, grepl('beta\\[random\\]', parameter)) %>%
+  select(midpoint, lower_ci, upper_ci) %>%
+  mutate(lower_ci = as.integer(lower_ci), 
+         upper_ci = as.integer(upper_ci))
+```
+
+Figure \ref{fig:exp1_plot_time_mid_ext} shows the parameter estimation
+plots for the day-unit parameters when equal spacing was used (error
+bars represent the middle 95% of estimated values and shaded horizontal
+lines indicate the population values). Panels A--B show the parameter
+estimation plots for the fixed-effect days-to-halfway elevation and
+triquarter-halfway delta parameters ($\upbeta_{fixed}$ and
+$\upgamma_{fixed}$), respectively. Panels C--D show the parameter
+estimation plots for the random-effect days-to-halfway elevation and
+triquarter-halfway delta parameters ($\upbeta_{random}$ and
+$\upgamma_{random}$), respectively. Note that, in Panel A, estimates for
+$\upbeta_{fixed}$ are centered around their corresponding population
+values (80, 180, and 280 days), and so the y-axis represents error (in
+number of days) from the population value. Note that Table \ref{tab:omega-exp1-time-inc} provides the partial $\upomega^2$ values for the experimental variables for the day-unit parameters under middle-and-extreme spacing. 
+
+For all simulations presented in Figure
+\ref{fig:exp1_plot_time_mid_ext}, one instance of bias occurred. With
+five measurements and a population value for the fixed-effect
+days-to-halfway elevation parameter ($\upbeta_{fixed}$) set to either 80
+or 280, the random-effect days-to-halfway elevation parameter
+($\upbeta_{random}$; Figure \ref{fig:exp1_plot_time_mid_ext}C) was
+slightly overestimated, with respective average estimated values of
+`r beta_mid_ext_5_80` and `r beta_mid_ext_5_280` days (relative to a
+population value of 10.00 days). For all other conditions across all
+day-unit parameters in Figure \ref{fig:exp1_plot_time_mid_ext}, no
+instance of bias occurred, as the average estimated values for all
+day-unit parameters (as indicated by the black dots) were close to their
+respective population values (indicated by the gray lines).
+
+With respect to variability, two general patterns of results emerged in
+the estimation of day-unit parameters with middle-and-extreme spacing.
+First, for all the day-unit parameters except the random effect of the
+halfway-triquarter delta parameter ($\upgamma_{random}$), variability
+increased considerably with five measurements and the fixed-effect
+days-to-halfway elevation parameter ($\upbeta_{fixed}$) had population
+values of 80 or 280. As an example, the error bar length for the
+fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$)
+spanned approximately
+`r beta_mid_ext_5_180$upper_ci - beta_mid_ext_5_180$lower_ci` days when
+the $\upbeta_{fixed}$ had a population value of 180 (upper bound of
+`r beta_mid_ext_5_180$upper_ci` days and a lower bound of
+`r beta_mid_ext_5_180$lower_ci` days), but the length increased to
+`r beta_mid_ext_5_80$upper_ci - beta_mid_ext_5_80$lower_ci` days (upper
+bound of `r beta_mid_ext_5_80$upper_ci` days and a lower bound of
+`r beta_mid_ext_5_80$lower_ci` days) when $\upbeta_{fixed}$ had a
+population value of 80 and
+`r beta_mid_ext_5_280$upper_ci - beta_mid_ext_5_280$lower_ci` days
+(upper bound of `r beta_mid_ext_5_280$upper_ci` days and a lower bound
+of `r beta_mid_ext_5_280$lower_ci` days) when $\upbeta_{fixed}$ had a
+population value of 280. Second, the large amounts of variability
+observed for the parameters with five measurements largely disappeared
+when seven or more measurements were taken. As an example, when the
+fixed-effect days-to-halfway elevation parameter($\upbeta_{fixed}$) had
+a population value of 280, the error bar range for the
+estimation$\upbeta_{fixed}$ spanned approximately
+`r beta_mid_ext_5_280$upper_ci - beta_mid_ext_5_280$lower_ci` days with
+five measurements, but the error bar length to approximately
+`r beta_mid_ext_7_280$upper_ci - beta_mid_ext_7_280$lower_ci` days with
+seven measurements. Note that variability remained considerably high for
+the random-effect days-to-halfway elevation parameter
+($\upbeta_{random}$) with seven measurements the fixed-effect
+days-to-halfway elevation parameter ($\upbeta_{fixed}$) had population
+values of 80 and 280, with respective ranges of
+`r beta__rand_mid_ext_7_80$upper_ci - beta__rand_mid_ext_7_80$lower_ci`
+and
+`r beta__rand_mid_ext_7_280$upper_ci - beta__rand_mid_ext_7_280$lower_ci`
+days.
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Middle-and-Extreme Spacing in Experiment 1}
+  \label{fig:exp1_plot_time_mid_ext}
+  \includegraphics{Figures/exp1_plot_days_middle-and-extreme spacing} \hfill{}
+  \caption*{Note. \textup{Errors bars represent the middle 95\% of estimated values. Gray horizontal lines in each panel represent the population value for each parameter. Panels A--B show the parameter estimation plots for
+the fixed- and random-effect days-to-halfway elevation  parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively. Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively. Note that, in Panel A, estimates for $\upbeta_{fixed}$ are centered around their corresponding population values (80, 180, and 280 days), and so the y-axis represents error (in number of days) from the population value. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp1-mid-ext} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+```{r omega-exp1-mid-ext, echo=F}
+print_bias_var_omega_table(exp_data = exp_1_raw, target_col = 'measurement_spacing', target_value = 'mid_ext', 
+ind_vars = c('number_measurements', 'midpoint'), 
+ind_var_acronyms = c('NM', 'M', 'NM x M'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Middle-and-Extreme Spacing in Experiment 1',
+footnote = 'NM = number of measurements (5, 7, 9, 11), M = population value set for $\\\\upbeta_{fixed}$ (80, 180, 280), NM x M = interaction between number of measurements and population value set for $\\\\upbeta_{fixed}$. \\\\phantom{ indicate conditions where}', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_time_mid_ext}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_time_mid_ext}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_time_mid_ext}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_time_mid_ext}D)'))
+```
+
+
+### Summary 
+
+Importantly, 
+1000 data sets were generated for each cell (*n* = 1000), and so 48 000 data sets were generated for the 48 cells in Experiment 1, 96 000 data sets were generated for the 96 cells in Experiment 2, and 72 000 data sets were generated for the 72 cells in Experiment 3.
+
+```{r experimentOverview, echo=F}
+
+exp_overview_df <- data.frame(
+'\\textbf{Experiment 1}'= c(
+'\\hspace{2pc}IV1: Number of measurements (5, 7, 9, 11)',
+'\\hspace{2pc}IV2: Spacing of measurements (equal, time-interval increasing, time-interval decreasing, middle-and-extreme)',
+'\\hspace{2pc}IV3: Nature of change (fixed-effect days-to-halfway elevation parameter $\\upbeta_{fixed}$ value of 80, 180, or 280)',
+'\\hspace{2pc}DV1: Convergence success rate',
+'\\hspace{2pc}DV2: Percent bias',
+'\\hspace{2pc}Constants: time-structured data, sample size (\\textit{N} = 225), independent and identically distributed errors, no missing data', 
+'\\hspace{2pc}Number of data sets: 48 000',
+
+'\\textbf{Experiment 2 (see Cells 5 \\& 9 of Table @ref(tab:systematicReviewCount-exp))}',
+'\\hspace{2pc}IV1: Number of measurements (5, 7, 9, 11)',
+'\\hspace{2pc}IV3: Spacing of measurements (equal, time-interval increasing, time-interval decreasing, middle-and-extreme)',
+'\\hspace{2pc}IV2: Sample size (30, 50, 100, 200, 500, 1000)',
+'\\hspace{2pc}DV1: Convergence success rate',
+'\\hspace{2pc}DV2: Percent bias',
+'\\hspace{2pc}Constants: fixed-effect days-to-halfway elevation parameter ($\\upbeta_{fixed}$ = 180), time-structured data, independent and \\phantom{andd}identically distributed errors, no missing data', 
+'\\hspace{2pc}Number of data sets: 96 000',
+
+
+'\\textbf{Experiment 3 (see Cells 1 \\& 10 of Table @ref(tab:systematicReviewCount-exp))}',
+'\\hspace{2pc}IV1: Number of measurements (5, 7, 9, 11)',
+'\\hspace{2pc}IV2: Sample size (30, 50, 100, 200, 500, 1000)',
+'\\hspace{2pc}IV3: Time structuredness (time-structured data, fast response rate, slow response rate) ',
+'\\hspace{2pc}DV1: Convergence success rate',
+'\\hspace{2pc}DV2: Percent bias',
+'\\hspace{2pc}Constants: fixed-effect days-to-halfway elevation parameter ($\\upbeta_{fixed}$ = 180), measurement spacing (equal), independent and \\phantom{andd}identically distributed errors, no missing data', 
+'\\hspace{2pc}Number of data sets: 72000'
+
+), check.names = F)
+
+kbl(x = exp_overview_df, format = 'latex', caption = 'Summary of Simulation Experiments', 
+    align = 'l', 
+    toprule = '\\cmidrule[\\heavyrulewidth](r{5cm}){1-1}', 
+    midrule = '\\cmidrule(r{5cm}){1-1}',
+    bottomrule = '\\cmidrule[\\heavyrulewidth](r{5cm}){1-1}', 
+booktabs = T, longtable = T, escape=F,
+linesep = c(rep('', times = 6),
+            '\\addlinespace\\addlinespace\\cmidrule(r{5cm}){1-1}', '\\cmidrule(r{5cm}){1-1}', 
+            rep('', times = 6), 
+            '\\addlinespace\\addlinespace\\addlinespace\\cmidrule(r{5cm}){1-1}','\\cmidrule(r{5cm}){1-1}', 
+            rep('', times = 6), 
+            '\\addlinespace\\addlinespace\\cmidrule(r{5cm}){1-1}', '\\cmidrule(r{5cm}){1-1}',
+            rep('', times = 7))) %>% 
+  kable_styling(position = 'left') %>%
+
+footnote(general = 'A 1000 data sets will be generated for each
+condition (\\\\textit{n} = 1000) in each simulation experiment. \\\\phantom{filler content to set alignmentfiller content to set alignment}', 
+         general_title = '\\\\textit{Note.\\\\hspace{-1pc}}', escape = F) %>%
+row_spec(row = 8, background = '#9fc5e8') %>%
+  column_spec(column = 1, width = '23.3cm') %>%
+  #cell_spec(x = exp_overview_df[8, ], background = '#9fc5e8', latex_background_in_cell = T) %>%
+row_spec(row = 16, background = '#9fc5e8') %>%
+landscape(margin = '2cm') 
+```
+
+Because the study by @coulombe2016 represented the most comprehensive investigation into the effects of longitudinal design and analysis factors on modelling accuracy (see Table \ref{tab:systematicReview}), the
+independent variable manipulations used in the current simulation experiments largely mirrored the
+independent variable manipulations from @coulombe2016. As a reference,
+Table \ref{tab:coulombe2016} lists the levels used for the independent
+variables in @coulombe2016. One last point to mention is that the
+independent variable manipulations were computed in the context of a
+360-day period since many organizational processes are governed by
+annual events (e.g., performance reviews, annual returns, regulatory
+processes, etc.). Table \ref{tab:myValues} lists the levels used for
+the independent variables in my simulations experiments.
+
+(ref:coulombe2016) @coulombe2016
+
+```{r coulombe2016, echo=F}
+
+coulombe_df <- data.frame('Independent variable' = c('Number of measurements (NM)', 'Time structuredness (TS)', 'Sample size (S)'), 
+                          'Levels' = c('3, 5, 7, 9', '40\\%, 100\\% of response window length', '30, 50, 100, 200, 500'), check.names = F)
+
+kbl(x = coulombe_df, booktabs = TRUE, format = 'latex', longtable = T, 
+      align = c('l', 'c'),
+      caption = 'Levels Used for Independent Variables in (ref:coulombe2016)', 
+    escape=F) %>%
+   kable_styling(latex_options= c('hold_position'), font_size = 10, position =
+                   'left')
+```
+
+```{r myValues, echo=F}
+ myValues_df <- data.frame('Independent variabe' = c('Number of measurements (NM)', 'Time structuredness (TS)', 'Sample size (S)', 'Measurement spacing (MS)', 'Nature of change (population value set for the fixed-effect days-to-halfway elevation parameter [$\\upbeta_{fixed}$])'), 
+                          'Levels' = c('5, 7, 9, and 11', 
+                                       'Time structured, fast response rate ($a_{fast}$ = 0.37), and slow response rate ($a_{slow}$ = 0.15)', 
+                                       '30, 50, 100, 200, 500, and 1000', 
+                                       'Equal, time-interval increasing, time-interval decreasing, middle-and-extreme', 
+                                       '80, 180, and 280 days'), check.names = F)
+
+kbl(x = myValues_df, booktabs = TRUE, format = 'latex', longtable = T, 
+      align = c('l', 'l'),
+      caption = 'Levels Used for Independent Variables in my Simulations', 
+    escape=F) %>%
+  column_spec(column = 1, width = '6cm') %>%
+  column_spec(column = 2, width = '10cm') %>%
+   kable_styling(latex_options= c('hold_position', 'repeat_header'), font_size = 10, position = 'left')
+```
+# References
+
+```{=tex}
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+```
+::: {#refs custom-style="Bibliography"}
+:::
+
+```{=tex}
+\endgroup
+```

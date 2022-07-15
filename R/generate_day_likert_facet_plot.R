@@ -20,6 +20,9 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
   days_file_name = paste('Figures/', exp_num, 'plot_days_', tolower(target_value), '.pdf', sep = '')
   likert_file_name = paste('Figures/', exp_num, 'plot_likert_', tolower(target_value),'.pdf', sep = '')
 
+ # days_file_name = paste(exp_num, 'plot_days_', tolower(target_value), '.pdf', sep = '')
+ # likert_file_name = paste(exp_num, 'plot_likert_', tolower(target_value),'.pdf', sep = '')
+
   #setup variable for dodging
   dodge_position <- position_dodge(width = 0.8)
 
@@ -56,15 +59,16 @@ center_beta_param_data <- function(day_data) {
 
 generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_cols = 2,
                                               legend_position = c(0.50, .50), legend_direction = 'horizontal',
-                                              file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 15,
+                                              file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 40,
                                               point_size = 15, line_size = 2, error_bar_width = 0.8,
                                               error_bar_size = 2.5,
                                               y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
                                               grouping_var = 'number_measurements',
+                                              grouping_var2 = 'bias_status',
                                               facet_var = 'parameter',
                                               #fill_var = 'conv_fail',
                                               fill_legend_title = 'Percentage \nRemoved Values',
-                                              shape_legend_title = 'Number of \nMeasurements',
+                                              shape_legend_title = 'Number of \nmeasurements',
                                               panel_spacing_y = 14, dodge_position,
                                               #parameters that change across Experiments 1-3
                                               x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)',
@@ -78,14 +82,15 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
 
   #create base plot
   base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
-                                grouping_var = grouping_var)
+                                grouping_var = grouping_var, grouping_var2 = grouping_var2)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
+  linesizes <- generate_line_sizes(unit = 'day', param_data = parameter_data)
   plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
                                                     error_bar_width = error_bar_width, h_line_alpha = h_line_alpha,
-                                                    h_line_size = h_line_size)
+                                                    linesizes = linesizes)
 
   #create legend
   legend_details <- create_legend(shape_legend_title = shape_legend_title,
@@ -116,26 +121,28 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                           error_bar_size = 2.5,
                                           y_axis_var = 'estimate',  y_axis_name = 'Estimate (Likert units [scale of 1-5])',
                                           grouping_var = 'number_measurements',
+                                          grouping_var2 = 'bias_status',
                                           facet_var = 'parameter',
                                           #fill_var = 'conv_fail',
-                                          fill_legend_title = 'Percentage \nRemoved Values',
-                                          shape_legend_title = 'Number of \nMeasurements',
+                                          #fill_legend_title = 'Percentage \nRemoved Values',
+                                          shape_legend_title = 'Number of \nmeasurements',
                                           panel_spacing_y = 4, dodge_position,
                                           #arguments that need to be changed to Likert facets
-                                          legend_position = c(0.70, 0.15), legend_direction = 'vertical', num_rows = 3,
+                                          legend_position = c(0.73, 0.24), legend_direction = 'horizontal', num_rows = 3,
                                           #parameters that change across Experiments 1-3
                                           x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)') {
 
   #create base plot
   base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
-                                grouping_var = grouping_var)
+                                grouping_var = grouping_var, grouping_var2 = grouping_var2)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
+  linesizes <- generate_line_sizes(unit = 'likert', param_data = parameter_data)
   plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
                                                     error_bar_width = error_bar_width, h_line_alpha = h_line_alpha,
-                                                    h_line_size = h_line_size)
+                                                    linesizes = linesizes)
 
   #create legend
   legend_details <- create_legend(shape_legend_title = shape_legend_title,
@@ -159,6 +166,28 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
 
 }
 
+generate_line_sizes <- function(unit = 'likert', param_data) {
+
+  tick_width <-  34.5 #width of one tick (assuming scale range of 50 and tick length of 5)
+  #theta_fixed,  theta_rand, alpha_fixed, alpha_rand, epsilon
+  likert_pop_values <- c(3, 0.05, 3.32, 0.05, 0.05)
+  day_pop_values <- c(180, 10, 20, 4) #beta_fixed, beta_rand, gamma_fixed, gamma_rand
+
+  #compute number of ticks each margin of error spans and then multiply by the tick length and then two cover both the upper and lower margins of error
+  #day_pop_line_sizes <- ((0.1*day_pop_values)/5)*tick_width*2
+
+  if (unit == 'likert') {
+    line_sizes <- rep(likert_pop_values*tick_width, each = nrow(param_data)/length(likert_pop_values))
+  }
+
+  else {
+    line_sizes <- rep(((0.1*day_pop_values)/5)*tick_width*2, each = nrow(param_data)/length(day_pop_values))
+
+  }
+
+  return(line_sizes)
+}
+
 
 generate_filtered_unfiltered_facet_plot <- function(parameter_data, num_rows = 1, num_cols = 2,
                                               legend_position = c(0.50, .50), legend_direction = 'horizontal',
@@ -167,8 +196,9 @@ generate_filtered_unfiltered_facet_plot <- function(parameter_data, num_rows = 1
                                               error_bar_size = 2.5,
                                               y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
                                               grouping_var = 'number_measurements',
+                                              grouping_var2 = 'bias_status',
                                               facet_var = 'parameter',
-                                              shape_legend_title = 'Number of \nMeasurements',
+                                              shape_legend_title = 'Number of \nmeasurements',
                                               panel_spacing_y = 12, dodge_position,
                                               #parameters that change across Experiments 1-3
                                               x_axis_var = 'sample_size', x_axis_name = 'Sample size (*N*)',
@@ -178,7 +208,7 @@ generate_filtered_unfiltered_facet_plot <- function(parameter_data, num_rows = 1
 
   #create base plot
   base_plot <- create_base_plot_unfiltered(parameter_data = parameter_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
-                                grouping_var = grouping_var)
+                                grouping_var = grouping_var, grouping_var2 = grouping_var2)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
   plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
@@ -222,12 +252,14 @@ create_base_plot <- function(parameter_data, x_axis_var, y_axis_var, grouping_va
 }
 
 #create base plot
-create_base_plot_unfiltered <- function(parameter_data, x_axis_var, y_axis_var, grouping_var) {
+create_base_plot_unfiltered <- function(parameter_data, x_axis_var, y_axis_var, grouping_var,
+                                        grouping_var2) {
 
   base_plot <-  ggplot(data = parameter_data, aes(x = !!sym(x_axis_var), y = !!sym(y_axis_var),
                                                   group = !!sym(grouping_var),
                                                   linetype = !!sym(grouping_var),
-                                                  shape = !!sym(grouping_var)))
+                                                  shape = !!sym(grouping_var),
+                                                  fill = !!sym(grouping_var2)))
   return(base_plot)
 
 }
@@ -237,15 +269,16 @@ create_base_plot_unfiltered <- function(parameter_data, x_axis_var, y_axis_var, 
 #primary aesthetic specifications (points, lines, error bars, hline)
 create_data_visualizations_unfiltered <- function(dodge_position, point_size, line_size,
                                 lower_ci, upper_ci, error_bar_width,
-                                h_line_alpha, h_line_size) {
+                                h_line_alpha, h_line_size, grouping_var2, linesizes) {
 
   primary_plot <- list(
-    geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = h_line_alpha, size = h_line_size),
-    geom_point(position = dodge_position, size = point_size, fill = 'black'),
-    geom_line(size = line_size,  position = dodge_position),
-    geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci),
-                  width = error_bar_width, position = dodge_position, size = 2.5)
-    )
+    geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = 0.35, size = linesizes),
+    geom_hline(mapping = aes(yintercept = pop_value), color = 'blue', size = 5, alpha = 0.8),
+    geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci, color = ci_status),
+                  width = error_bar_width, position = dodge_position, size = 2.5),
+    geom_point(position = dodge_position, size = point_size),
+    geom_line(size = line_size,  position = dodge_position))
+
 
   return(primary_plot)
 }
@@ -256,6 +289,7 @@ create_data_visualizations <- function(dodge_position, point_size, line_size,
 
   primary_plot <- list(
     geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = h_line_alpha, size = h_line_size),
+    #geom_rect(mapping = aes(ymin = pop_value - 0.1*pop_value, ymax = pop_value + 0.1*pop_value, xmin = -Inf, xmax = Inf)),
     geom_point(position = dodge_position, size = point_size),
     geom_line(size = line_size,  position = dodge_position),
     geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci),
@@ -271,14 +305,24 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
 
   #legend details + x-axis name
   legend_details <- list(
-    scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23)),
+    scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23),
+                       guide  = guide_legend(override.aes = list(fill = c("black")),
+                                             guide = guide_legend(order = 0))),
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
-   # scale_fill_manual(name = fill_legend_title,
-   #                 values = c('black', 'white'),
-   #                 labels = c('Below 10%', 'Above 10%'), drop = FALSE), #set drop =FALSE so that unused levels are included
-    guides(shape = guide_legend(override.aes = list(fill = "black"))),
+                          #guide = guide_legend(order = 3)),
+    scale_fill_manual(name = 'Bias amount',
+                      values = c('black', 'white'),
+                      labels = c('Below 10%', 'Above 10%'), drop = FALSE,#set drop =FALSE so that unused levels are included
+                      guide = guide_legend(override.aes = list(shape = 22))), #order = 1)),
+    scale_color_manual(name = 'Variability amount',
+                       breaks = c("0", "1"),
+                       values = c('black', '#8cb9e3'),
+                       labels = c('Below 10%', 'Above 10%'), drop = FALSE,
+                       guide = guide_legend(order = 1)),
+    #guides(col = guide_legend(reverse = TRUE)),
     #fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
-   labs(x = x_axis_name))
+    labs(x = x_axis_name))
+
   return(legend_details)
 }
 
@@ -288,7 +332,7 @@ create_legend_unfiltered <- function(shape_legend_title, x_axis_name) {
   legend_details <- list(
     scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23)),
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
-    guides(shape = guide_legend(override.aes = list(fill = "black"))),
+    guides(shape = guide_legend(override.aes = list(fill = "black"), order = 1)),
     #scale_x_discrete(name = x_axis_name))
     labs(x = x_axis_name))
 

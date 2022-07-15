@@ -9,6 +9,14 @@ generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
   #compute necessary conversions for beta-fixed (if necessary) + appends labels
   analytical_data <- append_parameter_labels(summary_data = summary_data)
 
+
+  #compute percentage error and bias status (i.e, > 10% error)
+  analytical_data$perc_error <- abs(((analytical_data$pop_value - analytical_data$estimate)/analytical_data$pop_value)*100)
+  analytical_data$bias_status <- factor(ifelse(analytical_data$perc_error > 10, yes = 1, no = 0))
+
+  #compute column for margin of error
+  analytical_data$ci_status <- factor(ifelse(analytical_data$upper_ci - analytical_data$lower_ci > 2*.10*analytical_data$pop_value, yes = 1, no = 0))
+
   #extract data for specific measurement spacing condition for Likert-scale parameters
   likert_data_rows <- str_detect(string = analytical_data$parameter, pattern =  'theta|alpha|epsilon')
   likert_data <- analytical_data[likert_data_rows, ]
@@ -109,7 +117,6 @@ convert_var_to_sd <- function(param_summary_data) {
            lower_ci_90 = sqrt(lower_ci_90),
 
            estimate = sqrt(estimate),
-           perc_error = ((pop_value - mean(estimate, na.rm = T))/pop_value)*100,
            sd_estimate = sd(estimate))
 
   return(param_summary_data)

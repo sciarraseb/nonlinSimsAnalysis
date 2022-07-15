@@ -22,8 +22,10 @@ compute_parameter_summary <- function(data, exp_num) {
 
   summary_data <- compute_statistics(data = ordered_data)
 
-  #add conv_fail categorical variable
+  #add conv_fail categorical variable and percentage error categorical variable (i.e, within or outside of 10% margin)
   summary_data$conv_fail <-  factor(ifelse(summary_data$num_removed_values < .1*summary_data$num_converged_values, yes =  0, no = 1))
+  #summary_data$bias_status <-  factor(ifelse(summary_data$perc_error > 10, yes =  1, no = 0))
+
 
   #set levels for time structuredness in exp 3
   if (exp_num == 3){
@@ -58,8 +60,10 @@ compute_statistics <- function(data) {
 
        estimate = mean(estimate, na.rm = T),
        num_converged_values = sum(code == 0),
-       pop_value = mean(pop_value),
-       perc_error = ((pop_value - mean(estimate, na.rm = T))/pop_value)*100)
+       pop_value = mean(pop_value))
+
+    #more ennoying errors from tidyverse
+    #summary_stats_table$perc_error <- abs(((summary_stats_table$pop_value - summary_stats_table$estimate)/summary_stats_table$pop_value)*100)
 
       ##not returning this table at the moment
       #estimate_summary <- intermediate_table_2 %>%
@@ -99,7 +103,7 @@ add_pop_value_col <- function(data=data) {
                           'beta_rand' = 10,
                           'gamma_rand' = 4,
 
-                          'epsilon' = 0.03) %>%
+                          'epsilon' = 0.05) %>%
    pivot_longer(cols = 1:9, names_to = 'parameter', values_to = 'pop_value')
 
   #intermediate table needed because pipes tend to break down in functions
@@ -125,7 +129,6 @@ add_pop_values_beta <- function(data) {
     mutate(pop_value = midpoint)
 
   #center beta_fixed estimates on zero
-  #beta_fixed_data$centered_estimate <- beta_fixed_data$estimate - as.numeric(as.character(beta_fixed_data$pop_value))
 
   #create data.frame for all other parameters
   pop_values <- data.frame('theta_fixed' = 3,
@@ -137,7 +140,7 @@ add_pop_values_beta <- function(data) {
                            'beta_rand' = 10,
                            'gamma_rand' = 4,
 
-                           'epsilon' = 0.03) %>%
+                           'epsilon' = 0.05) %>%
     pivot_longer(cols = 1:8, names_to = 'parameter', values_to = 'pop_value')
 
   #append pop_value column for all other parameters
