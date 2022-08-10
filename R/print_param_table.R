@@ -33,8 +33,10 @@ print_param_table <- function(table_ready_data, parameter_name,
     column_spec(column = c(1, 2), width = '3cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
-    #footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-0.25pc}',
-      #       general = 'Cells shaded in gray indicate instances where less than 90\\\\% of models converged.') %>%
+    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.5pc}',
+            general = "Cells shaded in light blue indicate values estimated with low precision (i.e., range covered by middle 95\\\\% of estimated of
+            values exceeds 20\\\\% of parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate values estimated with bias (i.e., error exceeding 10\\\\% of
+            parameter's population value).") %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
     kable_styling(position = 'left') %>%
     landscape(margin = '1cm')
@@ -45,32 +47,118 @@ print_param_table <- function(table_ready_data, parameter_name,
 #generates table-ready data sets
 create_table_data_sets <- function(param_summary_data, wide_var, first_col, second_col){
 
+  pop_values <- list('theta_fixed' = 3.00,
+                     'alpha_fixed' = 3.32,
+                     'beta_fixed' = 180,
+                     'gamma_fixed' = 20,
+                     'theta_rand' = 0.05,
+                     'alpha_rand' = 0.05,
+                     'beta_rand' = 10,
+                     'gamma_rand' = 4,
+                     'epsilon' = 0.05)
+
   param_summary_data <- convert_var_to_sd(param_summary_data = param_summary_data)
 
   #extract all columns names before bias column
   bias_col_num <- which(names(param_summary_data) == 'num_removed_values')
 
-  parameter_est_data <- generate_parameter_est_data(param_summary_data = param_summary_data,
+  #make two copies of parameter estimate table (one is used as a reference and the other is modified in character format)
+  param_est_data_char <- generate_parameter_est_data(param_summary_data = param_summary_data,
                                                     bias_col_num = bias_col_num,
                                                     wide_var = wide_var,
                                                     first_col = first_col, second_col = second_col)
+  param_est_data_num <- param_est_data_char
 
-  removed_value_table <- generate_num_removed_data(param_summary_data = param_summary_data,
-                                                                           bias_col_num = bias_col_num,
-                                                                           wide_var = wide_var,
-                                                                           first_col = first_col, second_col = second_col)
-
-  #round parameter_est_data to two decimal places
-  parameter_est_data <- round_two_decimal_places(parameter_est_data = parameter_est_data)
-
-  #add latex information to param_estimate_table
-  #removed_value_table <- generate_num_removed_value_latex(parameter_est_data = removed_value_table)
+  #error bar data
+  errorbar_data <- generate_errorbar_data(param_summary_data = param_summary_data,
+                                          bias_col_num = bias_col_num,
+                                          wide_var = wide_var,
+                                          first_col = first_col, second_col = second_col)
 
 
-  return(list('estimate_table' = parameter_est_data,
-              'removed_value_table' = removed_value_table))
+  parameter_est_data <- generate_latex_data(param_est_data_char, param_est_data_num, errorbar_data, pop_values)
+
+ ##appends empty superscript square for biased estimates
+ #parameter_est_data <- generate_bias_latex(parameter_est_data = parameter_est_data, pop_values = pop_values)
+
+ ##shades cells in light blue if precision is low
+ #parameter_est_data <- generate_errorbar_latex(parameter_est_data, errorbar_data, pop_values)
+
+
+  return(list('estimate_table' = parameter_est_data))
 }
 
+generate_errorbar_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
+
+  param_summary_data$errorbar_range <- param_summary_data$upper_ci - param_summary_data$lower_ci
+
+  errorbar_data <- param_summary_data %>%
+    select(1:(bias_col_num - 1), errorbar_range) %>%
+    pivot_wider(values_from = errorbar_range, names_from = parameter, names_prefix = 'range_') %>%
+    pivot_wider(values_from = contains('range_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
+    relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
+    arrange(!!sym(first_col), !!sym(second_col))
+
+  return(errorbar_data)
+}
+
+generate_latex_data <- function(param_est_data_char, param_est_data_num, errorbar_data, pop_values) {
+
+  #identify columns that contain parameter estimate information by finding column names with numbers in them
+  parameter_estimate_index <- which(str_detect(string = names(param_est_data_char), pattern = '\\d'))
+
+  for (col_number in parameter_estimate_index) {
+
+    #identify relevant population value for parameter of interest
+    pop_value_index <- str_detect(pattern = names(pop_values), string = names(param_est_data_char)[col_number])
+    pop_value <- as.numeric(pop_values[pop_value_index])
+
+    #notice use of [[]] for indexing
+    #round column values to two decimal places and convert it to character format
+    param_est_data_char[[col_number]] <- format(round(param_est_data_char[[col_number]], digits = 2), nsmall = 2)
+
+
+    #modify cell contents for whether estimate is biased (add superscript square if this is the case)
+    param_est_data_char[[col_number]] <- ifelse(test = param_est_data_num[[col_number]] - pop_value > 0.1*pop_value,
+                                                yes = str_c(param_est_data_char[[col_number]], '$^{\\square}$', sep = ''),
+                                                no = str_c(param_est_data_char[[col_number]]))
+
+
+    #modify cell colour for error bar length
+    param_est_data_char[[col_number]] <- cell_spec(x = param_est_data_char[[col_number]],
+                                                   background = ifelse(test = abs(errorbar_data[[col_number]]) > .2*as.numeric(pop_values[pop_value_index]),
+                                                                       yes = '#8cb9e3', no = '#ffffff'),
+                                                   format = 'latex', escape = F)
+
+  }
+
+  return(param_est_data_char)
+
+}
+
+generate_parameter_est_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
+
+  parameter_est_data <- param_summary_data %>%
+    select(1:(bias_col_num - 1), estimate) %>%
+    pivot_wider(values_from = estimate, names_from = parameter, names_prefix = 'est_') %>%
+    pivot_wider(values_from = contains('est_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
+    relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
+    arrange(!!sym(first_col), !!sym(second_col))
+
+  return(parameter_est_data)
+
+}
+
+extract_beta_fixed_pop_value <- function() {
+
+  #extract numbers after midpoint until end of column name
+
+  ##convert to numeric
+
+}
+
+
+##obfuscated function
 generate_num_removed_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
 
   removed_value_table <- param_summary_data %>%
@@ -83,20 +171,9 @@ generate_num_removed_data <- function(param_summary_data, bias_col_num, wide_var
   return(removed_value_table)
 }
 
-generate_parameter_est_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
-
-  parameter_est_data <- param_summary_data %>%
-    select(1:(bias_col_num - 1), estimate) %>%
-    pivot_wider(values_from = estimate, names_from = parameter, names_prefix = 'est_') %>%
-    pivot_wider(values_from = contains('est_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
-    relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
-    arrange(!!sym(first_col), !!sym(second_col))
-
-  }
-
 generate_num_removed_value_latex <- function(parameter_est_data) {
 
-  #identify columns that contain parameter estimate information
+  #identify columns that contain parameter estimate information by finding column names with numbers in them
   parameter_estimate_index <- which(str_detect(string = names(parameter_est_data), pattern = '\\d'))
 
   for (col_number in parameter_estimate_index) {

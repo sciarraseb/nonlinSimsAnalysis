@@ -1,6 +1,4 @@
 
-
-
 generate_summary_facet_plot <- function(condition_data, lower_y_limit, upper_y_limit, ticks,
                                         #parameters that change across Experiments 1-3
                                         x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)',
@@ -11,7 +9,7 @@ generate_summary_facet_plot <- function(condition_data, lower_y_limit, upper_y_l
                                         file_name, dodge_width = 0.8,
                                         point_size = 15, line_size = 2, error_bar_width = 0.8,
                                         error_bar_size = 2.5,
-                                        y_axis_var = 'estimate',  y_axis_name = 'Parameter bias (percentage error)',
+                                        y_axis_var = 'estimate',  y_axis_name = 'Parameter Bias (Percentage Error)',
                                         grouping_var = 'number_measurements',
                                         #fill_var = 'conv_fail',
                                         #fill_legend_title = 'Convergence \nSuccess',
@@ -21,14 +19,14 @@ generate_summary_facet_plot <- function(condition_data, lower_y_limit, upper_y_l
   file_name <- paste(exp_num, 'summary_plot.pdf', sep = '')
 
   #create base plot
-  base_plot <- create_base_plot_unfiltered(parameter_data = condition_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
+  base_plot <- create_base_plot_unfiltered_summ(parameter_data = condition_data, x_axis_var = x_axis_var, y_axis_var = y_axis_var,
                               grouping_var = grouping_var)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
   plot_visualizations <- create_summary_data_visualizations(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size)
   #create legend
-  legend_details <-  create_legend_unfiltered(shape_legend_title = shape_legend_title, x_axis_name =  x_axis_name)
+  legend_details <-  create_legend_unfiltered_summ(shape_legend_title = shape_legend_title, x_axis_name =  x_axis_name)
 
   #facets
   if (str_detect(string = exp_num, pattern = '3')) {
@@ -113,4 +111,28 @@ create_summary_data_visualizations <- function(dodge_position, point_size, line_
   return(primary_plot)
 }
 
+create_base_plot_unfiltered_summ <- function(parameter_data, x_axis_var, y_axis_var, grouping_var) {
+
+  base_plot <-  ggplot(data = parameter_data, aes(x = !!sym(x_axis_var), y = !!sym(y_axis_var),
+                                                  group = !!sym(grouping_var),
+                                                  linetype = !!sym(grouping_var),
+                                                  shape = !!sym(grouping_var)))
+
+  return(base_plot)
+
+}
+
+create_legend_unfiltered_summ <- function(shape_legend_title, x_axis_name) {
+
+  #legend details + x-axis name
+  legend_details <- list(
+    scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23),
+                       guide  = guide_legend(override.aes = list(fill = c("black")),
+                                             guide = guide_legend(order = 0))),
+    scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
+    #scale_x_discrete(name = x_axis_name))
+    labs(x = x_axis_name))
+
+  return(legend_details)
+}
 

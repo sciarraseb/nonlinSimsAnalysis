@@ -5,7 +5,7 @@
 #' @return
 generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measurement_spacing',
                                            target_value, x_axis_var, x_axis_name, exp_num,
-                                          beta_lower, beta_upper, ticks) {
+                                          beta_lower, beta_upper, beta_ticks) {
 
   #if exp_num contains 1, center beta estimates
   if (str_detect(string = exp_num, pattern = '1')){
@@ -29,7 +29,7 @@ generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measur
   #generate day facet plot
   generate_day_parameter_facet_plot(parameter_data = day_parameter_data, file_name = days_file_name,
                                     dodge_position = dodge_position,
-                                    beta_lower = beta_lower, beta_upper = beta_upper, ticks = ticks,
+                                    beta_lower = beta_lower, beta_upper = beta_upper, beta_ticks = beta_ticks,
                                     #parameters that change across Experiments 1-3
                                     x_axis_var = x_axis_var, x_axis_name = x_axis_name,
                                     exp_num = exp_num)
@@ -62,17 +62,17 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
                                               file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 40,
                                               point_size = 15, line_size = 2, error_bar_width = 0.8,
                                               error_bar_size = 2.5,
-                                              y_axis_var = 'estimate',  y_axis_name = 'Estimate (days)',
+                                              y_axis_var = 'estimate',  y_axis_name = 'Estimate (Days)',
                                               grouping_var = 'number_measurements',
                                               grouping_var2 = 'bias_status',
                                               facet_var = 'parameter',
                                               #fill_var = 'conv_fail',
                                               fill_legend_title = 'Percentage \nRemoved Values',
-                                              shape_legend_title = 'Number of \nmeasurements',
-                                              panel_spacing_y = 14, dodge_position,
+                                              shape_legend_title = 'Number of \nMeasurements',
+                                              panel_spacing_y = 20, dodge_position,
                                               #parameters that change across Experiments 1-3
                                               x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)',
-                                              beta_lower, beta_upper, ticks, exp_num) {
+                                              beta_lower, beta_upper, beta_ticks, exp_num) {
 
   #place beta_fixed pop values at 0
   if (str_detect(string = exp_num, pattern = '1')) {
@@ -85,7 +85,8 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
                                 grouping_var = grouping_var, grouping_var2 = grouping_var2)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
-  linesizes <- generate_line_sizes(unit = 'day', param_data = parameter_data)
+  linesizes <- generate_line_sizes(unit = 'day', param_data = parameter_data, beta_ticks, beta_upper, beta_lower)
+
   plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
@@ -98,7 +99,7 @@ generate_day_parameter_facet_plot <- function(parameter_data, num_rows = 2, num_
 
   #facets
   facet_details <- create_days_param_facets(facet_var = facet_var, num_rows = num_rows, num_cols = num_cols,
-                                            y_axis_name = y_axis_name, beta_lower = beta_lower, beta_upper = beta_upper, ticks = ticks)
+                                            y_axis_name = y_axis_name, beta_lower = beta_lower, beta_upper = beta_upper, beta_ticks = beta_ticks)
 
   #thematic elements
   thematic_details <- create_thematic_elements(legend_position = legend_position, legend_direction = legend_direction,
@@ -119,13 +120,13 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                           file_name, dodge_width = 0.8, h_line_alpha = 0.8, h_line_size = 15,
                                           point_size = 15, line_size = 2, error_bar_width = 0.8,
                                           error_bar_size = 2.5,
-                                          y_axis_var = 'estimate',  y_axis_name = 'Estimate (Likert units [scale of 1-5])',
+                                          y_axis_var = 'estimate',  y_axis_name = 'Estimate (Likert Units [Scale of 1-5])',
                                           grouping_var = 'number_measurements',
                                           grouping_var2 = 'bias_status',
                                           facet_var = 'parameter',
                                           #fill_var = 'conv_fail',
                                           #fill_legend_title = 'Percentage \nRemoved Values',
-                                          shape_legend_title = 'Number of \nmeasurements',
+                                          shape_legend_title = 'Number of \nMeasurements',
                                           panel_spacing_y = 4, dodge_position,
                                           #arguments that need to be changed to Likert facets
                                           legend_position = c(0.73, 0.24), legend_direction = 'horizontal', num_rows = 3,
@@ -137,7 +138,7 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
                                 grouping_var = grouping_var, grouping_var2 = grouping_var2)
 
   #primary aesthetic specifications (points, lines, error bars, hline)
-  linesizes <- generate_line_sizes(unit = 'likert', param_data = parameter_data)
+  linesizes <- generate_line_sizes(unit = 'likert', param_data = parameter_data, beta_ticks = NA, beta_upper = NA, beta_lower = NA)
   plot_visualizations <- create_data_visualizations_unfiltered(dodge_position = dodge_position,
                                                     point_size = point_size, line_size =  line_size,
                                                     lower_ci = lower_ci, upper_ci = upper_ci,
@@ -166,24 +167,56 @@ generate_likert_parameter_facet_plot <- function(parameter_data,  num_cols = 2,
 
 }
 
-generate_line_sizes <- function(unit = 'likert', param_data) {
+generate_line_sizes <- function(unit = 'likert', param_data, beta_ticks, beta_upper, beta_lower) {
 
-  tick_width <-  34.5 #width of one tick (assuming scale range of 50 and tick length of 5)
-  #theta_fixed,  theta_rand, alpha_fixed, alpha_rand, epsilon
-  likert_pop_values <- c(3, 0.05, 3.32, 0.05, 0.05)
-  day_pop_values <- c(180, 10, 20, 4) #beta_fixed, beta_rand, gamma_fixed, gamma_rand
-
-  #compute number of ticks each margin of error spans and then multiply by the tick length and then two cover both the upper and lower margins of error
-  #day_pop_line_sizes <- ((0.1*day_pop_values)/5)*tick_width*2
-
+  #for each parameter, we take 10% of its value and then multiply it by the margin and then by two (for the upper and lower portion)
   if (unit == 'likert') {
-    line_sizes <- rep(likert_pop_values*tick_width, each = nrow(param_data)/length(likert_pop_values))
+    line_sizes <- generate_likert_line_sizes(param_data)
   }
 
   else {
-    line_sizes <- rep(((0.1*day_pop_values)/5)*tick_width*2, each = nrow(param_data)/length(day_pop_values))
-
+    line_sizes <- generate_day_line_sizes(param_data, beta_ticks, beta_upper, beta_lower)
   }
+
+  return(line_sizes)
+}
+
+generate_likert_line_sizes <- function(param_data) {
+
+  ##theta_fixed,  theta_rand, alpha_fixed, alpha_rand, epsilon
+  likert_pop_values <- c(3, 0.05, 3.32, 0.05, 0.05)
+  likert_tick_length <- .05
+
+  #345 points equals range of entire axis; each likert estimation plot y-axis ha range of .20 and tick size of 0.05
+  margin_lengths <- (likert_tick_length/.20)*345
+
+  #compute number of margin lengths that fall within each parameter's tolerable error (i.e., 10% of pop value)
+  total_margin_lengths <- ((0.1*likert_pop_values)/likert_tick_length)*margin_lengths*2
+
+  #for each parameter, we take 10% of its value and then multiply it by the margin and then by two (for the upper and lower portion)
+  line_sizes <- rep(total_margin_lengths, each = nrow(param_data)/length(total_margin_lengths))
+
+  return(line_sizes)
+}
+
+generate_day_line_sizes <- function(param_data, beta_ticks, beta_upper, beta_lower) {
+
+  beta_fixed_value <- 180
+  #beta_rand, gamma_fixed, gamma_rand
+  day_pop_values <- c(10, 20, 4)
+  day_tick_length <- 5
+
+  #345 points equals range of entire axis; each day estimation plot y-axis has range of 55 and tick size of 5
+  ##beta_fixed length is set separately
+  beta_margin_length <-(beta_ticks/(beta_upper - beta_lower))*345
+  days_margin_lengths <- (day_tick_length/55)*345
+
+  beta_total_margin_length <- ((0.1*beta_fixed_value)/beta_ticks)*beta_margin_length*2
+  other_day_total_margin_lengths <- ((0.1*day_pop_values)/day_tick_length)*days_margin_lengths*2
+
+  all_day_total_margin_lengths <- c(beta_total_margin_length, other_day_total_margin_lengths)
+
+  line_sizes <- rep(all_day_total_margin_lengths, each = nrow(param_data)/length(all_day_total_margin_lengths))
 
   return(line_sizes)
 }
@@ -272,10 +305,10 @@ create_data_visualizations_unfiltered <- function(dodge_position, point_size, li
                                 h_line_alpha, h_line_size, grouping_var2, linesizes) {
 
   primary_plot <- list(
-    geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = 0.35, size = linesizes),
+    geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = 0.43, size = linesizes),
     geom_hline(mapping = aes(yintercept = pop_value), color = 'blue', size = 5, alpha = 0.8),
     geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci, color = ci_status),
-                  width = error_bar_width, position = dodge_position, size = 2.5),
+                  width = error_bar_width, position = dodge_position, size = 3.5),
     geom_point(position = dodge_position, size = point_size),
     geom_line(size = line_size,  position = dodge_position))
 
@@ -310,14 +343,14 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
                                              guide = guide_legend(order = 0))),
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
                           #guide = guide_legend(order = 3)),
-    scale_fill_manual(name = 'Bias amount',
+    scale_fill_manual(name = 'Bias Amount',
                       values = c('black', 'white'),
                       labels = c('Below 10%', 'Above 10%'), drop = FALSE,#set drop =FALSE so that unused levels are included
                       guide = guide_legend(override.aes = list(shape = 22))), #order = 1)),
-    scale_color_manual(name = 'Variability amount',
+    scale_color_manual(name = 'Error Bar Length',
                        breaks = c("0", "1"),
                        values = c('black', '#8cb9e3'),
-                       labels = c('Below 10%', 'Above 10%'), drop = FALSE,
+                       labels = c('Below 20%', 'Above 20%'), drop = FALSE,
                        guide = guide_legend(order = 1)),
     #guides(col = guide_legend(reverse = TRUE)),
     #fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
@@ -341,23 +374,26 @@ create_legend_unfiltered <- function(shape_legend_title, x_axis_name) {
 
 #create facets for day-based parameters
 create_days_param_facets<- function(facet_var, num_rows, num_cols, y_axis_name,
-                                    beta_lower, beta_upper, ticks) {
+                                    beta_lower, beta_upper, beta_ticks) {
+
+  #used to set range of other day-based parameters
+  beta_range <- beta_upper - beta_lower
 
   day_facet_details <- facet_wrap_custom( ~ get(facet_var), scales = "free", ncol = num_cols, nrow = num_rows ,
                                           dir = 'h', labeller = label_parsed,
                                           scale_overrides = list(scale_override(1,
                                                                                 scale_y_continuous(name =  y_axis_name,
-                                                                                                   breaks = seq(from = beta_lower, to = beta_upper, by = ticks),
+                                                                                                   breaks = seq(from = beta_lower, to = beta_upper, by = beta_ticks),
                                                                                                    limits = c(beta_lower, beta_upper))),
                                                                  scale_override(2, scale_y_continuous(name =  y_axis_name,
-                                                                                                      breaks = seq(from = 0, to = 50, by = 5),
-                                                                                                      limits = c(0, 50))),
+                                                                                                      breaks = seq(from = 0, to = 55, by = 5),
+                                                                                                      limits = c(0, 55))),
                                                                  scale_override(3,scale_y_continuous(name =  y_axis_name,
-                                                                                                     breaks = seq(from = 0, to = 50, by = 5),
-                                                                                                     limits = c(0, 50))),
+                                                                                                     breaks = seq(from = 0, to = 55, by = 5),
+                                                                                                     limits = c(0, 55))),
                                                                  scale_override(4, scale_y_continuous(name =  y_axis_name,
-                                                                                                      breaks = seq(from = 0, to = 50, by = 5),
-                                                                                                      limits = c(0, 50)))))
+                                                                                                      breaks = seq(from = 0, to = 55, by = 5),
+                                                                                                      limits = c(0, 55)))))
 
   return(day_facet_details)
 
@@ -382,8 +418,8 @@ create_likert_param_facets <- function(facet_var, num_rows, num_cols, y_axis_nam
 
                                                #alpha_fixed
                                                scale_override(2,scale_y_continuous(name =  y_axis_name,
-                                                                                   breaks = seq(from = 3.2, to = 3.4, by = .05),
-                                                                                   limits = c(3.2, 3.4))),
+                                                                                   breaks = seq(from = 3.25, to = 3.45, by = .05),
+                                                                                   limits = c(3.25, 3.45))),
                                                #alpha_random
                                                scale_override(4, scale_y_continuous(name =  y_axis_name,
                                                                                     breaks = seq(from = 0, to = 0.2, by =.05),
@@ -399,13 +435,13 @@ create_likert_param_facets <- function(facet_var, num_rows, num_cols, y_axis_nam
 
 #create facets for day-based parameters
 create_filtered_unfiltered_param_facets <- function(facet_var, num_rows, num_cols, y_axis_name,
-                                    beta_lower, beta_upper, ticks) {
+                                    beta_lower, beta_upper, beta_ticks) {
 
   day_facet_details <- facet_wrap_custom( ~ get(facet_var), scales = "free", ncol = num_cols, nrow = num_rows ,
                                           dir = 'h', labeller = label_parsed,
                                           scale_overrides = list(scale_override(1,
                                                                                 scale_y_continuous(name =  y_axis_name,
-                                                                                                   breaks = seq(from = beta_lower, to = beta_upper, by = ticks),
+                                                                                                   breaks = seq(from = beta_lower, to = beta_upper, by = beta_ticks),
                                                                                                    limits = c(beta_lower, beta_upper))),
                                                                  scale_override(2, scale_y_continuous(name =  y_axis_name,
                                                                                                       breaks = seq(from = 0, to = 40, by = 5),
@@ -451,7 +487,6 @@ create_thematic_elements <- function(legend_position, legend_direction, panel_sp
 
   return(thematic_elements)
 }
-
 
 
 

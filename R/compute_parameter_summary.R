@@ -47,6 +47,8 @@ compute_statistics <- function(data) {
        #bias = (mean(pop_value) - mean(estimate, na.rm = T))/sd(estimate, na.rm = T),
        num_removed_values = sum(is.na(estimate)),
        sd_estimate = sd(estimate),
+      # var_estimate = var(estimate),
+
 
        #lower and upper CI for estimates
        lower_ci = compute_middle_95_estimate(param_data = estimate)[1],
@@ -61,7 +63,6 @@ compute_statistics <- function(data) {
        estimate = mean(estimate, na.rm = T),
        num_converged_values = sum(code == 0),
        pop_value = mean(pop_value))
-
     #more ennoying errors from tidyverse
     #summary_stats_table$perc_error <- abs(((summary_stats_table$pop_value - summary_stats_table$estimate)/summary_stats_table$pop_value)*100)
 

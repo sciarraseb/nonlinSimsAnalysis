@@ -18,13 +18,13 @@ print_bias_var_omega_table <- function(exp_data, target_col, target_value,
 
   #generate kable table
   kable_table <- kbl(x = bias_var_table, format = 'latex',
-       col.names = c('Parameter', rep(c(ind_var_acronyms), times = 2)),
+       col.names = c('Parameter', rep(c(ind_var_acronyms), times = 1)),
        longtable = T, booktabs = T, centering = T, escape = F,
        linesep = c('', '', '', ''), align = c('l', rep('c', times = ncol(bias_var_table) - 1)),
        caption = caption) %>%
   column_spec(column = 1, width = '6cm') %>%
   #header
-  add_header_above(header = c(' ' = 1, 'Bias' = 3, 'Variability' = 3)) %>%
+  add_header_above(header = c(' ' = 1, 'Effect' = 3)) %>%
   #footnotes
   footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.25pc}',
            general = footnote) %>%
@@ -40,14 +40,14 @@ assemble_bias_var_omega_table <- function(exp_data,
                                           parameter_labels) {
 
 
-  #generate omega-squared values for bias (based on deviations from population values)
-  pop_deviation <- bind_rows(.x = pmap(.l = list(param = c('beta_fixed', 'beta_rand', 'gamma_fixed', 'gamma_rand'),
-                                                 target_col = target_col,
-                                                 target_value = target_value,
-                                                 dv_var = 'pop_deviation'),
-                                       .f = compute_day_param_omega_squared,
-                                       exp_data = exp_data,
-                                       ind_vars = ind_vars))
+ ##generate omega-squared values for bias (based on deviations from population values)
+ #pop_deviation <- bind_rows(.x = pmap(.l = list(param = c('beta_fixed', 'beta_rand', 'gamma_fixed', 'gamma_rand'),
+ #                                               target_col = target_col,
+ #                                               target_value = target_value,
+ #                                               dv_var = 'pop_deviation'),
+ #                                     .f = compute_day_param_omega_squared,
+ #                                     exp_data = exp_data,
+ #                                     ind_vars = ind_vars))
 
   #generate omega-squared values for variability (based on median absolute deviations)
   med_abs_deviation <- bind_rows(.x = pmap(.l = list(param = c('beta_fixed', 'beta_rand', 'gamma_fixed', 'gamma_rand'),
@@ -58,12 +58,12 @@ assemble_bias_var_omega_table <- function(exp_data,
                                            exp_data = exp_data,
                                            ind_vars = ind_vars))
   #join data sets
-  bias_var_omega_table <-  left_join(x = pop_deviation, y = med_abs_deviation, by = 'Parameter')
+  #bias_var_omega_table <-  left_join(x = pop_deviation, y = med_abs_deviation, by = 'Parameter')
 
   #update with latex code
-  bias_var_omega_table$Parameter <- parameter_labels
+  med_abs_deviation$Parameter <- parameter_labels
 
-  return(bias_var_omega_table)
+  return(med_abs_deviation)
 }
 
 

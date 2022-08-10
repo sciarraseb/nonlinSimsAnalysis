@@ -3,19 +3,18 @@
 #generates data sets likert- and day-based parameters
 generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
 
-  #convert vars to SDs
-  summary_data <- convert_var_to_sd(param_summary_data = summary_data)
-
   #compute necessary conversions for beta-fixed (if necessary) + appends labels
-  analytical_data <- append_parameter_labels(summary_data = summary_data)
-
+  analytical_data <- convert_summary_data_to_analytical(summary_data, exp_num)
 
   #compute percentage error and bias status (i.e, > 10% error)
   analytical_data$perc_error <- abs(((analytical_data$pop_value - analytical_data$estimate)/analytical_data$pop_value)*100)
   analytical_data$bias_status <- factor(ifelse(analytical_data$perc_error > 10, yes = 1, no = 0))
 
   #compute column for margin of error
-  analytical_data$ci_status <- factor(ifelse(analytical_data$upper_ci - analytical_data$lower_ci > 2*.10*analytical_data$pop_value, yes = 1, no = 0))
+  analytical_data$ci_status <- compute_ci_status(analytical_data = analytical_data, exp_num = exp_num)
+
+  #center beta_fixed data
+  analytical_data <- center_beta_fixed_data(summary_data = analytical_data)
 
   #extract data for specific measurement spacing condition for Likert-scale parameters
   likert_data_rows <- str_detect(string = analytical_data$parameter, pattern =  'theta|alpha|epsilon')
@@ -30,25 +29,47 @@ generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
 
 }
 
+compute_ci_status <- function(analytical_data, exp_num) {
+
+  if(str_detect(string = exp_num, pattern = '1')) {
+
+    #temporarily replace all beta_fixed pop values with 180
+    beta_fixed_rows <- which(analytical_data$parameter == 'bold(A:~beta[fixed]~(`Days-to-Halfway`~Elevation))')
+    analytical_data$pop_value[beta_fixed_rows] <- 180
+    ci_status <- factor(ifelse(abs(analytical_data$upper_ci - analytical_data$lower_ci) > 2*.10*analytical_data$pop_value, yes = 1, no = 0))
+  }
+  else {
+    ci_status <- factor(ifelse(analytical_data$upper_ci - analytical_data$lower_ci > 2*.10*analytical_data$pop_value, yes = 1, no = 0))
+  }
+
+  return(ci_status)
+
+}
+
 #generate analytical version of data
 convert_summary_data_to_analytical <- function(summary_data, exp_num) {
 
   if(str_detect(string = exp_num, pattern = '1')) {
 
     #center beta_fixed data
-    summary_data <- center_beta_fixed_data(summary_data = summary_data)
+    #summary_data <- center_beta_fixed_data(summary_data = summary_data)
 
     #append parameter labels
     summary_data <- append_parameter_labels(summary_data = summary_data)
+
+    #convert vars to sds for random-effect parameters and epsilon
+    analytical_data <- convert_var_to_sd(param_summary_data = summary_data)
+
   }
 
   else {
 
     summary_data <- append_parameter_labels(summary_data = summary_data)
+    analytical_data <- convert_var_to_sd(param_summary_data = summary_data)
 
   }
 
-  return(summary_data)
+  return(analytical_data)
 
 }
 
@@ -58,12 +79,12 @@ center_beta_fixed_data <- function(summary_data) {
   #code needed for modifications to beta; because midpoint is manipulated, the pop_value column is set to zero (centered value)
   beta_fixed_data <- summary_data %>%
     filter(parameter == 'beta_fixed')%>%
-    mutate(estimate = pop_value - estimate,
+    mutate(estimate = pop_value - estimate, #centers all beta_fixed estimates on zero
            lower_ci = pop_value - lower_ci,
            upper_ci = pop_value - upper_ci,
            lower_ci_90 = pop_value - lower_ci_90,
            upper_ci_90 = pop_value - upper_ci_90,
-           pop_value = 0)
+           pop_value = 0) #needed so that pop_value on plot is zero
 
   #overwrite beta_fixed data
   summary_data[summary_data$parameter == 'beta_fixed', ] <- beta_fixed_data
@@ -82,14 +103,14 @@ append_parameter_labels <- function(summary_data) {
                                                "beta_rand","gamma_rand",
                                                "epsilon"),
                                    labels = c(bquote(expr = 'bold(E:~theta[fixed]~(Baseline))'),
-                                              bquote(expr = 'bold(F:~alpha[fixed]~(Maximal~elevation))'),
+                                              bquote(expr = 'bold(F:~alpha[fixed]~(Maximal~Elevation))'),
                                               bquote(expr = 'bold(G:~theta[random]~(Baseline))'),
-                                              bquote(expr = 'bold(H:~alpha[random]~(Maximal~elevation))'),
-                                              bquote(expr = 'bold(A:~beta[fixed]~(`Days-to-halfway`~elevation))'),
-                                              bquote(expr = bold(C:~gamma[fixed]~(`Triquarter-halfway`~'delta'))),
-                                              bquote(expr = 'bold(B:~beta[random]~(`Days-to-halfway`~elevation))'),
-                                              bquote(expr = bold(D:~gamma[random]~(`Triquarter-halfway`~'delta'))),
-                                              bquote(expr = 'bold(I:~epsilon~(Error))')))
+                                              bquote(expr = 'bold(H:~alpha[random]~(Maximal~Elevation))'),
+                                              bquote(expr = 'bold(A:~beta[fixed]~(`Days-to-Halfway`~Elevation))'),
+                                              bquote(expr = bold(B:~gamma[fixed]~(`Triquarter-Halfway`~'Delta'))),
+                                              bquote(expr = 'bold(C:~beta[random]~(`Days-to-Halfway`~Elevation))'),
+                                              bquote(expr = bold(D:~gamma[random]~(`Triquarter-Halfway`~'Delta'))),
+                                              bquote(expr = 'bold(I~epsilon~(Error))'))) #~~(Error))')))
 
                                   #labels = c(bquote(expr = 'bold(theta[fixed])'),
                                   #          bquote(expr = 'bold(theta[random])'),
@@ -116,7 +137,7 @@ convert_var_to_sd <- function(param_summary_data) {
            upper_ci_90 = sqrt(upper_ci_90),
            lower_ci_90 = sqrt(lower_ci_90),
 
-           estimate = sqrt(estimate),
+           estimate = sqrt(estimate), #convert to standard deviation units
            sd_estimate = sd(estimate))
 
   return(param_summary_data)

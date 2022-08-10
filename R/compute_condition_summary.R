@@ -2,8 +2,7 @@
 
 compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
 
-  ##code is incorrect because mean variability must be calculated with variances --> compute mean variance --> square root to get mean sd
-  #converts random effect units from variance to SD
+  #converts random effect units from variance to SD, then computes mean
   #param_summary_data <-  convert_var_to_sd(param_summary_data = param_summary_data)
 
   #convert appropriate condition column to expressions (needed to facet titles)
@@ -17,12 +16,13 @@ compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
   #compute mean percentage error and lower and upper bounds of middle 95% of estimates
   condition_summary <- param_summary_data %>%
     #add facet labels to condition levels
+    filter(str_detect(parameter, 'beta|gamma')) %>%   #filter for day-unit parameters
     group_by_at(ind_vars) %>%
     summarize(mean_perc_error = mean(perc_error),
               #mean_lower_ci = mean(lower_ci_perc),
               #mean_upper_ci = mean(upper_ci_perc),
               mean_convergence = mean(num_converged_values)/1000,
-              mean_sd = sqrt(mean(var(sd_estimate))))
+              mean_sd = sqrt(mean(sd_estimate^2)))
 
   #add conv_fail variable; 900 comes from .9*cell size
   condition_summary$conv_fail <-  factor(ifelse(condition_summary$mean_convergence > 900, yes =  0, no = 1))

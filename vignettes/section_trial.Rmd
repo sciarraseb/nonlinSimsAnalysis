@@ -1,0 +1,203 @@
+---
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{textcomp} #for copyright symbol on title page
+  - \usepackage{longtable}
+  - \usepackage[section]{placeins}
+  - \usepackage{setspace}
+  - \usepackage{biblatex}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm} 
+  - \usepackage{amsmath} ##needed for argmax
+  - \DeclareMathOperator*{\argmax}{arg\,max}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}\doublespacing} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\footnotesize} #set caption font size to footnote 
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \captionsetup[table]{font = {figCaptionFont,figCaptionSize,figCaptionStyle}, labelfont={bf}, labelsep=captionSep, justification = raggedright, margin = {0cm,0cm}}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+  
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{example}[theorem]{Example}
+  
+  #modifies heading levels of 4-5 to follow apa7
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+    
+
+  
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation: 
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+linkcolor         : blue
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: dissertation_references.bib
+---
+
+```{r package_loading, include=F}
+#load packages
+library(easypackages)
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 
+              'ggbrace', 'cowplot')
+libraries(packages)
+load_all()
+```
+
+
+```{r knitting_setup, echo=F, message = F, warning = F}
+#import raw data files (needed for computing variances)
+exp_1_raw <- convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
+  
+exp_2_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_2_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "sample_size"), factor)
+
+exp_3_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+#unfiltered data 
+param_summary_exp_1 <- readRDS(file = 'data/uf_param_summary_exp_1.RData')
+param_summary_exp_2 <- readRDS(file = 'data/uf_param_summary_exp_2.RData')
+param_summary_exp_3 <- readRDS(file = 'data/uf_param_summary_exp_3.RData')
+
+#create analytical versions of summary data + converts vars to sds
+exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = '1')
+exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = '2')
+exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = '3')
+
+combined_analytical_exp_1 <- rbind(exp_1_analytical$likert, exp_1_analytical$days)
+combined_analytical_exp_2 <- rbind(exp_2_analytical$likert, exp_2_analytical$days)
+combined_analytical_exp_3 <- rbind(exp_3_analytical$likert, exp_3_analytical$days)
+
+#create condition summary data sets 
+cond_summary_exp_1 <- compute_condition_summary(param_summary_data = combined_analytical_exp_1, facet_var = 'measurement_spacing', 
+                          ind_vars = c('number_measurements', 'measurement_spacing', 'midpoint'))
+cond_summary_exp_2 <- compute_condition_summary(param_summary_data = combined_analytical_exp_2, facet_var = 'measurement_spacing', 
+                  ind_vars = c('number_measurements', 'measurement_spacing', 'sample_size'))
+
+cond_summary_exp_3 <- compute_condition_summary(param_summary_data = combined_analytical_exp_3, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+```
+
+
+
+### Experiment 3
+### Time-Structured Data 
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Time-Structured Data in Experiment 3}
+  \label{fig:exp3_plot_time_struc_app}
+  \includegraphics{Figures/exp3_plot_days_time structured} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Likert-Unit Parameters With Time-Structured Data in Experiment 3}
+  \label{fig:exp3_plot_time_struc_app}
+  \includegraphics{Figures/exp3_plot_likert_time structured} 
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption*{Note. \textup{Panels A--B show the parameter estimation plots for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively). Panels E--F show the parameter estimation plots for the fixed- and random-effect baseline parameters ($\uptheta_{fixed}$ and $\uptheta_{random}$, respectively). Panels G--H show the parameter estimation plots for the fixed- and random-effect maximal elevation parameters ($\upalpha_{fixed}$ and $\upalpha_{random}$, respectively). Panel I shows the parameter estimation plot for the error parameter ($\upepsilon$). Blue horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, $\upgamma_{random}$ = 4.00, $\uptheta_{fixed}$ = 3.00, $\uptheta_{random}$ = 0.05, $\upalpha_{fixed}$ = 3.32, $\upalpha_{random}$ = 0.05, $\upepsilon$ = 0.05. Gray bands indicate the acceptable $\pm 10\%$ margin of error for each parameter and unfilled dots indicate cells with average parameter estimates outside of the margin. Error bars represent the middle 95\% of estimated values, with light blue error bars indicating cells with variability greater than 20\% of the parameter's population value. I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20\% of the parameter's population value as indicative of low-precision estimation. Note that random-effect units are in standard deviation units. See Table \ref{tab:exp3-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp3-time-structured} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+### Time-Untructured Data (Fast Response Rate)
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Time-Unstructured Data (Fast Response Rate) in Experiment 3}
+  \label{fig:exp3_plot_fast_resp_app}
+  \includegraphics{Figures/exp3_plot_days_time unstructured (fast response)} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Likert-Unit Parameters With Time-Unstructured Data (Fast Response Rate) in Experiment 3}
+  \label{fig:exp3_plot_fast_resp_app}
+  \includegraphics{Figures/exp3_plot_likert_time unstructured (fast response)} 
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption*{Note. \textup{Panels A--B show the parameter estimation plots for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively). Panels E--F show the parameter estimation plots for the fixed- and random-effect baseline parameters ($\uptheta_{fixed}$ and $\uptheta_{random}$, respectively). Panels G--H show the parameter estimation plots for the fixed- and random-effect maximal elevation parameters ($\upalpha_{fixed}$ and $\upalpha_{random}$, respectively). Panel I shows the parameter estimation plot for the error parameter ($\upepsilon$). Blue horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, $\upgamma_{random}$ = 4.00, $\uptheta_{fixed}$ = 3.00, $\uptheta_{random}$ = 0.05, $\upalpha_{fixed}$ = 3.32, $\upalpha_{random}$ = 0.05, $\upepsilon$ = 0.05. Gray bands indicate the acceptable $\pm 10\%$ margin of error for each parameter and unfilled dots indicate cells with average parameter estimates outside of the margin. Error bars represent the middle 95\% of estimated values, with light blue error bars indicating cells with variability greater than 20\% of the parameter's population value. I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20\% of the parameter's population value as indicative of low-precision estimation. Note that random-effect units are in standard deviation units. See Table \ref{tab:exp3-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp3-fast-response} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+### Time-Untructured Data (Slow Response Rate)
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Day-Unit Parameters With Time-Unstructured Data (Slow Response Rate) in Experiment 3}
+  \label{fig:exp3_plot_slow_resp_app}
+  \includegraphics{Figures/exp3_plot_days_time unstructured (slow response)} \hfill{}
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption{Parameter Estimation Plots for Likert-Unit Parameters With Time-Unstructured Data (Slow Response Rate) in Experiment 3}
+  \label{fig:exp3_plot_slow_resp_app}
+  \includegraphics{Figures/exp3_plot_likert_time unstructured (slow response)} 
+\end{figure}
+\addtocounter{figure}{-1}
+\begin{figure}[H]
+  \caption*{Note. \textup{Panels A--B show the parameter estimation plots for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively). Panels E--F show the parameter estimation plots for the fixed- and random-effect baseline parameters ($\uptheta_{fixed}$ and $\uptheta_{random}$, respectively). Panels G--H show the parameter estimation plots for the fixed- and random-effect maximal elevation parameters ($\upalpha_{fixed}$ and $\upalpha_{random}$, respectively). Panel I shows the parameter estimation plot for the error parameter ($\upepsilon$). Blue horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, $\upgamma_{random}$ = 4.00, $\uptheta_{fixed}$ = 3.00, $\uptheta_{random}$ = 0.05, $\upalpha_{fixed}$ = 3.32, $\upalpha_{random}$ = 0.05, $\upepsilon$ = 0.05. Gray bands indicate the acceptable $\pm 10\%$ margin of error for each parameter and unfilled dots indicate cells with average parameter estimates outside of the margin. Error bars represent the middle 95\% of estimated values, with light blue error bars indicating cells with variability greater than 20\% of the parameter's population value. I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20\% of the parameter's population value as indicative of low-precision estimation. Note that random-effect units are in standard deviation units. See Table \ref{tab:exp3-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp3-slow-response} for $\upomega^2$ effect size values.}}
+\end{figure}
+```
+
+
