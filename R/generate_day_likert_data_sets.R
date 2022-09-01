@@ -7,8 +7,9 @@ generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
   analytical_data <- convert_summary_data_to_analytical(summary_data, exp_num)
 
   #compute percentage error and bias status (i.e, > 10% error)
-  analytical_data$perc_error <- abs(((analytical_data$pop_value - analytical_data$estimate)/analytical_data$pop_value)*100)
-  analytical_data$bias_status <- factor(ifelse(analytical_data$perc_error > 10, yes = 1, no = 0))
+  bias_list <- compute_bias_status(analytical_data = analytical_data, exp_num = exp_num)
+  analytical_data$perc_error <- bias_list$perc_error
+  analytical_data$bias_status <- bias_list$bias_status
 
   #compute column for margin of error
   analytical_data$ci_status <- compute_ci_status(analytical_data = analytical_data, exp_num = exp_num)
@@ -24,8 +25,45 @@ generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
   days_data_rows <- str_detect(string = analytical_data$parameter, pattern =  'beta|gamma')
   days_data <- analytical_data[days_data_rows, ]
 
+  #compute ci lengths for days and likert data sets
+  likert_data$errorbar_length <- likert_data$upper_ci - likert_data$lower_ci
+  days_data$errorbar_length <- days_data$upper_ci - days_data$lower_ci
+
+
   return(list('likert' = likert_data,
               'days' = days_data))
+
+}
+
+compute_bias_status <- function(analytical_data, exp_num) {
+
+  if(str_detect(string = exp_num, pattern = '1')) {
+
+    #compute percentage error with respect to pop value of 180 temporarily replace all beta_fixed pop values with 180
+    beta_fixed_rows <- which(analytical_data$parameter == 'bold(A:~beta[fixed]~(`Days-to-Halfway`~Elevation))')
+    all_other_rows <- which(analytical_data$parameter != 'bold(A:~beta[fixed]~(`Days-to-Halfway`~Elevation))')
+
+    #for beta_fixed rows, compute percentage error relative to a population value of 180
+    perc_error <- rep(NA, nrow(analytical_data))
+    bias_status <- rep(NA, nrow(analytical_data))
+
+    perc_error[beta_fixed_rows] <- (abs(analytical_data$estimate[beta_fixed_rows] - analytical_data$pop_value[beta_fixed_rows])/180)*100 #percentage error
+    #bias_status[beta_fixed_rows] <- factor(ifelse( perc_error[beta_fixed_rows] > 10, yes = 1, no = 0)) #bias status
+
+    perc_error[all_other_rows] <- (abs(analytical_data$estimate[all_other_rows] - analytical_data$pop_value[all_other_rows])
+                                   /analytical_data$pop_value[all_other_rows])*100 #percentage error
+    bias_status <- factor(ifelse(perc_error > 10, yes = 1, no = 0)) #bias status
+  }
+
+
+
+  else {
+    perc_error <- abs((analytical_data$estimate - analytical_data$pop_value)/analytical_data$pop_value)*100 #percentage error
+    bias_status <- factor(ifelse(perc_error > 10, yes = 1, no = 0)) #bias status  }
+  }
+
+  return(list('perc_error' = perc_error,
+              'bias_status' = bias_status))
 
 }
 

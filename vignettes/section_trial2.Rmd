@@ -23,6 +23,7 @@ header-includes:
   - \usepackage{xcolor}
   - \usepackage{amsthm} 
   - \usepackage{amsmath} ##needed for argmax
+  - \usepackage{bm}  #thicker bold in math 
   - \DeclareMathOperator*{\argmax}{arg\,max}
   - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
   - \usepackage[labelfont = {bf, up}]{caption} 
@@ -33,17 +34,23 @@ header-includes:
   - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
   - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}\doublespacing} #sets caption font to sans serif font of Helvetica 
   - \DeclareCaptionFont{figCaptionSize}{\footnotesize} #set caption font size to footnote 
+  - \DeclareCaptionFont{tabCaptionSize}{\small} #caption size for table title
   - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
   - \DeclareCaptionLabelSeparator{captionSep}{\newline} #separates figure label and figure title with required white space
   - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
-  - \captionsetup[table]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \captionsetup[table]{labelfont={tabCaptionSize, bf}, font = {figCaptionFont, tabCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
   - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
   - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#both are needed to change font type of table footnotes
+  - \usepackage{anyfontsize}
+  - \AtBeginEnvironment{ThreePartTable}{\fontfamily{phv} \fontsize{10.5pt}{12pt}\selectfont} 
+  - \AtBeginEnvironment{tablenotes}{\fontsize{10pt}{12pt}\selectfont} 
 
 #environment numbering 
   - \setcounter{section}{0} 
   - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
-  
+
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{example}[theorem]{Example}
   - \renewcommand\theadfont{}
@@ -60,8 +67,7 @@ header-includes:
       {-\z@\relax}%
       {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
     \makeatother
-    
-
+  
   
 author: 
   - name          : "Sebastian Sciarra "
@@ -87,6 +93,7 @@ documentclass     : "apa7"
 csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
 classoption       : "man"
 output            : papaja::apa6_pdf
+keep_tex: true
 editor_options: 
   markdown: 
     wrap: 72
@@ -96,39 +103,9 @@ bibliography: dissertation_references.bib
 ```{r package_loading, include=F}
 #load packages
 library(easypackages)
-packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 
-              'ggbrace', 'cowplot')
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 'ggbrace', 'cowplot')
 libraries(packages)
 load_all()
-```
-
-```{r pre_knitting_setup_unfiltered, echo=F, eval=F, include=F}
-#code should be computed before knitting to decrease knitting time 
-#load data from experiments
-exp_1 <- read_csv(file = 'data/exp_1_data.csv')
-exp_2 <- read_csv(file = 'data/exp_2_data.csv')
-exp_3 <- read_csv(file = 'data/exp_3_data.csv')
-
-#compute parameter summary statistics  
-param_summary_exp_1 <- compute_parameter_summary(data = exp_1, exp_num = 1)
-param_summary_exp_2 <- compute_parameter_summary(data = exp_2, exp_num = 2)
-param_summary_exp_3 <- compute_parameter_summary(data = exp_3, exp_num = 3)
-
-#necessary factor conversions 
-param_summary_exp_1$number_measurements <- factor(param_summary_exp_1$number_measurements, levels = c(5, 7, 9,11))
-param_summary_exp_1$midpoint <- factor(param_summary_exp_1$midpoint, levels = c(80, 180,280))
-
-param_summary_exp_2$number_measurements <- factor(param_summary_exp_2$number_measurements, levels = c(5, 7, 9,11))
-param_summary_exp_2$sample_size <- factor(param_summary_exp_2$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
-
-param_summary_exp_3$number_measurements <- factor(param_summary_exp_3$number_measurements, levels = c(5, 7, 9,11))
-param_summary_exp_3$sample_size <- factor(param_summary_exp_3$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
-
-#write data sets 
-#save parameter summary files as RData files so that metadata are correctly stored (e.g., factor levels, variable types)
-saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData')
-saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
-saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
 ```
 
 ```{r knitting_setup, echo=F, message = F, warning = F}
@@ -166,471 +143,64 @@ cond_summary_exp_3 <- compute_condition_summary(param_summary_data = combined_an
                           ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
 ```
 
+```{r pre_knitting_setup_unfiltered, echo=F, eval=F, include=F}
+#code should be computed before knitting to decrease knitting time 
+#load data from experiments
+exp_1 <- read_csv(file = 'data/exp_1_data.csv')
+exp_2 <- read_csv(file = 'data/exp_2_data.csv')
+exp_3 <- read_csv(file = 'data/exp_3_data.csv')
 
-```{=tex}
-\newpage
-\vspace*{-\topskip}
-\vspace*{\fill}
-\nointerlineskip
+#compute parameter summary statistics  
+param_summary_exp_1 <- compute_parameter_summary(data = exp_1, exp_num = 1)
+param_summary_exp_2 <- compute_parameter_summary(data = exp_2, exp_num = 2)
+param_summary_exp_3 <- compute_parameter_summary(data = exp_3, exp_num = 3)
+
+#necessary factor conversions 
+param_summary_exp_1$number_measurements <- factor(param_summary_exp_1$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_1$midpoint <- factor(param_summary_exp_1$midpoint, levels = c(80, 180,280))
+
+param_summary_exp_2$number_measurements <- factor(param_summary_exp_2$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_2$sample_size <- factor(param_summary_exp_2$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+param_summary_exp_3$number_measurements <- factor(param_summary_exp_3$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_3$sample_size <- factor(param_summary_exp_3$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+#write data sets 
+#save parameter summary files as RData files so that metadata are correctly stored (e.g., factor levels, variable types)
+saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData')
+saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
+saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
 ```
 
-# Experiment 2
+For time-interval increasing spacing, Table \ref{tab:errorbar-equal-nc} lists the error bar lengths for each day-unit parameter and nature-of-change value. Note that error bar lengths are computed by computing the average length across all manipulated number-of-measurement values. The column shaded in gray indicates the nature-of-change value that results in the shortest error bar lengths under equal spacing. Across all the manipulated nature-of-change values, errorbar lengths are shortest with a nature-of-change value of 180. 
 
-```{=tex}
-\nointerlineskip
-\vfill
-\newpage
-```
+```{r errorbar-equal-nc, echo=F}
+param_midpoint_equal <- exp_1_analytical$days %>%
+  filter(str_detect(string = measurement_spacing, pattern = 'Equal')) %>%
+  group_by(parameter, midpoint) %>%
+  summarize(errorbar_length = mean(errorbar_length, digits = 2)) %>%
+            #bias = round(mean(estimate) - mean(pop_value), digits = 2)) %>%
+  pivot_wider(names_from = midpoint, values_from =  errorbar_length)
 
-In Experiment 2, I investigated the measurement number-sample size pairings needed to achieve accurate modelling (i.e., low bias and high precision) under different measurement spacing schedules. Before presenting the results of Experiment 2, I will present my design and and analysis goals. For each spacing schedule (equal, time-interval increasing, time-interval decreasing, middle-and-extreme), I used a 4(number of measurements: 5, 7, 9, 11) x 6(sample size: 30, 50, 100, 200, 500, 1000) design. For the analysis, I was primarily interested in determining whether, for each measurement spacing schedule, what measurement number-sample size pairings achieved accurate modelling (i.e., low bias and high precision). As a secondary goal, I was also interested in determining whether any measurement spacing schedule provided optimal modelling accuracy (i.e., low bias and high precision) across all manipulated nature of change values. 
+param_midpoint_equal$parameter <- factor(x = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}A)', 
+                                        '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}B)', 
+                                        '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_equal}C)', 
+                                       '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_equal}D)'))
 
-## Methods
-### Variables Used in Simulation Experiment 
-
-#### Independent Variables
-##### Number of Measurements
-
-I used the following values for the number of measurements: 5, 7, 9, and 11 (see [number of measurements](#number-measurements)} for more discussion)).  
-
-##### Spacing of Measurements
-
-I used the following values for measurement spacing: equal, time-interval increasing, time-interval decreasing, and middle-and-extreme spacing (see [spacing of measurements](#spacing-measurements) for more discussion). 
-
-##### Sample Size (#sample-size)
-
-Sample size values were borrowed from @coulombe2016 with one difference.
-Because my experiments investigated the effects of measurement timing
-factors on the ability to model nonlinear patterns, which are inherently
-more complex than linear patterns of change, a sample size value of *N*
-= 1000 was added as the largest sample size. Therefore, the following
-values were used for my sample size manipulation: 30, 50, 100, 200, 500,
-and 1000 (see Table \ref{tab:myValues}). Importantly, in experiments where
-sample size was not manipulated (i.e., Experiment 1), the sample size
-value used corresponded to the average sample size used in
-organizational research [*n* = 225\; @bosco2015].
-
-#### Constants 
-
-Because the nature of change not manipulated in Experiment 2, I set it to have a constant value across all cells. To keep the nature of change constant across all cells, I set the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$) to have a value of 180. Another variable set to a constant value across the cells was time structuredness (data were assumed to be time structured). 
-
-#### Dependent Variables
-
-##### Convergence Success Rate
-
-The proportion of iterations in a cell where models converged defined
-the **convergence success rate**.\footnote{Specifically, convergence was obtained if the convergence code returned by OpenMx was 0.} Equation \@ref(eq:convergence) below shows the calculation used to compute the convergence success rate:
-
-```{=tex}
-\begin{align}
-  \text{Convergence success rate} =  \frac{\text{Number of models that successfully converged}}{n},
-  (\#eq:convergence) 
-\end{align}
-```
-\noindent where *n* represents the total number of models run in a cell.
-
-
-##### Bias
-
-Bias was calculated to evaluate the accuracy with which each logistic function parameter was estimated. As shown below in Equation \@ref(eq:bias), *bias* was obtained by calculating the difference between the population value set for a parameter and the average estimated value in each cell.
-
-\useshortskip
-```{=tex}
-\begin{align}
-  \text{Bias} =  \text{Population value for parameter} - \text{Average estimated value}
-  (\#eq:bias) 
-\end{align}
-```
-
-##### Precision
-
-In addition to computing bias, precision was calculated to evaluate the confidence with which each parameter was estimated in a given cell. *Precision* was obtained by identifying the range of values covered by the middle 95% of values estimated for a logistic parameter in each cell. By using the middle 95% of estimated values, a plausible range of population estimates was obtained.   
-
-## Overview of Data Generation and Analysis of Dependent Variables 
-
-Data generation and analysis of the dependent variables was the same as in Experiment 1 (see [data generation and analysis](#data-generation-analysis) for discussion).  
-
-## Results and Discussion
-
-In the sections that follow, I will organize the results by presenting them for each measurement spacing schedule (equal, time-interval increasing, time-interval decreasing, middle-and-extreme). Importantly, only the results for the day-unit parameters will be presented (i.e., fixed- and random-effect days-to-halfway elevation and halfway-triquarter delta parameters [$\upbeta_{fixed}$, $\upbeta_{random}$, $\upgamma_{fixed}$, $\upgamma_{random}$, respectively]). The results for the likert-unit parameters (i.e., fixed- and random-effect baseline and maximal elevation parameters [$\uptheta_{fixed}$, $\uptheta_{random}$, $\upalpha_{fixed}$, $\upalpha_{random}$, respectively]) were largely trivial and so are presented in [Appendix C](#appendix-c)). 
-
-For each measurement spacing schedule, I first provide a concise summary of the results and then provide a detailed report of the estimation accuracy of each day-unit parameter of the logistic function. Because the length of the detailed reports is considerable, I provide concise summaries before the detailed reports to provide a framework with which to understand the detailed reports. The detailed report of each measurement spacing schedule will summarize the results of each day-unit's parameter estimation plot, report partial $\upomega^2$ values for each day-unit parameter of the 4(number of measurements: 5, 7, 9, 11) x 6(sample size: 30, 50, 100, 200, 500, 1000) design, and then provide a qualitative summary.
-
-### Equal Spacing
-#### Concise Summary 
-
-For equal spacing, Table \ref{tab:summary-table-equal-spacing-exp2} provides a concise summary of the results for the day-unit parameters (see Figure \ref{fig:exp2_plot_equal} for the corresponding parameter estimation plots). Text within the bias and precision columns indicates the number of measurements needed to achieve either low bias or high precision across all manipulated nature of change values. Bias is low in all cells for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). For the fixed-effect triquarter-halfway elevation parameter ($\upgamma_{fixed}$), bias is low in all cells except with $N$ = 50 and five measurements. For the random-effect triquarter-halfway parameter ($\upgamma_{random}$), bias is low with $N \ge 200$ and nine number of measurements or with $N \ge 500$ and seven measurements.  Therefore, with equal spacing, low bias can be achieved in the estimation of all day-unit parameters with either $N \ge 200$ and nine measurements or  $N \ge 500$ and seven measurements. 
-
-With respect to precision with equal spacing, a pattern different from that with bias occurs. For the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$), precision is high across all cells. For the fixed-effect triquarter-halfway delta prameter ($\upgamma_{fixed}$), precision is high with either $N = 200$ and nine measurements or $N \ge 500$ and seven measurements.  For the random-effect day-unit parameters (random-effect days-to-halfway elevation parameter [$\upbeta_{random}$] and the random-effect triquarter-halfway elevation parameter [$\upgamma_{random}$]), precision is low in all cells. Therefore, with equal spacing, although the fixed-effect day-unit parameters can be estimated with high precision with either $N = 200$ and nine measurements or $N \ge 500$ and seven measurements, no measurement number-sample size pairing allows the random-effect day-unit parameters to be modelled with high precision.  
-
-In summarizing the results with equal spacing, low bias is achieved in the estimation of all day-unit parameters with either $N \ge 200$ and nine measurements or  $N \ge 500$ and seven measurements. High precision is never achieved in the estimation of all day-unit parameters with any manipulated measurement number-sample size pairing. Although it may be discouraging no manipulated measurement number-sample size pairing with equal spacing achieves high precision in the estimation of all day-unit parameters, the improvements in bias and precision in the estimation of each parameter diminish after the number of measurements and sample size increase beyond certain values. With equal spacing, the improvements in bias and precision across all day-unit parameters diminish with $N = \{30, 50\}$ and nine measurements or $N \ge 100$ and seven measurements. 
-
-
-```{r summary-table-equal-spacing-exp2, echo=F}
-summary_table <- data.frame('Parameter' = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp2_plot_equal}A)',
-                                                  '$\\gamma_{fixed}$ (Figure \\ref{fig:exp2_plot_equal}B)', 
-                                                  '$\\upbeta_{random}$ (Figure \\ref{fig:exp2_plot_equal}C)', 
-                                                  '$\\upgamma_{random}$ (Figure \\ref{fig:exp2_plot_equal}D)'), 
-                            'Low Bias' = c('All cells', 
-                                           'All cells except \\textit{N} = 50 and NM = 5', 
-                                           'All cells', 
-                                           '\\thead[lt]{\\textit{N} $\\ge$ 200 and NM $\\ge$ 9 or \\\\
-                                            \\textit{N} $\\ge$ 500 and NM $\\ge$ 7}'),
-                            
-                            'High Precision' = c('All cells', 
-                                            '\\thead[lt]{\\textit{N} = 200 and NM $\\ge$ 9 \\\\ 
-                                            \\textit{N} \ge 500 and NM $\\ge$ 7}', 
-                                            'No cells',
-                                            'No cells'), 
-                            'Qualitative Summary' = c('Low bias and high precision in all cells', 
-                                                      'Diminishing improvement in precision with \\textit{N} $\\le$ 50 and NM $\\ge$ 9', 
-                                                      'Diminishing improvements in precision with NM $\\ge$ 7', 
-                                                      '\\thead[lt]{Diminishing improvements in bias and precision with \\\\
-                                                      \\textit{N} $\\le$ 50 and NM $\\ge$ 9 or \\\\
-                                                      \\textit{N} $\\ge$ 100 and NM $\\ge$ 7}'), 
-                            
-                            check.names = F)
-
-kbl(x = summary_table, format = 'latex',
+param_midpoint_equal$`180`<- c(as.character(round(param_midpoint_equal$`180`[1:3], digits = 2)),
+                                   paste(as.character(round(param_midpoint_equal$`180`[4], digits = 2)), '\\textsuperscript{a}', sep = ''))
+  
+kbl(x = param_midpoint_equal, format = 'latex',digits = 2, 
        longtable = T, booktabs = T, centering = T, escape = F,
-       align = c('l', rep('l', times = ncol(summary_table) - 1)), 
-    caption = 'Concise Summary of Results for Equal Spacing in Experiment 2') %>%
-   #header
-  column_spec(column = 2, width = '5cm') %>%
-  column_spec(column = 3, width = '5cm') %>%
-  column_spec(column = 4, width = '9.5cm') %>%
-
-  #column_spec(column = 3, width = '4cm') %>%
-  #footnotes
-  footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.4pc}',
-           general = "\\\\textit{N} = sample size, NM = number of measurements, $\\\\upbeta_{fixed}$ = fixed-effect days-to-halfway elevation parameter, $\\\\upgamma_{fixed}$ = fixed-effect halfway-triquarter delta parameter, $\\\\upbeta_{random}$ = random-effect days-to-halfway elevation parameter, $\\\\upgamma_{random}$ = random-effect halfway-triquarter delta parameter.
-           ") %>% 
-    kable_styling(position = 'left') %>%
-  landscape(margin = '1cm')
-
+       align = c('l', rep('c', tims = ncol(param_midpoint_equal) - 1)), col.names = c('Parameter', '80', '180', '280'), 
+    caption = 'Error Bar Lengths Across Nature-of-Change Values Under Equal Spacing in Experiment 1') %>%
+    #header
+  column_spec(column = 1, width = '4cm') %>%
+ column_spec(column = c(2:4), width = '3cm') %>%
+  column_spec(column = 3, background = '#DFDEDE') %>%
+  add_header_above(header = c(' ' = 1, 'Population Value of $\\\\upbeta_{fixed}$' = 3), escape = F) %>%
+  footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.2pc}',
+           general = "Parameter names and population values are as follows: $\\\\upbeta_{fixed}$ = fixed-effect days-to-halfway elevation parameter = \\{80, 180, 280\\}; $\\\\upgamma_{fixed}$ = fixed-effect halfway-triquarter delta parameter = 20; $\\\\upbeta_{random}$ = random-effect days-to-halfway elevation parameter = 10; $\\\\upgamma_{random}$ = random-effect halfway-triquarter delta parameter = 4. Note that error bar lengths were calculated by computing the average error bar length value across all measurement number (NM) values (NM $\\\\in$ \\\\{5, 7, 9, 11\\\\}). Column shaded in gray indicates the nature-of-change value that results in the shortest error bar lengths under equal spacing.", 
+           alphabet_title = '\\\\newline', alphabet = "Error bar length is longer than with other nature-of-change values because estimation procedure converges on larger $\\\\upgamma_{random}$ values with a nature-of-change value of $\\\\upbeta_{fixed}$ = 180 (see Figures \\\\ref{fig:density_gamma_equal}--\\\\ref{fig:density_gamma_equal_fixed} and Table \\\\ref{tab:equal-gamma-outlier}).") %>%
+  kable_styling(position = 'left')
 ```
-
-
-#### Detailed Report
-
-For equal spacing, Figure \ref{fig:exp2_plot_equal} shows the parameter estimation plots for the day-unit parameters. Error bars represent the middle 95% of estimated values, blue horizontal lines indicate the population values for each parameter (with population values of $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, and $\upgamma_{random}$ = 4.00), and gray bands specify the acceptable margins of error (i.e., 10% of the parameter's population value). I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20% of the parameter's population value as indicative of low-precision estimation. Panels A--B show the parameter estimation plots for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively). Note that Table \ref{tab:omega-exp2-equal} provides the partial $\upomega^2$ values for the experimental variables for the day-unit parameters under equal spacing. 
-
-```{r plots-equal-exp2, include=F, eval=F}
-generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
-                               target_col = 'measurement_spacing', target_value = 'Equal spacing',
-                               x_axis_name = expression("Sample Size ("*italic(N)*")"), 
-                               x_axis_var = 'sample_size', exp_num = 'exp2_', beta_lower = 160, beta_upper = 210, beta_ticks = 5)
-                                
-```
-
-```{r exp2-density-plot-equal, include=F, eval=F}
-##generate figure showing density distributions if gamma_fizxd at N = 500 and N = 1000 with middle 95% area shaded. Emphasize
-##that longer error bars in  N = 1000 are likely a statistical artifact of the random number generating procedure. 
-exp_2 <- read_csv('data/exp_2.csv') %>% filter(code == 0) #load data 
-exp_2 <- convert_raw_var_to_sd(raw_data = exp_2) #var to sd conversion 
-
-parameter_names <- c(bquote(expr = bold(A:~gamma[fixed]~"(N=500, 5 measurements)")),
-                     bquote(expr = bold(B:~beta[random]~"(N=500, 5 measurements)")),
-                     bquote(expr = bold(C:~gamma[fixed]~"(N=1000, 5 measurements)")),
-                     bquote(expr = bold(D:~beta[random]~"(N=1000, 5 measurements)")))
-                     
-#1) Extract estimates for four parameter gamma_fixed and beta_rand when N =500 or 1000, num_measurements == 5, spacing == equal. 
-##Convert to long format, with parameter name going into unique column and estimate becoming new column 
-param_data_equal_exp_2 <- exp_2 %>%
-  filter(number_measurements == 5, measurement_spacing == 'equal', sample_size %in% c(500, 1000)) %>%
-  select(locate_ivs(exp_2),'gamma_fixed', 'beta_rand') %>%
-  pivot_longer(cols = c(gamma_fixed, beta_rand), values_to = 'estimate') %>%
-  unite(col = 'parameter', sample_size:name) 
-
-#2) Replace parameter values with tag labels. 
-param_data_equal_exp_2$parameter <- factor(param_data_equal_exp_2$parameter, 
-                               levels = c("500_gamma_fixed", "500_beta_rand",
-                                          "1000_gamma_fixed", "1000_beta_rand"), 
-                               labels = parameter_names)
-
-base_density_plot <- ggplot(data = param_data_equal_exp_2, mapping = aes(x = estimate, group = parameter)) +
-   geom_density(size = 3) 
-
-##create density data for each parameter 
-density_data <- ggplot_build(plot = base_density_plot)$data[[1]]
-
-param_search_names <- c("A\\:", "B\\:", "C\\:", "D\\:")
-
-param_error_bar_ranges <- lapply(X = param_search_names, compute_ind_param_error_bar_range, param_data = param_data_equal_exp_2)
-
-#3) Create base density plot so that density data can be created
-base_density_plot <- ggplot(data = param_data_equal_exp_2, mapping = aes(x = estimate, group = parameter)) +
-   geom_density(size = 3) 
-
-##create density data for each parameter 
-density_data <- ggplot_build(plot = base_density_plot)$data[[1]]
-
-plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
-               group = 1:length(param_error_bar_ranges), 
-               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
-plot_ready_data$parameter <- factor(plot_ready_data$parameter)
-
-
-density_plot_equal_exp2 <- base_density_plot +
-    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
-                       name = 'Value of parameter estimate (days)') + 
-  
-  #shaded filling
-      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
-                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
-    #error bar
-    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
-                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
-                                 y = max_density_value, height = 0.05), size = 3) + 
-
-    #vertical dashed lines for error bars
-    ##lower limit 
-    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
-                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
-    ##upper limit
-    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
-                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
-    
-    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
-    
-    facet_wrap_custom( ~ parameter, scales = "free", ncol = 2, nrow = 2 ,
-                                          dir = 'h', labeller = label_parsed,
-                                          scale_overrides = list(scale_override(1,
-                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(2, scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(3,scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(4, scale_y_continuous(name = 'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.90, by = 0.10),
-                                                                                                   limits = c(0, .90))))) + 
-  
-    #plot aesthetics
-    theme_classic() +
-
-    theme(
-      #panel details
-      strip.background = element_rect(fill = "white", color = "white"),
-      #original text size = 60, 150 for pre-results figures
-      strip.text.x = element_text(face = 'bold', hjust = 0, size = 60, margin = unit(c(t = 0, r = 0, b = 1, l = 0), "cm")),
-
-      #axis details
-      axis.text = element_text(size = 60, color = 'black'),
-      axis.title = element_text(size = 70),
-      axis.title.x.bottom = element_markdown(),
-      axis.line = element_line(size = 2),
-      axis.ticks.length.x = unit(x = 1, units = 'cm'),
-      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
-      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
-      axis.ticks = element_line(size = 2, colour = 'black'),
-      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
-
-      #panel details
-      panel.spacing.y = unit(x = 4, units = 'cm'),
-      panel.spacing.x = unit(x = 2, units = 'cm'))
-  
-  
-  #create PDF of faceted plot
-  set_panel_size(p = density_plot_equal_exp2, height = unit(x = 28, units = 'cm'),
-                 width = unit(x = 40, units = 'cm'),
-                 file =  'Figures/density_plot_fixed_equal_exp2.pdf')
-
-```
-
-```{r exp2-density-plot-equal-fixed, include=F, eval=F}
-param_error_bar_ranges <- lapply(X = param_search_names, compute_90_ind_param_error_bar_range, param_data = param_data_equal_exp_2)
-
-#3) Create base density plot so that density data can be created
-base_density_plot <- ggplot(data = param_data_equal_exp_2, mapping = aes(x = estimate, group = parameter)) +
-   geom_density(size = 3) 
-
-##create density data for each parameter 
-plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
-               group = 1:length(param_error_bar_ranges), 
-               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
-plot_ready_data$parameter <- factor(plot_ready_data$parameter)
-
-
-density_equal_fixed_exp2 <- base_density_plot +
-    scale_x_continuous(limits = c(0, 30), breaks = seq(from = 0, to = 30, by = 5), 
-                       name = 'Value of parameter estimate (days)') + 
-  
-  #shaded filling
-      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
-                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
-    #error bar
-    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
-                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
-                                 y = max_density_value, height = 0.05), size = 3) + 
-
-    #vertical dashed lines for error bars
-    ##lower limit 
-    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
-                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
-    ##upper limit
-    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
-                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +  
-    
-    #facet_wrap(facets = ~ parameter, nrow = 2, ncol = 2) + 
-    
-     facet_wrap_custom( ~ parameter, scales = "free", ncol = 2, nrow = 2 ,
-                                          dir = 'h', labeller = label_parsed,
-                                          scale_overrides = list(scale_override(1,
-                                                                                scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(2, scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(3,scale_y_continuous(name =  'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
-                                                                                                   limits = c(0, .60))),
-                                                                 scale_override(4, scale_y_continuous(name = 'Density (proportion of estimates)',
-                                                                                                   breaks = seq(from = 0, to = 0.90, by = 0.10),
-                                                                                                   limits = c(0, .90))))) + 
-    #plot aesthetics
-    theme_classic() +
-
-    theme(
-      #panel details
-      strip.background = element_rect(fill = "white", color = "white"),
-      #original text size = 60, 150 for pre-results figures
-      strip.text.x = element_text(face = 'bold', hjust = 0, size = 55, margin = unit(c(t = 0, r = 6, b = 1, l = 0), "cm")),
-
-      #axis details
-      axis.text = element_text(size = 60, color = 'black'),
-      axis.title = element_text(size = 70),
-      axis.title.x.bottom = element_markdown(),
-      axis.line = element_line(size = 2),
-      axis.ticks.length.x = unit(x = 1, units = 'cm'),
-      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
-      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
-      axis.ticks = element_line(size = 2, colour = 'black'),
-      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
-
-      #panel details
-      panel.spacing.y = unit(x = 4, units = 'cm'),
-      panel.spacing.x = unit(x = 2, units = 'cm'))
-  
-  
-  #create PDF of faceted plot
-  set_panel_size(p = density_equal_fixed_exp2, height = unit(x = 28, units = 'cm'),
-                 width = unit(x = 40, units = 'cm'),
-                 file =  'Figures/density_plots_equal_fixed_exp2.pdf')
-
-```
-
-```{r plots-equal-exp2-fixed, include=F, eval=F}
-exp_2_analytical$days$upper_ci <- exp_2_analytical$days$upper_ci_90
-exp_2_analytical$days$lower_ci <- exp_2_analytical$days$lower_ci_90
-
-generate_day_likert_facet_plot(analytical_data = exp_2_analytical, 
-                               target_col = 'measurement_spacing', target_value = 'Equal spacing',
-                               x_axis_name = 'Sample size (*N*)', 
-                               x_axis_var = 'sample_size', exp_num = 'exp2_fixed_', beta_lower = 165, beta_upper = 205,
-                               ticks = 5)
-```
-
-```{r text-values-equal-exp2, echo=F}
-#fixed-effect halfway-triquarter delta (5, 100)
-gamma_fixed_equal_5_200 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, sample_size == 200, grepl('gamma\\[fixed\\]', parameter)) %>%
-  select(lower_ci, upper_ci) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci))
-
-#fixed-effect days-to-halfway elevation parameter (5, 100)
-beta_fixed_equal_5_200 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, sample_size == 200, grepl('beta\\[fixed\\]', parameter)) %>%
-  select(lower_ci, upper_ci) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci))
-
-#fixed-effect days-to-halfway elevation parameter(7, 100)
-gamma_fixed_equal_7_200 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 7, sample_size == 200, grepl('gamma\\[fixed\\]', parameter)) %>%
-  select(lower_ci, upper_ci) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci)) 
-
-#random-effect halfway-triquarter delta (5, 200)
-gamma_rand_equal_5_200 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, sample_size == 200, grepl('gamma\\[random\\]', parameter)) %>%
-  select(lower_ci, upper_ci, estimate) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci), 
-         estimate = as.integer(estimate))
-```
-
-#### Bias
-
-For all simulations pertaining to equal spacing (see Figure \ref{fig:exp2_plot_equal}), bias only occurred in the estimation of the fixed- and random-effect triquarter-halfway delta parameters ($\upgamma_{fixed}$ in Figure \ref{fig:exp2_plot_equal}B and $\upgamma_{random}$ in Figure \ref{fig:exp2_plot_equal}D, respectively). The gray bands indicate the $\pm 10\%$ margin of error. I classified dots that fell outside the gray band as biased and these dots remained unfilled. Note that the gray 10% margin of error band for the fixed- and random-effect triquarter-halfway delta parameters are difficult to see because 10% of the parameters' population values are small value relative to the range of the y-axis (i.e., 10% of 4.00 is 0.40 , which is small relative to the y-axis range of 55). 
-
-For the fixed-effect halfway-triquarter delta parameter (Figure \ref{fig:fig:exp2_plot_equal}B), bias occurred with a sample size of 50 (shown on x-axis) on the five-measurements line (square dots). Therefore, using equal spacing, the fixed-effect halfway-triquarter delta parameter ($\upgamma_{fixed}$) can be estimated with with low bias with any manipulated measurement number-sample size pairing other than $N = 50$ with five measurements.
-
-For the random-effect halfway-triquarter delta parameter (Figure \ref{fig:fig:exp2_plot_equal}D), bias on the five-measurements line (square dots) with a sample sizes of 30 to 1000 (shown on x-axis), on the seven-measurements line (circular dots) with a sample sizes of 30 to 500, on the nine-measurements line (triangle dots) with sample sizes of 30 and 50, and on the eleven-measurements line (diamond shape) with sample sizes of 30 and 50. Therefore, using equal spacing, the random-effect halfway-triquarter delta parameter ($\upgamma_{random}$) can be estimated with with low bias using either $N \ge 100$ with nine or more measurements or $N \ge 1000$ with seven or more measurements.  
-
-In summary, with equal spacing, low bias is achieved in the estimation of all day-unit parameters using either $N \ge 100$ with nine or more measurements or $N \ge 1000$ with seven or more measurements. 
-
-
-```{=tex}
-\begin{figure}[H]
-  \caption{Summary of Day-Unit Parameter Estimates for Equal Spacing in Experiment 2}
-  \label{fig:exp2_plot_equal}
-  \includegraphics{Figures/exp2_plot_days_equal spacing} \hfill{}
-\end{figure}
-\begin{figure}[H]
-\caption*{Note. \textup{Panels A--B show the parameter estimation plots for the fixed- and random-effect days-to-halfway elevation parameters ($\upbeta_{fixed}$ and $\upbeta_{random}$, respectively). Panels C--D show the parameter estimation plots for the fixed- and random-effect triquarter-halfway elevation parameters ($\upgamma_{fixed}$ and $\upgamma_{random}$, respectively). Blue horizontal lines in each panel represent the population value for each parameter. Population values for each parameter are as follows: $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, $\upgamma_{random}$ = 4.00. Gray bands indicate the $\pm 10\%$ margin of error for each parameter and unfilled dots indicate cells with average parameter estimates outside of the margin. Error bars represent the middle 95\% of estimated values, with light blue error bars indicating cells with variability greater than 20\% of the parameter's population value. I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20\% of the parameter's population value as indicative of low-precision estimation. Note that random-effect units are in standard deviation units. See Table \ref{tab:exp2-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp2-equal} for $\upomega^2$ effect size values.}}
-\end{figure}
-```
-
-#### Precision
-
-For all simulations pertaining to equal spacing (see Figure \ref{fig:exp2_plot_equal}), precision was low for all parameters except the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$; Figure \ref{fig:exp1_plot_equal}A). I considered precision to be low if the length of an error bar covered a range of values larger than 20% of the parameter's population value. Error bars indicating low precision are coloured in light blue. 
-
-For the fixed-effect halfway-triquarter delta parameter ($\upgamma_{fixed}$; Figure \ref{fig:exp2_plot_equal}C), error bar lengths are longer than the 20% acceptable amount with five measurements at sample sizes of 30 to 1000 (shown on x-axis). With nine measurements, error bar lengths are longer than the 20% acceptable amount at sample sizes of 30 to 100 (shown on x-axis). With nine measurements, error bar lengths were longer than the 20% acceptable amount at sample sizes of 30 to 100 (shown on x-axis). Therefore, using equal spacing, precision is low for the estimation of fixed-effect triquarter-halfway elevation parameter ($\upgamma_{fixed}$) with either $N = 200$ and nine or more measurements or $N \ge 500$ and seven or more measurements. 
-
-For the random-effect day-unit parameters (random-effect days-to-halfway elevation parameter [$\upbeta_{random}$] in Figure \ref{fig:exp2_plot_equal}B and the random-effect halfway-triquarter delta parameter [$\upgamma_{random}$] in Figure \ref{fig:exp2_plot_equal}D), error bar lengths are longer than the 20% acceptable amount in all the cells. Therefore, with equal spacing, precision is low for the estimation of the random-effect day-unit parameters across all the manipulated measurement number-sample size pairings. 
-
-```{r density-ranges, echo=F}
-#fixed-effect days-to-halfway elevation parameter (5, 500)
-beta_fixed_equal_5_500 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, sample_size == 500, grepl('beta\\[fixed\\]', parameter)) %>%
-  select(lower_ci, upper_ci) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci))
-
-#fixed-effect days-to-halfway elevation parameter (5, 500)
-beta_fixed_equal_5_1000 <- exp_2_analytical$days %>% 
-  filter(measurement_spacing == 'Equal spacing', number_measurements == 5, sample_size == 1000, grepl('beta\\[fixed\\]', parameter)) %>%
-  select(lower_ci, upper_ci) %>%
-  mutate(lower_ci = as.integer(lower_ci), 
-         upper_ci = as.integer(upper_ci))
-```
-
-In summary, with equal spacing, high precision is achieved in the estimation of the fixed-effect day-unit parameters using either $N = 200$ and nine or more measurements or $N \ge 500$ and seven or more measurements. For the random-effect day-unit parameters, no manipulated measurement number-sample size pairing achieves high precision. 
-
-#### $\upomega^2$ Effect Sizes
-
-```{r omega-exp2-equal, echo=F}
-print_bias_var_omega_table(exp_data = exp_2_raw, target_col = 'measurement_spacing', target_value = 'equal', 
-ind_vars = c('number_measurements', 'sample_size'), 
-ind_var_acronyms = c('NM', 'S', 'NM x S'), 
-caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Equal Spacing in Experiment 2',
-footnote = 'NM = number of measurements (5, 7, 9, 11), S = sample size (30, 50, 100, 200, 500, 1000), NM x S = interaction between number of measurements and sample size.', 
-parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp2_plot_equal}A)',
-                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp2_plot_equal}B)',
-                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp2_plot_equal}C)',
-                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp2_plot_equal}D)'))
-```
-
-#### Qualitative Summary 
-
-In looking at the results for equal spacing in Figure \ref{fig:exp2_plot_equal}, general patterns of results exist in bias and precision.  For bias, it decreases the most across all the manipulated nature of change values in the estimation of the random-effect days-to-halfway elevation parameter ($\upbeta_{random}$) when the number of measurements goes from five to seven. For the random-effect random-effect triquarter-halfway delta parameter ($\upgamma_{random}$), bias decreases the most across all measurement number values when the number of measurements goes from five to nine. With respect to precision with time-interval increasing spacing,a pattern similar to that with bias occurs in the estimation of all the day-unit parameters: The largest improvements in precision across all manipulated nature of change values occur when the number of measurements increases from five to nine. In summary, for time-interval increasing spacing, even though no manipulated measurement number achieves high precision for the random-effect day-unit parameters, the largest improvements in precision---and bias---across all manipulated nature of change values for all day-unit parameters are achieved with nine measurements.
-
-In looking at the results for equal spacing in Figure \ref{fig:exp1_plot_equal}, general patterns of results exist in bias and precision. For  bias, it decreases the most across all the manipulated nature of change values in the estimation of the random-effect triquarter-halfway delta parameter ($\upgamma_{random}$) when the number of measurements goes from five to seven. With respect to precision, a pattern similar to that with bias occurs in the estimation of all day-unit parameters: The largest improvements in precision across all day-unit parameters and across all manipulated nature of change values occur when the number of measurements increases from five to seven. Therefore, for equal spacing, even though error bar lengths remain long (indicative of low precision) for the random-effect day-unit parameters across all manipulated measurement numbers, the largest improvements in bias and precision across all manipulated nature of change values for all day-unit parameters are achieved with seven measurements.
-
-

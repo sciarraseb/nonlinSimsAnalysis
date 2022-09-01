@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.9)  10 AUG 2022 13:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  1 SEP 2022 16:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpF991yA/preview-6503343919d.dir/section_trial2.tex
-(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpF991yA/preview-6503343919d.dir/section_trial2.tex
+**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/Rtmp0lNmJZ/preview-2bd412debc70.dir/section_trial2.tex
+(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/Rtmp0lNmJZ/preview-2bd412debc70.dir/section_trial2.tex
 LaTeX2e <2022-06-01> patch level 5
-L3 programming layer <2022-08-05> (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/apa7.cls
+L3 programming layer <2022-08-30> (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/apa7.cls
 Document Class: apa7 2022/07/25 v2.16 APA formatting (7th edition)
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -628,9 +628,6 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 53.
-\cslhangindent=\skip85
-\csllabelwidth=\skip86
-\cslentryspacingunit=\skip87
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/was/upgreek.sty
 Package: upgreek 2003/02/12 v2.0 (WaS)
 Package upgreek Info: Using Euler Roman for upright Greek on input line 31.
@@ -639,10 +636,10 @@ LaTeX Font Info:    Overwriting symbol font `ugrf@m' in version `bold'
 (Font)                  U/eur/m/n --> U/eur/b/n on input line 38.
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
-\LTleft=\skip88
-\LTright=\skip89
-\LTpre=\skip90
-\LTpost=\skip91
+\LTleft=\skip85
+\LTright=\skip86
+\LTpre=\skip87
+\LTpost=\skip88
 \LTchunksize=\count328
 \LTcapwidth=\dimen295
 \LT@head=\box68
@@ -659,9 +656,9 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip92
+\multirow@colwidth=\skip89
 \multirow@cntb=\count333
-\multirow@dima=\skip93
+\multirow@dima=\skip90
 \bigstrutjot=\dimen296
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
@@ -671,8 +668,8 @@ Package: array 2022/03/10 v2.5f Tabular extension package (FMi)
 \ar@mcellbox=\box73
 \extrarowheight=\dimen298
 \NC@list=\toks40
-\extratabsurround=\skip94
-\backup@length=\skip95
+\extratabsurround=\skip91
+\backup@length=\skip92
 \ar@cellbox=\box74
 )
 \TX@col@width=\dimen299
@@ -689,9 +686,9 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-\TPTL@width=\skip96
+\TPTL@width=\skip93
 )
-\longtablewidth=\skip97
+\longtablewidth=\skip94
 Failed to patch abstract.
 Failed to patch title.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
@@ -792,14 +789,14 @@ Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 \blx@sectionciteorderinternal@0=\count390
 \blx@entrysetcounter=\count391
 \blx@biblioinstance=\count392
-\labelnumberwidth=\skip98
-\labelalphawidth=\skip99
-\biblabelsep=\skip100
-\bibitemsep=\skip101
-\bibnamesep=\skip102
-\bibinitsep=\skip103
-\bibparsep=\skip104
-\bibhang=\skip105
+\labelnumberwidth=\skip95
+\labelalphawidth=\skip96
+\biblabelsep=\skip97
+\bibitemsep=\skip98
+\bibnamesep=\skip99
+\bibinitsep=\skip100
+\bibparsep=\skip101
+\bibhang=\skip102
 \blx@bcfin=\read3
 \blx@bcfout=\write6
 \blx@langwohyphens=\language3
@@ -881,20 +878,20 @@ Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@savedoriglanguage=\count461
 \c@pageref=\count462
 \c@savedpageref=\count463
-\shorthandwidth=\skip106
-\shortjournalwidth=\skip107
-\shortserieswidth=\skip108
-\shorttitlewidth=\skip109
-\shortauthorwidth=\skip110
-\shorteditorwidth=\skip111
-\locallabelnumberwidth=\skip112
-\locallabelalphawidth=\skip113
-\localshorthandwidth=\skip114
-\localshortjournalwidth=\skip115
-\localshortserieswidth=\skip116
-\localshorttitlewidth=\skip117
-\localshortauthorwidth=\skip118
-\localshorteditorwidth=\skip119
+\shorthandwidth=\skip103
+\shortjournalwidth=\skip104
+\shortserieswidth=\skip105
+\shorttitlewidth=\skip106
+\shortauthorwidth=\skip107
+\shorteditorwidth=\skip108
+\locallabelnumberwidth=\skip109
+\locallabelalphawidth=\skip110
+\localshorthandwidth=\skip111
+\localshortjournalwidth=\skip112
+\localshortserieswidth=\skip113
+\localshorttitlewidth=\skip114
+\localshortauthorwidth=\skip115
+\localshorteditorwidth=\skip116
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def
@@ -953,14 +950,14 @@ File: biblatex.cfg
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Document encoding is UTF8 ....
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2022-08-05 L3 programming layer (loader) 
+Package: expl3 2022-08-30 L3 programming layer (loader) 
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-08-05 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2022-08-30 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count475
 \l__pdf_internal_box=\box76
 ))
 Package biblatex Info: ... and expl3
-(biblatex)             2022-08-05 L3 programming layer (loader) 
+(biblatex)             2022-08-30 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
@@ -977,7 +974,7 @@ Package: wrapfig 2003/01/31  v 3.6
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2022/06/20 v1.0f Color table columns (DPC)
 \everycr=\toks46
-\minrowclearance=\skip120
+\minrowclearance=\skip117
 \rownum=\count477
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
@@ -1012,11 +1009,11 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \tabu@arstrutbox=\box80
 \tabu@hleads=\box81
 \tabu@vleads=\box82
-\tabu@cellskip=\skip121
+\tabu@cellskip=\skip118
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
 \UL@box=\box83
 \UL@hyphenbox=\box84
-\UL@skip=\skip122
+\UL@skip=\skip119
 \UL@hook=\toks49
 \UL@height=\dimen324
 \UL@pe=\count485
@@ -1031,18 +1028,20 @@ Package: amsthm 2020/05/29 v2.20.6
 \thm@headfont=\toks52
 \thm@notefont=\toks53
 \thm@headpunct=\toks54
-\thm@preskip=\skip123
-\thm@postskip=\skip124
-\thm@headsep=\skip125
+\thm@preskip=\skip120
+\thm@postskip=\skip121
+\thm@headsep=\skip122
 \dth@everypar=\toks55
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2022/01/07 v1.5 Sub-captions (AR)
 \c@subfigure=\count486
 \c@subtable=\count487
+) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/anyfontsize/anyfontsize.sty
+Package: anyfontsize 2007/11/22 anyfontsize.sty by pts
 )
 \c@theorem=\count488
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2022/07/20 3.78 The Babel package
+Package: babel 2022/08/29 3.79 The Babel package
 \babel@savecnt=\count489
 \U@D=\dimen327
 \l@unhyphenated=\language4
@@ -1051,7 +1050,7 @@ Package: babel 2022/07/20 3.78 The Babel package
 \bbl@dirlevel=\count490
 Package babel Info: Main language set with 'main='. Except if you have
 (babel)             problems, prefer the default mechanism for setting
-(babel)             the main language. Reported on input line 4324.
+(babel)             the main language. Reported on input line 4325.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'british' set to \l@english
@@ -1069,7 +1068,7 @@ Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 11.
 )
 
-Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 240.
+Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 222.
 
 \c@NumberOfAffiliations=\count491
 Package csquotes Info: Checking for multilingual support...
@@ -1079,24 +1078,24 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 (./section_trial2.aux)
 \openout1 = `section_trial2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 242.
-LaTeX Font Info:    ... okay on input line 242.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 224.
+LaTeX Font Info:    ... okay on input line 224.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1143,7 +1142,7 @@ Package grfext Info: Graphics extension search list:
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 242.
+Package hyperref Info: Link coloring ON on input line 224.
 (./section_trial2.out) (./section_trial2.out)
 \@outlinefile=\write7
 \openout7 = `section_trial2.out'.
@@ -1172,77 +1171,62 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'section_trial2.bbl' not found.
 No file section_trial2.bbl.
-Package biblatex Info: Reference section=0 on input line 242.
-Package biblatex Info: Reference segment=0 on input line 242.
+Package biblatex Info: Reference section=0 on input line 224.
+Package biblatex Info: Reference segment=0 on input line 224.
 
 Class apa7 Warning: Abstract not defined.
 
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 243.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 243.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 243.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 243.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 243.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 243.
+(Font)              <12> on input line 225.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 243.
+(Font)              <8> on input line 225.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 243.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 243.
+(Font)              <6> on input line 225.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 243.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 225.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/Users/sebastiansciarra/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ] [2] [3]
-
-LaTeX Warning: Reference `tab:myValues' on page 4 undefined on input line 287.
-
-[4]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 304.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 304.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 304.
-[5]
-
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 6 undefined on input line 348.
-
-[6] [7] [8]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
 * \paperwidth=614.295pt
 * \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
 * \headheight=15.2pt
 * \headsep=25.0pt
 * \topskip=12.0pt
@@ -1260,100 +1244,153 @@ LaTeX Warning: Reference `fig:exp1_plot_equal' on page 6 undefined on input line
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 363.
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 243.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 249.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 255.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.5> on input line 255.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7.34996> on input line 255.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5.25> on input line 255.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 260.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 260.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 260.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 363.
-
-Overfull \hbox (3.31145pt too wide) in paragraph at lines 372--375
-[]|[][] 
- []
-
-[9
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 260.
+[4
 
 
 ]
 
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 10 undefined on input line 385.
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 5 undefined on input line 274.
 
 
-LaTeX Warning: Reference `tab:omega-exp1-equal' on page 10 undefined on input line 385.
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 5 undefined on input line 276.
 
-[10
+[5
+
+
+]
+<Figures/exp1_plot_days_equal spacing.pdf, id=82, 2713.13625pt x 2740.2375pt>
+File: Figures/exp1_plot_days_equal spacing.pdf Graphic file (type pdf)
+<use Figures/exp1_plot_days_equal spacing.pdf>
+Package pdftex.def Info: Figures/exp1_plot_days_equal spacing.pdf  used on input line 281.
+(pdftex.def)             Requested size: 469.75528pt x 474.44762pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--282
+
+ []
+
+
+LaTeX Warning: Reference `tab:exp1-alpha-theta-param-est' on page 6 undefined on input line 284.
+
+[6 <./Figures/exp1_plot_days_equal spacing.pdf>] [7]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 298.
+
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 8 undefined on input line 316.
+
+
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 8 undefined on input line 318.
+
+
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 8 undefined on input line 320.
+
+[8] [9] [10]
+
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 11 undefined on input line 359.
+
+<Figures/density_plots_equal_gamma_exp1.pdf, id=150, 1416.29124pt x 3386.6525pt>
+File: Figures/density_plots_equal_gamma_exp1.pdf Graphic file (type pdf)
+<use Figures/density_plots_equal_gamma_exp1.pdf>
+Package pdftex.def Info: Figures/density_plots_equal_gamma_exp1.pdf  used on input line 361.
+(pdftex.def)             Requested size: 178.48389pt x 426.79283pt.
+[11] [12 <./Figures/density_plots_equal_gamma_exp1.pdf>]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
+* \headheight=15.2pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=95.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+[13
 
 
 ]
 
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 11 undefined on input line 395.
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 14 undefined on input line 388.
+
+<Figures/density_plots_equal_gamma_filtered_exp1.pdf, id=174, 1416.29124pt x 3386.6525pt>
+File: Figures/density_plots_equal_gamma_filtered_exp1.pdf Graphic file (type pdf)
+<use Figures/density_plots_equal_gamma_filtered_exp1.pdf>
+Package pdftex.def Info: Figures/density_plots_equal_gamma_filtered_exp1.pdf  used on input line 390.
+(pdftex.def)             Requested size: 178.48389pt x 426.79283pt.
+[14
 
 
-LaTeX Warning: Reference `fig:fig:exp2_plot_equal' on page 11 undefined on input line 395.
-
-
-LaTeX Warning: Reference `fig:fig:exp2_plot_equal' on page 11 undefined on input line 395.
-
-<Figures/exp2_plot_days_equal spacing.pdf, id=147, 2726.185pt x 2739.23375pt>
-File: Figures/exp2_plot_days_equal spacing.pdf Graphic file (type pdf)
-<use Figures/exp2_plot_days_equal spacing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_equal spacing.pdf  used on input line 400.
-(pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 400--401
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 400--401
-
- []
-
-
-LaTeX Warning: Reference `tab:exp2-alpha-theta-param-est' on page 11 undefined on input line 403.
-
-[11] [12 <./Figures/exp2_plot_days_equal spacing.pdf>]
-
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 13 undefined on input line 409.
-
-[13] AED endfloat: Processing end Figures and Tables [14] (./section_trial2.aux)
+ <./Figures/density_plots_equal_gamma_filtered_exp1.pdf>]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 404.
+(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [15] AED endfloat: Processing end Figures and Tables [16] (./section_trial2.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `section_trial2.out' has not changed.
-(rerunfilecheck)             Checksum: C20C2AF91D5850435523F81A7DE6A525;1176.
+(rerunfilecheck)             Checksum: 77DA9A4E91C33FBBB4741627F8E3B92C;121.
 Package logreq Info: Writing requests to 'section_trial2.run.xml'.
 \openout1 = `section_trial2.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35277 strings out of 479638
- 671319 string characters out of 5877111
- 1380198 words of memory out of 5000000
- 53105 multiletter control sequences out of 15000+600000
- 559873 words of font info for 102 fonts, out of 8000000 for 9000
+ 35369 strings out of 477035
+ 674501 string characters out of 5826645
+ 1420600 words of memory out of 5000000
+ 55809 multiletter control sequences out of 15000+600000
+ 607270 words of font info for 154 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,15n,106p,1790b,1729s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,16n,106p,1743b,1729s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-pdfTeX warning (dest): name{appendix-c} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{qualitative-equal-exp1} has been referenced but does not exist, replaced by a fixed one
 
-
-pdfTeX warning (dest): name{data-generation-analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{spacing-measurements} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{number-measurements} has been referenced but does not exist, replaced by a fixed one
-
-{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on section_trial2.pdf (14 pages, 297714 bytes).
+{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on section_trial2.pdf (16 pages, 323206 bytes).
 PDF statistics:
- 307 PDF objects out of 1000 (max. 8388607)
- 248 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
- 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 299 PDF objects out of 1000 (max. 8388607)
+ 233 compressed objects within 3 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
