@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.7.21)  21 JUL 2022 21:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  16 SEP 2022 09:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpzsH5Aa/preview-c887300226ee.dir/dissertation_B.tex
-(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpzsH5Aa/preview-c887300226ee.dir/dissertation_B.tex
+**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/Rtmp2hhKdk/preview-159e9632b8ae2.dir/experiment_2.tex
+(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/Rtmp2hhKdk/preview-159e9632b8ae2.dir/experiment_2.tex
 LaTeX2e <2022-06-01> patch level 5
-L3 programming layer <2022-07-15> (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/apa7.cls
-Document Class: apa7 2022/01/03 v2.15 APA formatting (7th edition)
+L3 programming layer <2022-08-30> (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/apa7.cls
+Document Class: apa7 2022/07/25 v2.16 APA formatting (7th edition)
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/base/size12.clo
@@ -712,7 +712,7 @@ Package: lineno 2005/11/02 line numbers on paragraphs v4.41
 \bframebox=\box75
 LaTeX Info: Redefining \\ on input line 3056.
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty
-Package: csquotes 2021-02-22 v5.2l context-sensitive quotations (JAW)
+Package: csquotes 2022-09-14 v5.2n context-sensitive quotations (JAW)
 \csq@reset=\count342
 \csq@gtype=\count343
 \csq@glevel=\count344
@@ -721,7 +721,7 @@ Package: csquotes 2021-02-22 v5.2l context-sensitive quotations (JAW)
 \csq@tshold=\count347
 \csq@ltx@everypar=\toks43
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def
-File: csquotes.def 2021-02-22 v5.2l csquotes generic definitions (JAW)
+File: csquotes.def 2022-09-14 v5.2n csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
@@ -730,61 +730,68 @@ File: csquotes.cfg
 )) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/ncctools/nccmath.sty
 Package: nccmath 2006/01/20 v1.3 Additional Math Commands (NCC)
 \NCC@fracrulewidth=\dimen309
+) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen310
+\c@nlinenum=\count348
+\TeXr@lab=\toks44
+) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2022/07/12 v3.18b programmable bibliographies (PK/MW)
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count348
+\lrq@indent=\count349
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 )) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count349
-\c@listtotal=\count350
-\c@listcount=\count351
-\c@liststart=\count352
-\c@liststop=\count353
-\c@citecount=\count354
-\c@citetotal=\count355
-\c@multicitecount=\count356
-\c@multicitetotal=\count357
-\c@instcount=\count358
-\c@maxnames=\count359
-\c@minnames=\count360
-\c@maxitems=\count361
-\c@minitems=\count362
-\c@citecounter=\count363
-\c@maxcitecounter=\count364
-\c@savedcitecounter=\count365
-\c@uniquelist=\count366
-\c@uniquename=\count367
-\c@refsection=\count368
-\c@refsegment=\count369
-\c@maxextratitle=\count370
-\c@maxextratitleyear=\count371
-\c@maxextraname=\count372
-\c@maxextradate=\count373
-\c@maxextraalpha=\count374
-\c@abbrvpenalty=\count375
-\c@highnamepenalty=\count376
-\c@lownamepenalty=\count377
-\c@maxparens=\count378
-\c@parenlevel=\count379
-\blx@tempcnta=\count380
-\blx@tempcntb=\count381
-\blx@tempcntc=\count382
-\c@blx@maxsection=\count383
-\blx@maxsegment@0=\count384
-\blx@notetype=\count385
-\blx@parenlevel@text=\count386
-\blx@parenlevel@foot=\count387
-\blx@sectionciteorder@0=\count388
-\blx@sectionciteorderinternal@0=\count389
-\blx@entrysetcounter=\count390
-\blx@biblioinstance=\count391
+\c@tabx@nest=\count350
+\c@listtotal=\count351
+\c@listcount=\count352
+\c@liststart=\count353
+\c@liststop=\count354
+\c@citecount=\count355
+\c@citetotal=\count356
+\c@multicitecount=\count357
+\c@multicitetotal=\count358
+\c@instcount=\count359
+\c@maxnames=\count360
+\c@minnames=\count361
+\c@maxitems=\count362
+\c@minitems=\count363
+\c@citecounter=\count364
+\c@maxcitecounter=\count365
+\c@savedcitecounter=\count366
+\c@uniquelist=\count367
+\c@uniquename=\count368
+\c@refsection=\count369
+\c@refsegment=\count370
+\c@maxextratitle=\count371
+\c@maxextratitleyear=\count372
+\c@maxextraname=\count373
+\c@maxextradate=\count374
+\c@maxextraalpha=\count375
+\c@abbrvpenalty=\count376
+\c@highnamepenalty=\count377
+\c@lownamepenalty=\count378
+\c@maxparens=\count379
+\c@parenlevel=\count380
+\blx@tempcnta=\count381
+\blx@tempcntb=\count382
+\blx@tempcntc=\count383
+\c@blx@maxsection=\count384
+\blx@maxsegment@0=\count385
+\blx@notetype=\count386
+\blx@parenlevel@text=\count387
+\blx@parenlevel@foot=\count388
+\blx@sectionciteorder@0=\count389
+\blx@sectionciteorderinternal@0=\count390
+\blx@entrysetcounter=\count391
+\blx@biblioinstance=\count392
 \labelnumberwidth=\skip98
 \labelalphawidth=\skip99
 \biblabelsep=\skip100
@@ -796,9 +803,9 @@ Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 \blx@bcfin=\read3
 \blx@bcfout=\write6
 \blx@langwohyphens=\language3
-\c@mincomprange=\count392
-\c@maxcomprange=\count393
-\c@mincompwidth=\count394
+\c@mincomprange=\count393
+\c@maxcomprange=\count394
+\c@mincompwidth=\count395
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def
@@ -806,74 +813,74 @@ File: blx-dm.def 2022/07/12 v3.18b biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count395
-\c@savedafterword=\count396
-\c@annotator=\count397
-\c@savedannotator=\count398
-\c@author=\count399
-\c@savedauthor=\count400
-\c@bookauthor=\count401
-\c@savedbookauthor=\count402
-\c@commentator=\count403
-\c@savedcommentator=\count404
-\c@editor=\count405
-\c@savededitor=\count406
-\c@editora=\count407
-\c@savededitora=\count408
-\c@editorb=\count409
-\c@savededitorb=\count410
-\c@editorc=\count411
-\c@savededitorc=\count412
-\c@foreword=\count413
-\c@savedforeword=\count414
-\c@holder=\count415
-\c@savedholder=\count416
-\c@introduction=\count417
-\c@savedintroduction=\count418
-\c@namea=\count419
-\c@savednamea=\count420
-\c@nameb=\count421
-\c@savednameb=\count422
-\c@namec=\count423
-\c@savednamec=\count424
-\c@translator=\count425
-\c@savedtranslator=\count426
-\c@shortauthor=\count427
-\c@savedshortauthor=\count428
-\c@shorteditor=\count429
-\c@savedshorteditor=\count430
-\c@labelname=\count431
-\c@savedlabelname=\count432
-\c@institution=\count433
-\c@savedinstitution=\count434
-\c@lista=\count435
-\c@savedlista=\count436
-\c@listb=\count437
-\c@savedlistb=\count438
-\c@listc=\count439
-\c@savedlistc=\count440
-\c@listd=\count441
-\c@savedlistd=\count442
-\c@liste=\count443
-\c@savedliste=\count444
-\c@listf=\count445
-\c@savedlistf=\count446
-\c@location=\count447
-\c@savedlocation=\count448
-\c@organization=\count449
-\c@savedorganization=\count450
-\c@origlocation=\count451
-\c@savedoriglocation=\count452
-\c@origpublisher=\count453
-\c@savedorigpublisher=\count454
-\c@publisher=\count455
-\c@savedpublisher=\count456
-\c@language=\count457
-\c@savedlanguage=\count458
-\c@origlanguage=\count459
-\c@savedoriglanguage=\count460
-\c@pageref=\count461
-\c@savedpageref=\count462
+\c@afterword=\count396
+\c@savedafterword=\count397
+\c@annotator=\count398
+\c@savedannotator=\count399
+\c@author=\count400
+\c@savedauthor=\count401
+\c@bookauthor=\count402
+\c@savedbookauthor=\count403
+\c@commentator=\count404
+\c@savedcommentator=\count405
+\c@editor=\count406
+\c@savededitor=\count407
+\c@editora=\count408
+\c@savededitora=\count409
+\c@editorb=\count410
+\c@savededitorb=\count411
+\c@editorc=\count412
+\c@savededitorc=\count413
+\c@foreword=\count414
+\c@savedforeword=\count415
+\c@holder=\count416
+\c@savedholder=\count417
+\c@introduction=\count418
+\c@savedintroduction=\count419
+\c@namea=\count420
+\c@savednamea=\count421
+\c@nameb=\count422
+\c@savednameb=\count423
+\c@namec=\count424
+\c@savednamec=\count425
+\c@translator=\count426
+\c@savedtranslator=\count427
+\c@shortauthor=\count428
+\c@savedshortauthor=\count429
+\c@shorteditor=\count430
+\c@savedshorteditor=\count431
+\c@labelname=\count432
+\c@savedlabelname=\count433
+\c@institution=\count434
+\c@savedinstitution=\count435
+\c@lista=\count436
+\c@savedlista=\count437
+\c@listb=\count438
+\c@savedlistb=\count439
+\c@listc=\count440
+\c@savedlistc=\count441
+\c@listd=\count442
+\c@savedlistd=\count443
+\c@liste=\count444
+\c@savedliste=\count445
+\c@listf=\count446
+\c@savedlistf=\count447
+\c@location=\count448
+\c@savedlocation=\count449
+\c@organization=\count450
+\c@savedorganization=\count451
+\c@origlocation=\count452
+\c@savedoriglocation=\count453
+\c@origpublisher=\count454
+\c@savedorigpublisher=\count455
+\c@publisher=\count456
+\c@savedpublisher=\count457
+\c@language=\count458
+\c@savedlanguage=\count459
+\c@origlanguage=\count460
+\c@savedoriglanguage=\count461
+\c@pageref=\count462
+\c@savedpageref=\count463
 \shorthandwidth=\skip106
 \shortjournalwidth=\skip107
 \shortserieswidth=\skip108
@@ -897,19 +904,19 @@ Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2022/07/12 v3.18b biblatex compatibility (PK/MW)
-\c@textcitecount=\count463
-\c@textcitetotal=\count464
-\c@textcitemaxnames=\count465
-\c@biburlbigbreakpenalty=\count466
-\c@biburlbreakpenalty=\count467
-\c@biburlnumpenalty=\count468
-\c@biburlucpenalty=\count469
-\c@biburllcpenalty=\count470
+\c@textcitecount=\count464
+\c@textcitetotal=\count465
+\c@textcitemaxnames=\count466
+\c@biburlbigbreakpenalty=\count467
+\c@biburlbreakpenalty=\count468
+\c@biburlnumpenalty=\count469
+\c@biburlucpenalty=\count470
+\c@biburllcpenalty=\count471
 \biburlbigskip=\muskip18
 \biburlnumskip=\muskip19
 \biburlucskip=\muskip20
 \biburllcskip=\muskip21
-\c@smartand=\count471
+\c@smartand=\count472
 )
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
@@ -919,8 +926,8 @@ Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2022/07/12 v3.18b biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count472
-\c@bbx:relatedtotal=\count473
+\c@bbx:relatedcount=\count473
+\c@bbx:relatedtotal=\count474
 ))
 Package biblatex Info: Trying to load citation style 'numeric'...
 Package biblatex Info: ... file 'numeric.cbx' found.
@@ -946,14 +953,14 @@ File: biblatex.cfg
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Document encoding is UTF8 ....
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2022-07-15 L3 programming layer (loader) 
+Package: expl3 2022-08-30 L3 programming layer (loader) 
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-07-01 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count474
+File: l3backend-pdftex.def 2022-08-30 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count475
 \l__pdf_internal_box=\box76
 ))
 Package biblatex Info: ... and expl3
-(biblatex)             2022-07-15 L3 programming layer (loader) 
+(biblatex)             2022-08-30 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
@@ -961,16 +968,17 @@ Package: xparse 2022-06-22 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2022/07/12 v3.18b expl3 case changing code for biblatex
 )) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen310
-\WF@size=\dimen311
-\c@WF@wrappedlines=\count475
+\wrapoverhang=\dimen311
+\WF@size=\dimen312
+\c@WF@wrappedlines=\count476
 \WF@box=\box77
-\WF@everypar=\toks44
+\WF@everypar=\toks45
 Package: wrapfig 2003/01/31  v 3.6
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
-Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
-\everycr=\toks45
+Package: colortbl 2022/06/20 v1.0f Color table columns (DPC)
+\everycr=\toks46
 \minrowclearance=\skip120
+\rownum=\count477
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
@@ -979,27 +987,27 @@ Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box78
-\sift@deathcycles=\count476
-\@vwid@loff=\dimen312
-\@vwid@roff=\dimen313
+\sift@deathcycles=\count478
+\@vwid@loff=\dimen313
+\@vwid@roff=\dimen314
 )
-\c@taburow=\count477
-\tabu@nbcols=\count478
-\tabu@cnt=\count479
-\tabu@Xcol=\count480
-\tabu@alloc=\count481
-\tabu@nested=\count482
-\tabu@target=\dimen314
-\tabu@spreadtarget=\dimen315
-\tabu@naturalX=\dimen316
-\tabucolX=\dimen317
-\tabu@Xsum=\dimen318
-\extrarowdepth=\dimen319
-\abovetabulinesep=\dimen320
-\belowtabulinesep=\dimen321
-\tabustrutrule=\dimen322
-\tabu@thebody=\toks46
-\tabu@footnotes=\toks47
+\c@taburow=\count479
+\tabu@nbcols=\count480
+\tabu@cnt=\count481
+\tabu@Xcol=\count482
+\tabu@alloc=\count483
+\tabu@nested=\count484
+\tabu@target=\dimen315
+\tabu@spreadtarget=\dimen316
+\tabu@naturalX=\dimen317
+\tabucolX=\dimen318
+\tabu@Xsum=\dimen319
+\extrarowdepth=\dimen320
+\abovetabulinesep=\dimen321
+\belowtabulinesep=\dimen322
+\tabustrutrule=\dimen323
+\tabu@thebody=\toks47
+\tabu@footnotes=\toks48
 \tabu@box=\box79
 \tabu@arstrutbox=\box80
 \tabu@hleads=\box81
@@ -1009,18 +1017,13 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \UL@box=\box83
 \UL@hyphenbox=\box84
 \UL@skip=\skip122
-\UL@hook=\toks48
-\UL@height=\dimen323
-\UL@pe=\count483
-\UL@pixel=\dimen324
+\UL@hook=\toks49
+\UL@height=\dimen324
+\UL@pe=\count485
+\UL@pixel=\dimen325
 \ULC@box=\box85
 Package: ulem 2019/11/18
-\ULdepth=\dimen325
-) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
-Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen326
-\c@nlinenum=\count484
-\TeXr@lab=\toks49
+\ULdepth=\dimen326
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
 \thm@style=\toks50
@@ -1034,21 +1037,23 @@ Package: amsthm 2020/05/29 v2.20.6
 \dth@everypar=\toks55
 ) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2022/01/07 v1.5 Sub-captions (AR)
-\c@subfigure=\count485
-\c@subtable=\count486
+\c@subfigure=\count486
+\c@subtable=\count487
+) (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/anyfontsize/anyfontsize.sty
+Package: anyfontsize 2007/11/22 anyfontsize.sty by pts
 )
-\c@theorem=\count487
+\c@theorem=\count488
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2022/07/20 3.78 The Babel package
-\babel@savecnt=\count488
+Package: babel 2022/08/29 3.79 The Babel package
+\babel@savecnt=\count489
 \U@D=\dimen327
 \l@unhyphenated=\language4
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read4
-\bbl@dirlevel=\count489
+\bbl@dirlevel=\count490
 Package babel Info: Main language set with 'main='. Except if you have
 (babel)             problems, prefer the default mechanism for setting
-(babel)             the main language. Reported on input line 4324.
+(babel)             the main language. Reported on input line 4325.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'british' set to \l@english
@@ -1066,47 +1071,41 @@ Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 11.
 )
 
-Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 239.
+Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 248.
 
-\c@NumberOfAffiliations=\count490
+\c@NumberOfAffiliations=\count491
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-(./dissertation_B.aux
+(./experiment_2.aux
 
-LaTeX Warning: Label `tab:systematicReviewCount' multiply defined.
-
-
-LaTeX Warning: Label `tab:systematicReview' multiply defined.
+LaTeX Warning: Label `precision-time-dec-exp2' multiply defined.
 
 
-LaTeX Warning: Label `tab:systematicReview' multiply defined.
-
-
-LaTeX Warning: Label `tab:parameterValues' multiply defined.
+LaTeX Warning: Label `qualitative-time-dec-exp2' multiply defined.
 
 )
-\openout1 = `dissertation_B.aux'.
+\openout1 = `experiment_2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 241.
-LaTeX Font Info:    ... okay on input line 241.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1153,10 +1152,10 @@ Package grfext Info: Graphics extension search list:
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 241.
-(./dissertation_B.out) (./dissertation_B.out)
+Package hyperref Info: Link coloring ON on input line 250.
+(./experiment_2.out) (./experiment_2.out)
 \@outlinefile=\write7
-\openout7 = `dissertation_B.out'.
+\openout7 = `experiment_2.out'.
 
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/config/APA7english.txt
 File: APA7english.txt 2020/12/02 v1.02 apa7 configuration for non-American English
@@ -1177,185 +1176,183 @@ File: english.lbx 2022/07/12 v3.18b biblatex localization (PK/MW)
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout6 = `dissertation_B.bcf'.
+\openout6 = `experiment_2.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'dissertation_B.bbl' not found.
-No file dissertation_B.bbl.
-Package biblatex Info: Reference section=0 on input line 241.
-Package biblatex Info: Reference segment=0 on input line 241.
+Package biblatex Info: ... file 'experiment_2.bbl' not found.
+No file experiment_2.bbl.
+Package biblatex Info: Reference section=0 on input line 250.
+Package biblatex Info: Reference segment=0 on input line 250.
 
 Class apa7 Warning: Abstract not defined.
 
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 242.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 242.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 242.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 242.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 242.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 242.
+(Font)              <12> on input line 251.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 242.
+(Font)              <8> on input line 251.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 242.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 242.
+(Font)              <6> on input line 251.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 242.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 251.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/Users/sebastiansciarra/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 244.
-(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##    parameter         number_measurem~ measurement_spa~ midpoint num_removed_val~[] 
- []
+] (./experiment_2.toc)
+\tf@toc=\write8
+\openout8 = `experiment_2.toc'.
 
+[2] [3]
 
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##    <fct>             <fct>            <fct>            <fct>               <int>[] 
- []
+LaTeX Warning: Reference `tab:myValues' on page 4 undefined on input line 300.
 
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  1 bold(theta[fixed~ 5                Equal spacing    80                      0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  2 bold(theta[fixed~ 5                Equal spacing    180                     0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  3 bold(theta[fixed~ 5                Equal spacing    280                     0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  4 bold(theta[fixed~ 5                Time-interval i~ 80                      0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  5 bold(theta[fixed~ 5                Time-interval i~ 180                     0[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  6 bold(theta[fixed~ 5                Time-interval i~ 280                     0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  7 bold(theta[fixed~ 5                Time-interval d~ 80                      0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  8 bold(theta[fixed~ 5                Time-interval d~ 180                     0[] 
- []
-
-
-Overfull \hbox (42.76323pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ##  9 bold(theta[fixed~ 5                Time-interval d~ 280                     0[] 
- []
-
-
-Overfull \hbox (42.77023pt too wide) in paragraph at lines 263--263
-[]\T1/lmtt/m/n/12 ## 10 bold(theta[fixed~ 5                Middle-and-extr~ 80                      0[] 
- []
-
-[2]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 285.
-(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.289 \end{titlepage}
-                      [1]
-pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.301 \newpage
-               [2]
+[4]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 322.
+(Font)              <10> on input line 314.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 322.
+(Font)              <7> on input line 314.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 322.
-[3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 399.
-(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
-File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
-)
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 399.
-<Figures/Monte_Carlo_comparison.png, id=364, 927.465pt x 522.95375pt>
-File: Figures/Monte_Carlo_comparison.png Graphic file (type png)
-<use Figures/Monte_Carlo_comparison.png>
-Package pdftex.def Info: Figures/Monte_Carlo_comparison.png  used on input line 401.
-(pdftex.def)             Requested size: 469.7601pt x 264.87555pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 401--402
-
- []
-
-[14 <./Figures/Monte_Carlo_comparison.png>] [15]
-<Figures/prisma_diagram.png, id=393, 854.19125pt x 517.935pt>
-File: Figures/prisma_diagram.png Graphic file (type png)
-<use Figures/prisma_diagram.png>
-Package pdftex.def Info: Figures/prisma_diagram.png  used on input line 433.
-(pdftex.def)             Requested size: 469.75452pt x 284.83351pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
-
- []
-
-[16] [17 <./Figures/prisma_diagram.png>] [18]
+(Font)              <5> on input line 314.
+[5] [6] [7] [8]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
 * \paperwidth=614.295pt
 * \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
+* \headheight=15.2pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=95.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 374.
+(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
+)
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 380.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 386.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.5> on input line 386.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7.34996> on input line 386.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5.25> on input line 386.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.5> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 388.
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10.5> not available
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 391.
+
+Overfull \hbox (0.78062pt too wide) in paragraph at lines 396--398
+[]|[][] 
+ []
+
+LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 400.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9.5> on input line 400.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6.64996> on input line 400.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <4.75> on input line 400.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9.5> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 400.
+[9
+
+
+] [10
+
+
+]
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <11> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 423.
+<Figures/exp2_plot_days_equal spacing.pdf, id=195, 2726.185pt x 2739.23375pt>
+File: Figures/exp2_plot_days_equal spacing.pdf Graphic file (type pdf)
+<use Figures/exp2_plot_days_equal spacing.pdf>
+Package pdftex.def Info: Figures/exp2_plot_days_equal spacing.pdf  used on input line 425.
+(pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 425--426
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 425--426
+
+ []
+
+
+LaTeX Warning: Reference `tab:exp2-alpha-theta-param-est' on page 11 undefined on input line 428.
+
+[11] [12 <./Figures/exp2_plot_days_equal spacing.pdf>] [13]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 442.
+
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 14 undefined on input line 460.
+
+[14]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 476.
+(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [15] [16] [17] [18]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
 * \headheight=15.2pt
 * \headsep=25.0pt
 * \topskip=12.0pt
@@ -1374,661 +1371,180 @@ Underfull \hbox (badness 10000) in paragraph at lines 433--434
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-LaTeX Warning: Hyper reference `Exp3' on page 19 undefined on input line 480.
-
-
-LaTeX Warning: Hyper reference `Exp2' on page 19 undefined on input line 486.
-
-
-LaTeX Warning: Hyper reference `Exp2' on page 19 undefined on input line 494.
-
-
-LaTeX Warning: Hyper reference `Exp3' on page 19 undefined on input line 496.
+Overfull \hbox (4.42062pt too wide) in paragraph at lines 533--536
+[]|[][] 
+ []
 
 [19
 
 
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[20
-
-
-
-
-] [21] [22
-
-
-] [23]
-<Figures/polynomial_vs_nonlinear_plot.pdf, id=483, 1734.48pt x 867.24pt>
-File: Figures/polynomial_vs_nonlinear_plot.pdf Graphic file (type pdf)
-<use Figures/polynomial_vs_nonlinear_plot.pdf>
-Package pdftex.def Info: Figures/polynomial_vs_nonlinear_plot.pdf  used on input line 665.
-(pdftex.def)             Requested size: 469.74503pt x 234.87251pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 665--666
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 665--666
-
- []
-
-[24] [25 <./Figures/polynomial_vs_nonlinear_plot.pdf>]
-<Figures/combined_plot.pdf, id=504, 1300.86pt x 867.24pt>
-File: Figures/combined_plot.pdf Graphic file (type pdf)
-<use Figures/combined_plot.pdf>
-Package pdftex.def Info: Figures/combined_plot.pdf  used on input line 691.
-(pdftex.def)             Requested size: 469.75827pt x 313.17218pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 691--692
-
- []
-
-[26] [27 <./Figures/combined_plot.pdf>] [28]
-
-LaTeX Warning: Reference `tab:experimentOverview' on page 29 undefined on input line 709.
-
-
-LaTeX Warning: Reference `tab:coulombe2016' on page 29 undefined on input line 741.
-
-
-LaTeX Warning: Reference `tab:myValues' on page 29 undefined on input line 746.
-
-[29] [30] [31]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-Overfull \hbox (4.93373pt too wide) in alignment at lines 797--823
-[] [] [] [] 
- []
-
-[32
+] [20
 
 
 ]
-
-LaTeX Warning: Reference `tab:myValues' on page 33 undefined on input line 832.
-
-[33
-
-
-]
-File: Figures/combined_plot.pdf Graphic file (type pdf)
-<use Figures/combined_plot.pdf>
-Package pdftex.def Info: Figures/combined_plot.pdf  used on input line 918.
-(pdftex.def)             Requested size: 469.75827pt x 313.17218pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 918--920
-
- []
-
-[34] [35] [36] [37] [38] [39] [40] [41]
-<Figures/beta_fixed_Equal_5_30.pdf, id=692, 650.43pt x 433.62pt>
-File: Figures/beta_fixed_Equal_5_30.pdf Graphic file (type pdf)
-<use Figures/beta_fixed_Equal_5_30.pdf>
-Package pdftex.def Info: Figures/beta_fixed_Equal_5_30.pdf  used on input line 1196.
-(pdftex.def)             Requested size: 341.43124pt x 227.62082pt.
-<Figures/density_to_param_plot.png, id=693, 527.9725pt x 923.45pt>
-File: Figures/density_to_param_plot.png Graphic file (type png)
-<use Figures/density_to_param_plot.png>
-Package pdftex.def Info: Figures/density_to_param_plot.png  used on input line 1203.
-(pdftex.def)             Requested size: 284.52086pt x 497.64104pt.
-[42 <./Figures/beta_fixed_Equal_5_30.pdf>] [43 <./Figures/density_to_param_plot.png>]
-<Figures/param_estimation_ex.png, id=714, 398.48875pt x 369.38pt>
-File: Figures/param_estimation_ex.png Graphic file (type png)
-<use Figures/param_estimation_ex.png>
-Package pdftex.def Info: Figures/param_estimation_ex.png  used on input line 1251.
-(pdftex.def)             Requested size: 426.81047pt x 395.63286pt.
-[44] [45 <./Figures/param_estimation_ex.png>]
-<Figures/logistic_results_plot.png, id=745, 749.80125pt x 561.09625pt>
-File: Figures/logistic_results_plot.png Graphic file (type png)
-<use Figures/logistic_results_plot.png>
-Package pdftex.def Info: Figures/logistic_results_plot.png  used on input line 1299.
-(pdftex.def)             Requested size: 426.79622pt x 319.38298pt.
-[46] [47 <./Figures/logistic_results_plot.png>] [48]
-<Figures/exp1_plot_days_equal spacing.pdf, id=779, 2713.13625pt x 2740.2375pt>
-File: Figures/exp1_plot_days_equal spacing.pdf Graphic file (type pdf)
-<use Figures/exp1_plot_days_equal spacing.pdf>
-Package pdftex.def Info: Figures/exp1_plot_days_equal spacing.pdf  used on input line 1379.
-(pdftex.def)             Requested size: 469.75528pt x 474.44762pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1379--1380
-
- []
-
-[49]
-Overfull \vbox (38.41263pt too high) has occurred while \output is active []
-
-[50 <./Figures/exp1_plot_days_equal spacing.pdf>] [51] [52]
-<Figures/exp1_plot_days_time-interval increasing.png, id=825, 619.31375pt x 568.1225pt>
-File: Figures/exp1_plot_days_time-interval increasing.png Graphic file (type png)
-<use Figures/exp1_plot_days_time-interval increasing.png>
-Package pdftex.def Info: Figures/exp1_plot_days_time-interval increasing.png  used on input line 1465.
-(pdftex.def)             Requested size: 469.77615pt x 430.94536pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1465--1466
-
- []
-
-[53]
-Overfull \vbox (6.91037pt too high) has occurred while \output is active []
-
-[54 <./Figures/exp1_plot_days_time-interval increasing.png>]
-<Figures/density_plots_time_inc_exp1.pdf, id=847, 1416.29124pt x 2251.41125pt>
-File: Figures/density_plots_time_inc_exp1.pdf Graphic file (type pdf)
-<use Figures/density_plots_time_inc_exp1.pdf>
-Package pdftex.def Info: Figures/density_plots_time_inc_exp1.pdf  used on input line 1511.
-(pdftex.def)             Requested size: 268.47142pt x 426.77634pt.
-[55] [56 <./Figures/density_plots_time_inc_exp1.pdf>]
-<Figures/exp1_plot_days_time-interval decreasing.png, id=873, 622.325pt x 568.1225pt>
-File: Figures/exp1_plot_days_time-interval decreasing.png Graphic file (type png)
-<use Figures/exp1_plot_days_time-interval decreasing.png>
-Package pdftex.def Info: Figures/exp1_plot_days_time-interval decreasing.png  used on input line 1573.
-(pdftex.def)             Requested size: 469.7623pt x 428.8475pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1573--1574
-
- []
-
-[57]
-Overfull \vbox (4.81252pt too high) has occurred while \output is active []
-
-[58 <./Figures/exp1_plot_days_time-interval decreasing.png>]
-<Figures/density_plots_time_dec_exp1.pdf, id=892, 1416.29124pt x 2251.41125pt>
-File: Figures/density_plots_time_dec_exp1.pdf Graphic file (type pdf)
-<use Figures/density_plots_time_dec_exp1.pdf>
-Package pdftex.def Info: Figures/density_plots_time_dec_exp1.pdf  used on input line 1601.
-(pdftex.def)             Requested size: 268.47142pt x 426.77634pt.
-[59] [60 <./Figures/density_plots_time_dec_exp1.pdf>] [61]
-<Figures/exp1_plot_days_middle-and-extreme spacing.pdf, id=926, 2713.13625pt x 2740.2375pt>
-File: Figures/exp1_plot_days_middle-and-extreme spacing.pdf Graphic file (type pdf)
-<use Figures/exp1_plot_days_middle-and-extreme spacing.pdf>
-Package pdftex.def Info: Figures/exp1_plot_days_middle-and-extreme spacing.pdf  used on input line 1695.
-(pdftex.def)             Requested size: 469.75528pt x 474.44762pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1695--1696
-
- []
-
-[62]
-Overfull \vbox (38.41263pt too high) has occurred while \output is active []
-
-[63 <./Figures/exp1_plot_days_middle-and-extreme spacing.pdf>] [64] [65]
-
-LaTeX Warning: Reference `tab:experimentOverview' on page 66 undefined on input line 1735.
-
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 1738.
-
-
-LaTeX Warning: Reference `tab:coulombe2016' on page 66 undefined on input line 1764.
-
-
-LaTeX Warning: Reference `tab:myValues' on page 66 undefined on input line 1769.
-
-[66]
-
-LaTeX Warning: Reference `tab:myValues' on page 67 undefined on input line 1783.
-
-[67] [68]
-<Figures/exp2_plot_days_equal spacing.pdf, id=1026, 2726.185pt x 2889.79625pt>
-File: Figures/exp2_plot_days_equal spacing.pdf Graphic file (type pdf)
-<use Figures/exp2_plot_days_equal spacing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_equal spacing.pdf  used on input line 1896.
-(pdftex.def)             Requested size: 469.72665pt x 497.91716pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1896--1897
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1896--1897
-
- []
-
-[69]
-Overfull \vbox (49.88217pt too high) has occurred while \output is active []
-
-[70 <./Figures/exp2_plot_days_equal spacing.pdf>] [71]
-<Figures/exp2_plot_days_time-interval increasing.pdf, id=1068, 2726.185pt x 2739.23375pt>
+<Figures/exp2_plot_days_time-interval increasing.pdf, id=300, 2726.185pt x 2739.23375pt>
 File: Figures/exp2_plot_days_time-interval increasing.pdf Graphic file (type pdf)
 <use Figures/exp2_plot_days_time-interval increasing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_time-interval increasing.pdf  used on input line 1969.
+Package pdftex.def Info: Figures/exp2_plot_days_time-interval increasing.pdf  used on input line 563.
 (pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1969--1971
+Underfull \hbox (badness 10000) in paragraph at lines 563--564
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1969--1971
+Underfull \hbox (badness 10000) in paragraph at lines 563--564
 
  []
 
-[72] [73 <./Figures/exp2_plot_days_time-interval increasing.pdf>] [74]
-<Figures/exp2_plot_days_time-interval decreasing.pdf, id=1109, 2726.185pt x 2739.23375pt>
+
+LaTeX Warning: Reference `tab:exp2-alpha-theta-param-est' on page 21 undefined on input line 566.
+
+[21] [22 <./Figures/exp2_plot_days_time-interval increasing.pdf>] [23] [24] [25] [26] [27] [28]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
+* \headheight=15.2pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=95.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+[29
+
+
+] [30
+
+
+]
+<Figures/exp2_plot_days_time-interval decreasing.pdf, id=399, 2726.185pt x 2739.23375pt>
 File: Figures/exp2_plot_days_time-interval decreasing.pdf Graphic file (type pdf)
 <use Figures/exp2_plot_days_time-interval decreasing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_time-interval decreasing.pdf  used on input line 2042.
+Package pdftex.def Info: Figures/exp2_plot_days_time-interval decreasing.pdf  used on input line 701.
 (pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 2042--2044
+Underfull \hbox (badness 10000) in paragraph at lines 701--702
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2042--2044
+Underfull \hbox (badness 10000) in paragraph at lines 701--702
 
  []
 
-[75] [76 <./Figures/exp2_plot_days_time-interval decreasing.pdf>] [77]
-<Figures/exp2_plot_days_middle-and-extreme spacing.pdf, id=1149, 2726.185pt x 2739.23375pt>
+
+LaTeX Warning: Reference `tab:exp2-alpha-theta-param-est' on page 31 undefined on input line 704.
+
+[31] [32 <./Figures/exp2_plot_days_time-interval decreasing.pdf>] [33] [34] [35] [36] [37] [38]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
+* \headheight=15.2pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=95.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+[39
+
+
+] [40
+
+
+]
+<Figures/exp2_plot_days_middle-and-extreme spacing.pdf, id=497, 2726.185pt x 2739.23375pt>
 File: Figures/exp2_plot_days_middle-and-extreme spacing.pdf Graphic file (type pdf)
 <use Figures/exp2_plot_days_middle-and-extreme spacing.pdf>
-Package pdftex.def Info: Figures/exp2_plot_days_middle-and-extreme spacing.pdf  used on input line 2102.
+Package pdftex.def Info: Figures/exp2_plot_days_middle-and-extreme spacing.pdf  used on input line 838.
 (pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 2102--2104
+Underfull \hbox (badness 10000) in paragraph at lines 838--839
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2102--2104
+Underfull \hbox (badness 10000) in paragraph at lines 838--839
 
  []
 
-[78] [79 <./Figures/exp2_plot_days_middle-and-extreme spacing.pdf>] [80] [81]
 
-LaTeX Warning: Reference `tab:experimentOverview' on page 82 undefined on input line 2143.
-
-[82]
-
-LaTeX Warning: Reference `tab:coulombe2016' on page 83 undefined on input line 2180.
+LaTeX Warning: Reference `tab:exp2-alpha-theta-param-est' on page 41 undefined on input line 841.
 
 
-LaTeX Warning: Reference `tab:myValues' on page 83 undefined on input line 2185.
+LaTeX Warning: Reference `tab:exp2-mid-ext-exp2' on page 41 undefined on input line 841.
 
-
-LaTeX Warning: Reference `tab:myValues' on page 83 undefined on input line 2196.
-
-[83] [84] [85] [86]
-<Figures/cdf_plots.pdf, id=1240, 2754.29pt x 1150.2975pt>
-File: Figures/cdf_plots.pdf Graphic file (type pdf)
-<use Figures/cdf_plots.pdf>
-Package pdftex.def Info: Figures/cdf_plots.pdf  used on input line 2332.
-(pdftex.def)             Requested size: 469.73608pt x 196.17986pt.
-[87] [88 <./Figures/cdf_plots.pdf>] [89]
-<Figures/cdf_pdf_plots.pdf, id=1292, 1140.26pt x 912.40875pt>
-File: Figures/cdf_pdf_plots.pdf Graphic file (type pdf)
-<use Figures/cdf_pdf_plots.pdf>
-Package pdftex.def Info: Figures/cdf_pdf_plots.pdf  used on input line 2423.
-(pdftex.def)             Requested size: 469.75409pt x 375.88597pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 2423--2424
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 2423--2424
-
- []
-
-[90] [91 <./Figures/cdf_pdf_plots.pdf>] [92]
-<Figures/exp3_plot_days_time structured.pdf, id=1340, 2726.185pt x 2739.23375pt>
-File: Figures/exp3_plot_days_time structured.pdf Graphic file (type pdf)
-<use Figures/exp3_plot_days_time structured.pdf>
-Package pdftex.def Info: Figures/exp3_plot_days_time structured.pdf  used on input line 2516.
-(pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 2516--2518
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 2516--2518
-
- []
-
-[93] [94 <./Figures/exp3_plot_days_time structured.pdf>] [95] [96]
-<Figures/exp3_plot_days_time unstructured (fast response).pdf, id=1390, 2726.185pt x 2739.23375pt>
-File: Figures/exp3_plot_days_time unstructured (fast response).pdf Graphic file (type pdf)
-<use Figures/exp3_plot_days_time unstructured (fast response).pdf>
-Package pdftex.def Info: Figures/exp3_plot_days_time unstructured (fast response).pdf  used on input line 2622.
-(pdftex.def)             Requested size: 469.72665pt x 471.97498pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 2622--2624
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 2622--2624
-
- []
-
-[97] [98 <./Figures/exp3_plot_days_time unstructured (fast response).pdf>] [99] [100]
-<Figures/exp3_plot_days_time unstructured (slow response).pdf, id=1441, 2726.185pt x 2906.86pt>
-File: Figures/exp3_plot_days_time unstructured (slow response).pdf Graphic file (type pdf)
-<use Figures/exp3_plot_days_time unstructured (slow response).pdf>
-Package pdftex.def Info: Figures/exp3_plot_days_time unstructured (slow response).pdf  used on input line 2754.
-(pdftex.def)             Requested size: 469.72665pt x 500.85728pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 2754--2756
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 2754--2756
-
- []
-
-[101]
-Overfull \vbox (28.8223pt too high) has occurred while \output is active []
-
-[102 <./Figures/exp3_plot_days_time unstructured (slow response).pdf>] [103] [104] [105] [106] [107] [108] [109] [110] [111] [112] [113] [114] [115] [116] [117] [118] [119] [120]
-<Figures/equal_spacing_diagram.png, id=1792, 909.3975pt x 473.77pt>
-File: Figures/equal_spacing_diagram.png Graphic file (type png)
-<use Figures/equal_spacing_diagram.png>
-Package pdftex.def Info: Figures/equal_spacing_diagram.png  used on input line 3210.
-(pdftex.def)             Requested size: 650.43633pt x 338.85864pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 3210--3211
-
- []
-
-[121
-
- <./Figures/equal_spacing_diagram.png>] [122
-
-] [123]
-<Figures/time_inc_diagram.png, id=1814, 954.56625pt x 539.01375pt>
-File: Figures/time_inc_diagram.png Graphic file (type png)
-<use Figures/time_inc_diagram.png>
-Package pdftex.def Info: Figures/time_inc_diagram.png  used on input line 3282.
-(pdftex.def)             Requested size: 650.42194pt x 367.27293pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 3282--3283
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 3282--3283
-
- []
-
-[124
-
- <./Figures/time_inc_diagram.png>] [125
-
-] [126]
-<Figures/time_dec_diagram.png, id=1837, 951.555pt x 540.0175pt>
-File: Figures/time_dec_diagram.png Graphic file (type png)
-<use Figures/time_dec_diagram.png>
-Package pdftex.def Info: Figures/time_dec_diagram.png  used on input line 3355.
-(pdftex.def)             Requested size: 650.46094pt x 369.14343pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 3355--3356
-
- []
-
-[127
-
- <./Figures/time_dec_diagram.png>] [128
-
-]
-<Figures/mid_ext_diagram.png, id=1849, 952.55875pt x 536.0025pt>
-File: Figures/mid_ext_diagram.png Graphic file (type png)
-<use Figures/mid_ext_diagram.png>
-Package pdftex.def Info: Figures/mid_ext_diagram.png  used on input line 3377.
-(pdftex.def)             Requested size: 650.46394pt x 366.01448pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 3377--3378
-
- []
-
-[129
-
- <./Figures/mid_ext_diagram.png>] [130
-
-] [131] [132] [133]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[134
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.19}) has been already used, duplicate ignored
+[41] [42 <./Figures/exp2_plot_days_middle-and-extreme spacing.pdf>] [43]
+pdfTeX warning (ext4): destination with the same identifier (name{precision-time-dec-exp2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.3592 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [135
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.19}) has been already used, duplicate ignored
+l.871 ...recision}\label{precision-time-dec-exp2}}
+                                                   [44]
+pdfTeX warning (ext4): destination with the same identifier (name{qualitative-time-dec-exp2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.3639 ...>{\raggedright\arraybackslash}p{3cm}ccc}
-                                                   [136
-
-
-
-
-] [137
-
-
-]
+l.882 ...ummary}\label{qualitative-time-dec-exp2}}
+                                                   [45] [46] [47]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
+* h-part:(L,W,R)=(70.27834pt, 473.73833pt, 70.27834pt)
+* v-part:(T,H,B)=(70.27834pt, 654.41331pt, 70.27834pt)
 * \paperwidth=614.295pt
 * \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[138
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
+* \textwidth=473.73833pt
+* \textheight=654.41331pt
+* \oddsidemargin=-1.99165pt
+* \evensidemargin=-1.99165pt
+* \topmargin=-42.19165pt
 * \headheight=15.2pt
 * \headsep=25.0pt
 * \topskip=12.0pt
@@ -2047,453 +1563,86 @@ l.3639 ...>{\raggedright\arraybackslash}p{3cm}ccc}
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.3734 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [139
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.3781 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [140
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.3828 ...right\arraybackslash}p{3cm}cccccccccccc}
-                                                   [141
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.20}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.3875 ...raggedright\arraybackslash}p{3cm}cccccc}
-                                                   [142
-
-
-
-
-] [143
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[144
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[145
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[146
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[147
-
-
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(28.45274pt, 557.38951pt, 28.45274pt)
-* v-part:(T,H,B)=(28.45274pt, 738.0645pt, 28.45274pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=557.38951pt
-* \textheight=738.0645pt
-* \oddsidemargin=-43.81725pt
-* \evensidemargin=-43.81725pt
-* \topmargin=-84.01724pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-[148
-
-
-
-
-] [149
-
-
-] [150] [151] [152] [153] [154] [155] [156]
-<Figures/taylor_vs_nonlin.pdf, id=2029, 650.43pt x 433.62pt>
-File: Figures/taylor_vs_nonlin.pdf Graphic file (type pdf)
-<use Figures/taylor_vs_nonlin.pdf>
-Package pdftex.def Info: Figures/taylor_vs_nonlin.pdf  used on input line 4326.
-(pdftex.def)             Requested size: 469.76817pt x 313.17879pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 4326--4327
-
+Overfull \hbox (8.83965pt too wide) in paragraph at lines 939--939
+ []|$\U/eur/m/n/10.5 ^^L[]$| 
  []
 
-[157] [158 <./Figures/taylor_vs_nonlin.pdf>] [159] [160] [161] [162] [163] [164] [165] AED endfloat: Processing end Figures and Tables [166] (./dissertation_B.aux)
+
+Overfull \hbox (8.27248pt too wide) in paragraph at lines 939--940
+ []|$\U/eur/m/n/10.5 ^^M[]$| 
+ []
+
+
+Overfull \hbox (2.83467pt too wide) in paragraph at lines 942--943
+[]|[][] 
+ []
+
+
+Overfull \hbox (6.88629pt too wide) in paragraph at lines 962--964
+[]|[][] 
+ []
+
+
+Overfull \hbox (10.64172pt too wide) in alignment at lines 934--967
+ [] [] [] [] [] [] [] [] 
+ []
+
+[48
+
+
+] [49
+
+
+] AED endfloat: Processing end Figures and Tables [50] (./experiment_2.aux)
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `dissertation_B.out' has not changed.
-(rerunfilecheck)             Checksum: AD8A18894EEE42E8F42D2EC2141555DD;15616.
-Package logreq Info: Writing requests to 'dissertation_B.run.xml'.
-\openout1 = `dissertation_B.run.xml'.
+Package rerunfilecheck Info: File `experiment_2.out' has not changed.
+(rerunfilecheck)             Checksum: 836C5DC5B68C3631EE8659D3BB75734E;2368.
+Package logreq Info: Writing requests to 'experiment_2.run.xml'.
+\openout1 = `experiment_2.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 36492 strings out of 479983
- 700454 string characters out of 5886310
- 1436749 words of memory out of 5000000
- 53331 multiletter control sequences out of 15000+600000
- 588415 words of font info for 110 fonts, out of 8000000 for 9000
+ 35629 strings out of 477035
+ 679282 string characters out of 5826645
+ 1430674 words of memory out of 5000000
+ 55941 multiletter control sequences out of 15000+600000
+ 647763 words of font info for 188 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,15n,106p,2514b,1731s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{Hfootnote.25} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.24} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.23} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.22} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.21} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.20} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.19} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.18} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.17} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.16} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.15} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{appendix-c-parameter-estimation-plots-for-likert-unit-parameters} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.14} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.13} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.12} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.11} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.10} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.9} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.8} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.7} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.6} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.5} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist, replaced by a fixed one
-
+ 99i,20n,106p,1655b,1876s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
 
+pdfTeX warning (dest): name{qualitative-mid-ext-exp2} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{precision-mid-ext-exp2} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{appendix-c} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{data-generation-analysis} has been referenced but does not exist, replaced by a fixed one
+
+
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
-{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm5.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on dissertation_B.pdf (168 pages, 2509176 bytes).
+
+pdfTeX warning (dest): name{number-measurements} has been referenced but does not exist, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{spacing-measurements} has been referenced but does not exist, replaced by a fixed one
+
+{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on experiment_2.pdf (50 pages, 425125 bytes).
 PDF statistics:
- 2453 PDF objects out of 2487 (max. 8388607)
- 2126 compressed objects within 22 object streams
- 678 named destinations out of 1000 (max. 500000)
- 657 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 727 PDF objects out of 1000 (max. 8388607)
+ 615 compressed objects within 7 object streams
+ 162 named destinations out of 1000 (max. 500000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,778 @@
+---
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{textcomp} #for copyright symbol on title page
+  - \usepackage{longtable}
+  - \usepackage{makecell}
+  - \usepackage[section]{placeins}
+  - \usepackage{setspace}
+  - \usepackage{biblatex}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm} 
+  - \usepackage{amsmath} ##needed for argmax
+  - \usepackage{bm}  #thicker bold in math 
+  - \DeclareMathOperator*{\argmax}{arg\,max}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}\doublespacing} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\fontsize{11pt}{13.2pt}\selectfont} #set caption font size to footnote 
+  - \DeclareCaptionFont{tabCaptionSize}{\small} #caption size for table title
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \captionsetup[table]{labelfont={tabCaptionSize, bf}, font = {figCaptionFont, tabCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#both are needed to change font type of table footnotes
+  - \usepackage{anyfontsize}
+  - \AtBeginEnvironment{ThreePartTable}{\fontfamily{phv} \fontsize{10.5pt}{12pt}\selectfont} 
+  - \AtBeginEnvironment{tablenotes}{\fontsize{9.5pt}{11.4pt}\selectfont} 
+
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+
+#set table line widths 
+  - \setlength\cmidrulewidth{1pt} #line thickness of lines within table and in multi-row headers
+  - \setlength\lightrulewidth{1pt} #line thickness of bottom line in header 
+
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{example}[theorem]{Example}
+  - \renewcommand\theadfont{} #sets cell font to be same as table font 
+  
+  #set figure title text
+  - \newcommand{\figurefootnote}{\raggedright\linespread{2}\fontfamily{phv}\fontsize{9.5pt}{11.4pt}\selectfont \textit{Note. }}
+  
+  #modifies heading levels of 4-5 to follow apa7
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+  
+  
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation: 
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+linkcolor         : blue
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+keep_tex: true
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: dissertation_references.bib
+---
+```{r package_loading_ta, include=F}
+#load packages
+library(easypackages)
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 
+              'ggbrace', 'cowplot')
+libraries(packages)
+load_all()
+```
+
+```{r knitting_setup_ta, echo=F, message = F, warning = F}
+#import raw data files (needed for computing variances)
+exp_1_raw <- convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
+  
+exp_2_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_2_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "sample_size"), factor)
+
+exp_3_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+#unfiltered data 
+param_summary_exp_1 <- readRDS(file = 'data/uf_param_summary_exp_1.RData')
+param_summary_exp_2 <- readRDS(file = 'data/uf_param_summary_exp_2.RData')
+param_summary_exp_3 <- readRDS(file = 'data/uf_param_summary_exp_3.RData')
+
+#create analytical versions of summary data + converts vars to sds
+exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = '1')
+exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = '2')
+exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = '3')
+
+combined_analytical_exp_1 <- rbind(exp_1_analytical$likert, exp_1_analytical$days)
+combined_analytical_exp_2 <- rbind(exp_2_analytical$likert, exp_2_analytical$days)
+combined_analytical_exp_3 <- rbind(exp_3_analytical$likert, exp_3_analytical$days)
+
+#create condition summary data sets 
+cond_summary_exp_1 <- compute_condition_summary(param_summary_data = combined_analytical_exp_1, facet_var = 'measurement_spacing', 
+                          ind_vars = c('number_measurements', 'measurement_spacing', 'midpoint'))
+cond_summary_exp_2 <- compute_condition_summary(param_summary_data = combined_analytical_exp_2, facet_var = 'measurement_spacing', 
+                  ind_vars = c('number_measurements', 'measurement_spacing', 'sample_size'))
+
+cond_summary_exp_3 <- compute_condition_summary(param_summary_data = combined_analytical_exp_3, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+```
+
+```{r pre_knitting_setup_unfiltered_ta, echo=F, eval=F, include=F}
+#code should be computed before knitting to decrease knitting time 
+#load data from experiments
+exp_1 <- read_csv(file = 'data/exp_1_data.csv') %>% filter(code == 0)
+exp_2 <- read_csv(file = 'data/exp_2_data.csv')
+exp_3 <- read_csv(file = 'data/exp_3_data.csv')
+
+#compute parameter summary statistics  
+exp_1_long <- exp_1 %>%
+    filter(code == 0) %>%
+    #place parameter estimates in one column
+    pivot_longer(cols = contains(c('theta', 'alpha', 'beta', 'gamma', 'epsilon')),
+                 names_to = 'parameter', values_to = 'estimate') %>%
+    filter(parameter == 'beta_fixed') %>%
+    mutate(pop_value = midpoint)
+
+exp_1_ordered <- order_param_spacing_levels(data = exp_1_long)
+
+exp_1_ordered %>%
+      #compute statistics for each parameter for each experimental variable
+      group_by(parameter, .dots = locate_ivs(exp_1_ordered)) %>%
+      summarize(
+       lower_ci = compute_middle_95_estimate(param_data = estimate)[1],
+       upper_ci = compute_middle_95_estimate(param_data = estimate)[2])
+
+compute_parameter_summary(data = exp_1, exp_num = '1')
+
+param_summary_exp_1 <- compute_parameter_summary(data = exp_1, exp_num = 1)
+param_summary_exp_2 <- compute_parameter_summary(data = exp_2, exp_num = 2)
+param_summary_exp_3 <- compute_parameter_summary(data = exp_3, exp_num = 3)
+
+#necessary factor conversions 
+param_summary_exp_1$number_measurements <- factor(param_summary_exp_1$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_1$midpoint <- factor(param_summary_exp_1$midpoint, levels = c(80, 180,280))
+
+param_summary_exp_2$number_measurements <- factor(param_summary_exp_2$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_2$sample_size <- factor(param_summary_exp_2$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+param_summary_exp_3$number_measurements <- factor(param_summary_exp_3$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_3$sample_size <- factor(param_summary_exp_3$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+#write data sets 
+#save parameter summary files as RData files so that metadata are correctly stored (e.g., factor levels, variable types)
+saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData')
+saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
+saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
+```
+
+
+
+```{=tex}
+\newpage
+\vspace*{-\topskip}
+\vspace*{\fill}
+\nointerlineskip
+```
+
+# Technical Appendix
+## Technical Appendix A: Ergodicity and the Need to Conduct Longitudinal Research
+
+(ref:petersen1983) [for an introduction, see @petersen1983]
+(ref:birkhoff1931) @birkhoff1931 [for a review, see @choe2005, Chapter 3]
+
+To understand why cross-sectional results are unlikely to agree with longitudinal results for any given analysis, a discussion of data structure is apropos. Consider an example where a researcher obtains data from 50 people measured over 100 time points such that each row contains a $p$ person's data over the 100 time points and each column contains data from 50 people at a $t$ time point. For didactic purposes, all data are assumed to be sampled from a normal distribution. To understand whether findings in any given cross-sectional data set yield the same findings in any given longitudinal data set, the researcher randomly samples one cross-sectional and one longitudinal data set and computes the mean and variance in each set. To conduct a cross-sectional analysis, the researcher randomly samples the data across the 50 people at a given time point and computes a mean of the scores at the sampled time point ($\bar{X}_t$) using Equation \ref{eq:cross-mean} shown below:
+
+\begin{align}
+\bar{X}_t = \frac{1}{P}\sum^P_{p = 1} x_p,
+(\#eq:cross-mean)
+\end{align}
+
+\noindent where the scores of all $P$ people are summed ($x_p$) and then divided by the number of people ($P$). To compute the variance of the scores at the sampled time point ($S^2_t$), the researcher uses Equation \ref{eq:cross-variance} shown below:
+
+\begin{align}
+\S^2_t = \frac{1}{P}\sum^P_{p = 1} (x_p - \bar{X}_t)^2,
+(\#eq:cross-variance)
+\end{align}
+
+\noindent where the sum of squared differences between each person's score ($x_p$) and the average value at the given $t$ time point ($\bar{X}_t$) is computed and then divided by the number of people ($P$).  To conduct a longitudinal analysis, the researcher randomly samples the data across the 100 time points for a given person and also computes a mean and variance of the scores. To compute the mean across  the $t$ time points of the longitudinal data set ($\bar{X}_p$), the researcher uses Equation \ref{eq:long-mean} shown below:
+
+\begin{align}
+\bar{X}_p = \frac{1}{T}\sum^T_{t = 1} x_t,
+(\#eq:long-mean)
+\end{align}
+
+\noindent where the scores at each $t$ time point are summed ($x_t$) and then divided by the number of time points ($T$). The researcher also computes a variance of the sampled person's scores across all time points ($S^2_p$) using Equation \ref{eq:long-variance} shown below:
+
+\begin{align}
+\S^2_p = \frac{1}{T}\sum^T_{t = 1} (x_t - \bar{X}_p)^2,
+(\#eq:long-variance)
+\end{align}
+
+\noindent where the sum of squared differences between the score at each time point ($x_t$) and the average value of the $p$ person's scores ($\bar{X}_p$) is computed and then divided by the number of time points ($T$). 
+
+If the researcher wants treat the mean and variance values computed from the cross-sectional and longitudinal data sets as interchangeable, then two conditions outlined by ergodic theory must be satisfied [@molenaar2004; @molenaar2009].\footnote{Note that ergodic theory is an entire mathematical discipline (ref:petersen1983). In the current context, the most important ergodic theorems are those proven by (ref:birkhoff1931).} First, a given cross-sectional mean and variance can only closely estimate the mean and variance of any given person's data (i.e., a longitudinal data set) to the extent that each person's data are generated from a normal distribution with the same mean and variance. If each person's data were generated from a different normal distribution, the computing the mean and variance at a given time point would, at best, describe the values of one person. When each person's data are generated from the same normal distribution, the condition of **homogeneity** is met. Importantly, satisfying the condition of homogeneity does not guarantee that the mean and variance obtained from another cross-sectional data set will closely estimate the mean and variance of any given person (i.e., any given longitudinal data set). The mean and variance values computed from any given cross-sectional data set can only closely estimate the values of any given person to the extent that the cross-sectional mean and variance remain constant over time. If the mean and variance of observations remain constant over time, then the the second condition of **stationarity** is satisfied. Therefore, the researcher can only treat means and variances from cross-sectional and longitudinal data sets as interchangeable if each person's data is generated from the same normal distribution (homogeneity) and if the mean and variance remain constant over time (stationarity). When the conditions of homogeneity and stationarity are satisfied, a process is said to be **ergodic**: Analyses of cross-sectional data sets return the same values as analyses on longitudinal data sets.
+
+Given that psychological studies almost never collect data from only one person, one potential reservation may be that the conditions required for ergodicity only hold when a longitudinal data set contains the data of one person. That is, if the researcher used the full data set containing the data of 100 people sampled over 100 time points and computed 100 cross-sectional means and variances (Equation \ref{eq:cross-mean} and Equation \ref{eq:cross-variance}, respectively) and 100 longitudinal means and variances (Equation \ref{eq:long-mean} and Equation \ref{eq:long-variance}, respectively), wouldn't the average of the cross-sectional means and variances be the same as the average of the longitudinal means and variances? Although the averaging the cross-sectional mean returns the same value as averaging the longitudinal means, the average longitudinal variance remains different from the average cross-sectional variance [for several empirical examples, see @fisher2018]. Therefore, the conditions of ergodicity apply even with larger longitudinal and cross-sectional sample sizes. 
+
+(ref:voelkle2014spector2019) [@voelkle2014; for similar discussion, see @spector2019]
+(ref:adolf2019medaglia2019) [@adolf2019; @medaglia2019]
+
+The guaranteed differences in cross-sectional and longitudinal variance values that result from non-ergodic processes have far-reaching implications. Almost every analysis employed in organizational research---whether it be correlation, regression, factor analysis, mediation analysis, etc.---analyzes variability, and so, when a process is non-ergodic, cross-sectional variability will differ from longitudinal variability, and the results obtained from applying any given analysis on each of the variabilities will differ as a consequence. Because variability is central to so many analyses, the non-equivalence of longitudinal and cross-sectional variances that results from a non-ergodic process explains why discussions of ergodicity often comment that "for non-ergodic processes, an analysis of the structure of IEV [interindividual variability] will yield results that differ from results obtained in an analogous analysis of IAV [intraindividual variability]"[@molenaar2004, p. 202].\footnote{It is important to note that a violation of one or both ergodic conditions (homogeneity and stationarity) does not mean that an analysis of cross-sectional variability yields results that have no relation to the results gained from applying the analysis on longitudinal variability (i.e., the causes of cross-sectional variability are independent from the causes of longitudinal variability). An analysis of cross-sectional variability can still give insight into temporal dynamics if the causes of non-ergodicity can be identified (ref:voelkle2014spector2019). Thus, conceptualizing ergodicity on a continuum with non-erdogicity and ergodicity on opposite ends provides a more balanced perspective for understanding ergodicity (ref:adolf2019medaglia2019).}
+
+With an understanding of the conditions required for ergodicity, a brief consideration of organizational phenomena finds that these conditions are regularly violated. Focusing only on homogeneity (each person's data are generated from the same distribution), several instances in organizational research violate this condition. As examples of homogeneity violations, employees show different patterns of absenteeism over five years [@magee2016], leadership development over the course of a seminar [@day2011], career stress over the course of 10 years [@igic2017], and job performance in response to organizational restructuring [@miraglia2015]. With respect to stationarity (constant values for statistical parameters across people over time), several examples can be generated by realizing how calendar events affect psychological processes and behaviours throughout the year. As examples of stationarity violations, consider how salespeople, on average, undoubtedly sell more products during holidays, how employees, on average, take more sick days during the winter months, and how accountants, on average, experience more stress during tax season. With ergodic condition violations commonly occurring in organizational psychology, it becomes fitting to echo the commonly held sentiment that few, if any, psychological processes are ergodic [@molenaar2004; @molenaar2008; @molenaar2009; @fisher2018; @curran2011; @wang2015; @hamaker2012]. 
+
+
+## Technical Appendix B: Using Nonlinear Function in the Structural Equation Modelling Framework 
+### Nonlinear Latent Growth Curve Model Used to Analyze Each Generated Data Set{#structured-latent}
+
+The sections that follow will first review the framework used to build
+latent growth curve models and then explain how nonlinear functions can
+be modified to fit into this framework.
+
+#### Brief Review of the Latent Growth Curve Model Framework
+
+(ref:meredith1990browne1993) [@meredith1990; @browne1993]
+
+(ref:blozis2004) [@blozis2004]
+
+The latent growth curve model proposed by @meredith1990
+is briefly reviewed here [for a review, see @preacher2008]. Consider an example where data are collected at five time
+points ($T = 5$) to yield five observations for each $p$ person
+($\mathbf{y_p} = [y_1, y_2, y_3, y_4, y_5$). A simple model to fit is
+one where change over is defined by a straight line and each person's
+pattern of change is some variation of this straight line. In modelling
+parlance, an intercept-slope model is fit where both the intercept and
+slope are random effects whose values are allowed to vary for each
+person. Intercept and slope parameters can be algebraically represented
+by a two-column matrix that represents the effect of each parameter on
+the outcome variable $y$ at each $i$ time point. Because the effect of
+the intercept parameter is constant over time, a column of 1s is used to
+represent its effect. For the slope parameter, a pattern of linear
+growth can be specified filling the second column with a series of
+monotonically increasing numbers such as
+0--4.\footnote{The set of numbers specified for the slope starts at zero because there is presumably no effect of any variable at the first time point.}The matrix $\mathbf{\Uplambda}$ below shows a two-column matrix that
+specifies the effects for an intercept and slope parameter:
+
+$$ 
+\mathbf{\Uplambda} = 
+\begin{bmatrix}
+1 & 0 \\ 
+1 & 1 \\ 
+1 & 2 \\ 
+1 & 3 \\
+1 & 4 \\
+\end{bmatrix}
+$$
+
+\noindent To create a model that allows different linear patterns to be
+fit to each person's data, a weight can be applied to each column of
+$\mathbf{\Uplambda}$ and each weight can vary across individuals.\footnote{The columns of $\mathbf{\Uplambda}$ are called basis curves (ref:blozis2004) or basis functions (ref:meredith1990browne1993) because each column specifies a particular component of change.}That is, each $p$ person's pattern of change is predicted with a unique set of weights in $\mathbf{\upiota_p}$ that determines the extent to
+which each basis column of $\mathbf{\Uplambda}$ contributes to that
+person's change over time. Discrepancies between the values predicted by
+$\mathbf{\Uplambda\upiota_p}$ and a person's observed scores across all
+five time points are stored in an error vector
+$\mathbf{\mathcal{E}_p}$. Thus, a person's observed data ($\mathbf{y_p}$) is
+constructed using the expression shown below in Equation \ref{eq:sem-framework}:
+
+```{=tex}
+\begin{align}
+ y_p = \mathbf{\Uplambda\upiota_p} + \mathbf{\mathcal{E}_p}.
+ (\#eq:sem-framework)
+\end{align}
+```
+
+\noindent Note that Equation \ref{eq:sem-framework} defines the general structural equation modelling framework. 
+
+#### Fitting a Nonlinear Function in the Structural Equation Modelling Framework
+
+Unfortunately, the logistic function of Equation
+\ref{eq:logFunction-generation}---where each parameter was estimated as a
+fixed- and random-effect---could not be directly used in a latent growth curve model because it would have violated the linear nature of the structural equation modelling framework (Equation \ref{eq:sem-framework}). Structural equation models only permit linear combinations---specifically, the
+products of matrix-vector and/or matrix-matrix multiplication---and so
+directly fitting a nonlinear function such as the logistic function in
+Equation \ref{eq:logFunction-generation} would not have been possible.
+
+One solution to fitting the logistic function within the structural equation modelling framework was to implement the structured latent curve modelling approach
+[@browne1991; @browne1993; for an excellent review, see @preacher2015]. Briefly, the structured latent curve modelling approach constructs a Taylor series approximation of a nonlinear function so that the nonlinear function can be fit into the structural equation modelling framework (Equation \ref{eq:sem-framework}). The sections that follow will present the structured latent curve modelling approach in four parts such that 1) Taylor series approximations will first be reviewed, 2) a Taylor series approximation will then be constructed for the logistic function, 3) the logistic Taylor series approximation will be modified and fit into the structural equation modelling framework, and 4) the process of parameter estimation will be reviewed. 
+
+##### Taylor Series Approximations
+
+A Taylor series uses derivative information of a nonlinear function to
+construct a linear approximation.\footnote{Linear functions are
+defined as functions where no parameter exists within its own partial
+derivative. For example, none of the parameters in the polynomial
+equation of $y = a + bt + ct^2 + dt^3$ exist within their own partial
+derivative: $\frac{\partial y}{\partial a} = 1$,
+$\frac{\partial y}{\partial b} = t$,
+$\frac{\partial y}{\partial c} = t^2$, and
+$\frac{\partial y}{\partial d} = t^3$. Conversely, the logistic function
+is nonlinear because $\upbeta$ and $\upgamma$ exist in their own
+partial derivatives. For example, the derivative of the logistic function  $y = \uptheta + \frac{\upalpha - \uptheta}{1 + e^{\frac{\upbeta - t}{\upgamma}}} $with respect to $\upbeta$ is $\frac{(\uptheta - \upalpha) (e^{\frac{\upbeta - t}{\upgamma}})(\frac{1}{\upgamma})}{1 + (e^{\frac{\upbeta - t}{\upgamma}})^2}$and so is nonlinear because it contains $\upbeta$.}Equation \ref{eq:taylor} shows the general formula for a Taylor series such that
+
+```{=tex}
+\begin{align}
+P^N(f(x), a)= \sum^{N}_{n = 0} \frac{f^na}{n !}(x-a)^n,
+(\#eq:taylor)
+\end{align}
+```
+
+\noindent where $N$ is the highest derivative order of the function $f(a)$ that is taken beginning from a zero-value derivative order ($n=0$), $a$ is the point where the Taylor series is derived, and $x$ is the point where the
+Taylor series is evaluated. As an example, consider  $f(x) = \cos(x)$. Note that, across the continuum of $x$ values (i.e., from $-\infty$ to $\infty$), $\cos(x)$ returns values between -1 and 1 in an oscillatory manner. Computing the second-order Taylor series approximation of $f(x) = \cos(x)$ yields the following function shown in Equation \ref{eq:example-taylor}:
+
+```{=tex}
+\begin{align} 
+P^2(\cos(x), a) &=  \frac{\frac{\partial^0 \cos(a)}{\partial a^0}}{0!}(x -a)^0 + \frac{\frac{\partial^1 \cos(a)}{\partial a^1}}{1!}(x -a)^1 + \frac{\frac{\partial^2 \cos(a)}{\partial a^2}}{2!} (x -a)^2 \nonumber \\ 
+&=  \frac{\cos(0)}{0!}(x -0)^0 - \frac{\sin(0)}{1!}(x -0)^1 - \frac{\cos(0)}{2!}(x -0)^2  \nonumber \\ 
+&=  \frac{1}{1}1 - \frac{0}{1}x - \frac{1}{2}x^2  \nonumber \\ 
+P^2(\cos(x), 0) &=  1- \frac{1}{2}x^2. 
+  (\#eq:example-taylor)
+\end{align}
+```
+\noindent Note that that the second-order Taylor series of $\cos(x)$
+perfectly estimates $\cos(x)$ when the point of evaluation $x$ is set
+equal to the point of derivation $a$ and estimates $\cos(x)$ with an
+increasing amount of error as the difference between $x$ and $a$
+increases (see Example \ref{exm:taylor-estimates}).
+
+```{example, taylor-estimates, echo=T}
+Estimates of Taylor series approximation of $f(x) = \cos(x)$ as the difference between the point of evaluation $\mathrm{x}$ and the point of derivation $\mathrm{a}$ increases.
+
+ \noindent \textup{Taylor series approximation of $f(x) = \cos(x)$ estimates values that are exactly equal to the values returned by $f(x) = \cos(x)$ when the point of evaluation \textit{x} is set to the point of derivation \textit{a}. The example below computes the value predicted by the Taylor series approximation of $f(x) = \cos(x)$ and by $f(x) = \cos(x)$ when \textit{x} = \textit{a} = 0.}
+
+\useshortskip
+\begin{align*}
+P^2(\cos(x=0), a=0) &= \cos(x=0) \nonumber \\ 
+1- \frac{1}{2}x^2 &=  \cos(0) \nonumber \\ 
+1- \frac{1}{2}0^2 &=  1 \nonumber \\ 
+1- 0 &=  1 \nonumber \\ 
+1 &=  1 \nonumber \\ 
+\end{align*}
+\vspace*{-25mm}
+
+ \noindent \textup{Taylor series approximation of $f(x) = \cos(x)$ estimates a value that is clearly not equal ($neq$) to the value returned by $f(x) = \cos(x)$when the difference between the point of evaluation \textit{x} and the point of derivation \textit{a} is smaller. The example below computes the value predicted by the Taylor series approximation of $f(x) = \cos(x)$ and by $f(x) = \cos(x)$ when \textit{x} = 1 and  \textit{a} = 0.} 
+
+\useshortskip
+\begin{align*}
+P^2(\cos(x = 1), 0) &\thickapprox \cos(x = 1) \nonumber \\ 
+1- \frac{1}{2}x^2 &\thickapprox   \cos(1) \nonumber \\ 
+1- \frac{1}{2}1^2 &\thickapprox   0.54 \nonumber \\ 
+1- 0.5 &\thickapprox   0.54 \nonumber \\ 
+0.5 &\thickapprox 0.54 \nonumber \\ 
+\end{align*}
+\vspace*{-25mm}
+
+ \noindent\textup{Taylor series approximation of $f(x) = \cos(x)$ estimates a value that is clearly not equal ($neq$) to the value returned by $f(x) = \cos(x)$ when the difference between the point of evaluation \textit{x} and the point of derivation \textit{a} is larger The example below computes the value predicted by the Taylor series approximation of $f(x) = \cos(x)$ and by $f(x) = \cos(x)$ when \textit{x} = 4 and  \textit{a} = 0.} 
+
+
+\useshortskip
+\begin{align*}
+P^2(\cos(x = 4), 0) &\neq \cos(x = 4) \nonumber \\ 
+1- \frac{1}{2}x^2 &\neq  \cos(4) \nonumber \\ 
+1- \frac{1}{2}4^2 &\neq  -0.65 \nonumber \\ 
+1- 16 &\neq  -0.65 \nonumber \\ 
+0.5 &\neq  -0.65 \nonumber \\ 
+\end{align*}
+\vspace*{-25mm}
+
+\noindent \hrulefill
+```
+
+\noindent Figure \ref{fig:taylor-vs-nonlin} plots the nonlinear function
+of $\cos(x)$ and its second-order Taylor series $P^2(\cos(x)) = 1- \frac{1}{2}x^2$. The
+second order Taylor series perfectly estimates $\cos(x)$ when the point
+of evaluation ($x$) equals the point of derivation ($a$; $x = a = 0$),
+but incurs an increasingly large amount of error as the difference
+between the point of evaluation and the point of derivation increases.
+For example, at $x = 10$, $\cos(10) = -0.84$, but the Taylor series
+outputs a value of -49.50 ($P^2(cos(50)) = 1- \frac{1}{2}10^2 = -49.50$). Therefore, Taylor series' are approximations because they are locally accurate.
+
+```{r taylor-vs-nonlin, include=F, eval=F}
+
+x <- seq(from = 0, to = 10, by = 0.1)
+taylor_data <- 1- 0.5*(x)^2
+cos_data <- cos(x)
+
+combined_data <- data.frame('x' = x, Taylor = taylor_data, Cos = cos_data, check.names = F)
+
+combined_data_long <- combined_data %>% 
+  pivot_longer(cols = c('Cos' , 'Taylor'), names_to = 'curve_type', 
+               names_ptypes = factor())
+
+taylor_vs_nonlin_plot <- ggplot(data = combined_data_long, mapping = aes(x = x, y = value, group = curve_type, linetype = curve_type)) + 
+  geom_line(size = 1) + 
+  labs(linetype = 'Curve type') + 
+  annotate(geom = 'text', label = 'P^2*(cos(x)) == 1 - frac(1, 2)*x^2', x = 5, y = -30, parse=T, size = 7) + 
+  
+  #expression(paste(P^{2}*(cos(x)), ', ', b == 6))
+
+  annotate(geom = 'text', label = 'f(x) == cos(x)', x = 8, y = -10, parse=T, size = 7) + 
+  
+  geom_segment(inherit.aes = F, mapping = aes(x = 8, xend = 8, y = -9, yend = -1), 
+               arrow = arrow(length = unit(0.3, 'cm')), size = 0.5) +
+  
+  geom_segment(inherit.aes = F, mapping = aes(x = 5, xend = 5, y = -28, yend = -13), 
+               arrow = arrow(length = unit(0.3, 'cm')), size = 0.5) +
+  scale_y_continuous(name = 'Curve value') + 
+  scale_x_continuous(name = 'Point of evaluation (x)', breaks = seq(from = 0, to = 10, by =1)) + 
+  theme_classic(base_family = 'Helvetica') + 
+  theme(legend.text = element_text(size = 12, color = 'black'), 
+        legend.title = element_text(size = 16, color = 'black'), 
+        axis.text =element_text(size = 12, color = 'black'), 
+        axis.title = element_text(size = 16, color = 'black')) 
+  
+ggsave(filename = 'Figures/taylor_vs_nonlin.pdf', plot =taylor_vs_nonlin_plot, width = 9, height = 6)
+
+
+```
+
+```{=tex}
+\begin{figure}[H]
+  \caption{Estimation Accuracy of Taylor Series Approximation of Nonlinear Function (cos(x))}
+  \label{fig:taylor-vs-nonlin}
+  \includegraphics{Figures/taylor_vs_nonlin} \hfill{}
+  \caption*{Note. \textup{The second order Taylor series perfectly estimates $\cos(x)$ when the point of evaluation ($x$) equals the point of derivation ($a$; $x = a = 0$), but incurs an increasingly large amount of error as the difference between the point of evaluation and the point of derivation increases. For example, at $x = 10$, $\cos(x) = -0.84$, but the Taylor series outputs a value of -49.50 ($P^2(cos(50)) = 1- \frac{1}{2}10^2 = -49.50$). }}
+\end{figure}
+```
+
+##### Taylor Series Approximation of the Logistic Function
+
+Given that a Taylor series provides a linear approximation of a
+nonlinear function and the structural equation modelling framework is linear, the structured latent curve modelling approach uses Taylor series approximations to construct linear representations of nonlinear functions [@browne1991; @browne1993]. In the current simulations, a Taylor series approximation was constructed for the logistic function (Equation \ref{eq:logistic}). Note that, because the logistic function had four parameters ($\uptheta$,
+$\upalpha$, $\upbeta$, $\upgamma$), derivatives were computed with
+respect to each of the parameters. Using a derivative order set to one
+($n = 1$), the following Taylor series was constructed for the logistic
+function (Equation \ref{eq:logistic-approx}):
+
+```{=tex}
+\begin{align}
+ P^1(L(\Uptheta, t)) = L + \frac{\partial L}{\partial \uptheta}(x_{\uptheta}-a_{\uptheta})^1 + \frac{\partial L}{\partial \upalpha}(x_{\upalpha}-a_{\upalpha})^1 + \frac{\partial L}{\partial \upbeta}(x_{\upbeta}-a_{\upbeta})^1 + \frac{\partial L}{\partial \upgamma_{\upgamma}}(x-a_{\upgamma})^1, 
+(\#eq:logistic-approx)
+\end{align}
+```
+\noindent where $\mathbf{L(\Uptheta, t)}$ represents the logistic function shown below in
+Equation \ref{eq:logistic}:
+
+```{=tex}
+\begin{align}
+  \mathbf{L(\Uptheta, t)} = \uptheta + \frac{\upalpha - \uptheta}{{1 + e^\frac{\upbeta - t}{\upgamma}}} + \upepsilon, 
+(\#eq:logistic)
+\end{align}
+```
+
+\noindent with $\Uptheta = [\uptheta, \upalpha, \upbeta, \upgamma]$ and  $\mathbf{L(\Uptheta, t)}$ being a vector of scores at all $\mathbf{t}$ time points. In the current context, because each parameter of the logistic function had a unique meaning (see section on [data generation][Data generation]), the point of derivation $a$ differed for each parameter---using the same $a$ value for each parameter to construct the
+Taylor series approximation of the logistic function would have yielded
+a practically useless equation. Because the logistic Taylor series
+approximation (Equation \ref{eq:logistic-approx}) was deployed in a
+statistical model (i.e., the structural equation modelling framework), the derivation values
+($a_{\uptheta}$, $a_{\upalpha}$, $a_{\upbeta}$, $a_{\upgamma}$) were set
+to the mean values estimated by the analysis for each parameter. Thus, the
+derivation values were replaced with the following terms:
+
+-   $a_{\uptheta} = \hat{\uptheta}$
+-   $a_{\upalpha} = \hat{\upalpha}$
+-   $a_{\upbeta} = \hat{\upbeta}$
+-   $a_{\upgamma} = \hat{\upgamma}$
+
+\noindent where that a caret $\hat{}$ indicates the mean value estimated for a parameter by the analysis. In order to estimate curves for each $p$ person, the values of
+evaluation ($x_{\uptheta}$, $x_{\upalpha}$, $x_{\upbeta}$,
+$x_{\upgamma}$) corresponded to the parameter values computed for a
+given person ($\uptheta_p$, $\upalpha_p$, $\upbeta_p$, $\upgamma_p$). Thus, the evaluation values were replaced with the following terms:
+
+-   $x_{\uptheta} = \uptheta_p$
+-   $x_{\upalpha} = \upalpha_p$
+-   $x_{\upbeta} = \upbeta_p$
+-   $x_{\upgamma} = \upgamma_p$
+
+\noindent Substituting the above values for the derivation and evaluation values of $x$ and $a$ in the initial logistic Taylor series approximation (Equation \ref{eq:logistic-approx}) yielded the following expression for the logistic Taylor series approximation (Equation \ref{eq:taylor-full}):
+
+```{=tex}
+\begin{align}
+ P^1(L(\Uptheta, t)) = L(\Uptheta, t) + \frac{\partial L}{\partial \uptheta}(\uptheta_i-\hat{\uptheta})^1 + \frac{\partial L}{\partial \upalpha}(\upalpha_i-\hat{\upalpha_i})^1 + \frac{\partial L}{\partial \upbeta}(\upbeta-\hat{\upbeta})^1 + \frac{\partial L}{\partial \upgamma_{\upgamma}}(\upbeta-\hat{\upbeta})^1.
+(\#eq:taylor-full)
+\end{align}
+```
+
+\noindent Therefore, because the Taylor series was derived using the mean values estimated for each parameter ($\hat{\uptheta}$, $\hat{\upalpha}$, $\hat{\upbeta}$,
+$\hat{\upgamma}$), it provided a perfect approximation of the estimated
+population curve---the evaluation values for each parameter would have
+been set to their corresponding mean estimated value. To estimate the curve of any given $p$ person, the evaluation values could be offset from their corresponding derivation value (i.e., mean estimated value for a parameter) by using the set of parameter values computed for that person ($\uptheta_p$, $\upalpha_p$, $\upbeta_p$, $\upgamma_p$). Note that, because Taylor series approximations are only locally accurate, the predicted curves for any given $p$ person become increasingly inaccurate curves as the difference between the derivation and evaluation values increases (e.g., $\uptheta_i-\hat{\uptheta}$).
+
+##### Fitting the Logistic Taylor Series Approximation Into the Structual Equation Modelling Framework 
+
+Although the logistic Taylor series approximation provides an accurate
+estimation of the logistic function, the function in (Equation
+\ref{eq:taylor-full}) is modified in the structured latent curve
+modelling approach so that it can more effectively fit into the structural equation modelling framework (Equation \ref{eq:sem-framework}). The partial derivative information is stored in the matrix $\mathbf{\Uplambda}$ such that
+
+$$ 
+\mathbf{\Uplambda} = 
+\begin{bmatrix}
+\frac{\partial L(\Uptheta, t_1)}{\partial \uptheta} & \frac{\partial L(\Uptheta, t_1)}{\partial \upalpha}  &  \frac{\partial L(\Uptheta, t_1)}{\partial \upbeta} & \frac{\partial L(\Uptheta, t_1)}{\partial \upgamma}   \\ 
+\frac{\partial L(\Uptheta, t_2)}{\partial \uptheta}  & \frac{\partial L(\Uptheta, t_2)}{\partial \upalpha} &  \frac{\partial L(\Uptheta, t_2)}{\partial \upbeta} & \frac{\partial L(\Uptheta, t_2)}{\partial \upgamma} & \\ 
+\vdots & \vdots & \vdots & \vdots \\ 
+\frac{\partial L(\Uptheta, t_n)}{\partial \uptheta} & \frac{\partial L(\Uptheta, t_n)}{\partial \upalpha}  & \frac{\partial L(\Uptheta, t_n)}{\partial \upbeta} & \frac{\partial L(\Uptheta, t_n)}{\partial \upgamma} \\
+\end{bmatrix}.
+$$
+
+\noindent As in the structural equation modelling framework where each column of
+$\mathbf{\Uplambda}$ specified a basis curve (i.e., a loading of a
+growth parameter onto all time points), each column of $\mathbf{\Uplambda}$ here
+in the structured latent curve modelling approach contains the loadings
+of a logistic function parameter onto all the $n$ time points, with the loadings being determined by the partial derivative of logistic function with respect to that parameter. To predict unique curves for each person, each column can be multiplied by a specific weight $\mathbf{\upiota_p}$ that contains person-specific deviations from each mean estimated parameter value as shown below:
+
+$$ 
+\mathbf{\upiota_p} = 
+\begin{bmatrix}
+\hat{\uptheta} - \uptheta_p   \\ 
+\hat{\upalpha} - \upalpha_p   \\ 
+\hat{\upbeta} - \upbeta_p \\ 
+\hat{\upgamma_i} - \upgamma_p \\
+\end{bmatrix},
+$$ 
+
+
+\noindent where a caret ($\hat{}$) indicates the mean value estimated
+for a given parameter and a subscript $p$ indicates a parameter value
+computed for a person. With a matrix $\mathbf{\Uplambda}$ containing
+logistic function parameter loadings and a vector $\mathbf{\upiota_p}$ containing
+person-specific weights, the Taylor series of Equation
+\ref{eq:taylor-full} that predicted a person's scores over time can be
+rewritten to become the following expression of Equation
+\ref{eq:slcm-nonsem}:
+
+```{=tex}
+\begin{align}
+ \mathbf{y_p} = \mathbf{L(\Uptheta, t)} + \mathbf{\Uplambda\upiota_p} + \mathbf{\mathcal{E}_p}.
+ (\#eq:slcm-nonsem)
+\end{align}
+```
+
+\noindent Importantly, because of the logistic function ($\mathbf{L(\Uptheta, t)}$) in the
+above expression (Equation \ref{eq:slcm-nonsem}), the model no longer
+fits into the general structural equation modelling framework (Equation \ref{eq:sem-framework}). To modify Equation \ref{eq:slcm-nonsem} such that it fits into the structural equation modelling framework, the structured latent curve modelling approach recognizes that the logistic function ($\mathbf{L(\Uptheta, t)}$) is invariant under a scaling constant and uses this property to rewrite  $\mathbf{L(\Uptheta, t)}$ as a weighted sum of the partial derivative loading matrix [$\mathbf{\Uplambda}$\; @shapiro1987]. Briefly, the
+logistic function vector $\mathbf{L(\Uptheta, t)}$ is invariant under a constant scaling
+property because, given some constant scalar value $k \ge 0$ and a set
+of parameter values ($\Uptheta$), there exists another set of parameter
+values ($\tilde{\Uptheta}$) that can produce the same values (see
+Equation \ref{eq:icsf} and Example \ref{exm:icsf-ex} below).
+
+```{=tex}
+\begin{align}
+ k\mathbf{L(\Uptheta, t)} = \mathbf{L(\tilde{\Uptheta}, t)}
+ (\#eq:icsf)
+\end{align}
+```
+
+```{example, icsf-ex, echo=T}
+Invariability under a constant scaling factor of logistic function (Equation \ref{eq:logistic}).  
+
+\noindent \textup{Given $t = [0, 1, 2, 3]$, $\Uptheta = [\uptheta = 3.00$, $\upalpha = 3.32$, $\upbeta = 180.00$, $\upgamma = 20.00$], and some constant scaling factor $k = 2.00$, then there exists some set of parameter values $\tilde{\Uptheta}$ that produces the same values as $kL(\Uptheta)$. In the current example, $\tilde{\Uptheta} = [\uptheta = 6.00$, $\upalpha = 6.64$, $\upbeta = 180.00$, $\upgamma = 20.00$].} 
+
+\useshortskip
+\begin{align*}
+\mathbf{kL(\Uptheta, t)} &= \mathbf{L(\tilde{\Uptheta}, t)} \nonumber \\ 
+2*[3.00, 3.02, 3.30, 3.32] &=  [6.00, 6.04, 6.60, 6.64] \nonumber \\ 
+[6.00, 6.04, 6.60, 6.64]  &= [6.00, 6.04, 6.60, 6.64] 1 \nonumber \\ 
+\end{align*}
+\useshortskip
+\vspace*{-25mm}
+
+\noindent \hrulefill
+```
+
+\noindent If a function has the property of being invariant under a
+scaling factor, then it can also be expressed as the following
+matrix-vector product shown in Equation \ref{eq:logistic-matrix-vector}
+[@shapiro1987]:
+
+\begin{align}
+ \mathbf{L(\Uptheta, t)} = \mathbf{\Lambda\uptau},
+(\#eq:logistic-matrix-vector)
+\end{align}
+
+\noindent where $\mathbf{\Uplambda}$ contains the partial derivative loadings\footnote{This is also known as a Jacobian matrix.} and
+$\mathbf{\uptau}$ is a vector whose values are otbained by pre-multiplying the output of the logistic function ($\mathbf{L(\Uptheta, t)}$) by the inverse of the partial derivative loading matrix ${\Lambda\uptau}^{-1}$. Solving for $\mathbf{\uptau}$ yields a vector whose contents contain the mean values estimated for parameters that enter the logistic function in a linear way and
+zeroes for parameters that enter the function in a nonlinear way (i.e.,
+parameters that exist within their own partial derivative). Hence, $\mathbf{\uptau}$ is often called a mean vector [@blozis2004; @preacher2015].  In the current example, $\uptheta$ and $\upalpha$ enter the logistic function
+in a linear way and $\upbeta$ and $\upgamma$ enter the logistic function
+in a nonlinear way and so the first two entries of $\mathbf{\uptau}$
+contain the values estimated for $\uptheta$ and $\upalpha$ (i.e.,
+$\hat{\uptheta}$ and $\hat{\upalpha}$) and the last two entries contain zeroes. Example \ref{exm:tau-vector} below shows that the first two
+values of $\mathbf{\uptau}$ are indeed the values estimated for
+$\uptheta$ and $\upalpha$ and the last two values are zero.
+
+```{example, tau-vector, echo=T}
+Computation of mean vector $\mathbf{\uptau}$. 
+  
+ \noindent \textup{Given the parameter estimates of $\hat{\uptheta} = 3.00$, $\hat{\upalpha} = 3.32$, $\hat{\upbeta} = 180.00$, and $\hat{\upgamma} = 20.00$ and $\mathbf{t}$ = [0, 1, 2, 3], $\mathbf{\uptau}$ = [3.00, 3.32, 0, 0], then } 
+
+\useshortskip
+\begin{align*}
+\mathbf{L(\Uptheta, t)} &= \mathbf{\Lambda\uptau} \\ 
+[3.00, 3.02, 3.30, 3.32] &= \begin{bmatrix}
+1.00 & 0.00 & 0.00  & 0.00 \\ 
+0.95  & 0.05 & -0.00 & 0.00 \\ 
+0.05 & 0.95 & -0.00 & -0.00 \\ 
+0.00 & 1.00  & 0.00 & 0.00 \\
+\end{bmatrix} \mathbf{\uptau} \\ 
+\begin{bmatrix}
+1.00 & 0.00 & 0.00  & 0.00 \\ 
+0.95  & 0.05 & -0.00 & 0.00 \\ 
+0.05 & 0.95 & -0.00 & -0.00 \\ 
+0.00 & 1.00  & 0.00 & 0.00 \\
+\end{bmatrix}^{-1}
+\begin{bmatrix} 
+3.00 \\ 3.02 \\ 3.30 \\ 3.32
+\end{bmatrix} &=  \mathbf{\Lambda\uptau} \\ 
+ \mathbf{\uptau} &= [3.00, 3.32, 0, 0]\\
+\end{align*}
+\vspace*{-25mm}
+
+\noindent \hrulefill
+```
+
+\noindent With $\mathbf{L(\Uptheta, t)} = \mathbf{\Uplambda\uptau}$, Equation \ref{eq:slcm-nonsem} can be rewritten in a linear equation as shown below in Equation \ref{eq:taylor-linear}:
+
+\begin{align}
+ \mathbf{y_p} = \mathbf{\Uplambda\uptau} + \mathbf{\Uplambda\upiota_p} + \mathbf{\mathcal{E}_p}.
+ (\#eq:taylor-linear)
+ \end{align}
+ 
+\noindent The mean vector $\mathbf{\uptau}$ and vector of
+person-specific deviations $\mathbf{\upiota_p}$ can be combined into a
+new vector $\mathbf{s_p}$ that represents the person-specific weights
+applied to the basis curves in $\mathbf{\Uplambda}$ such that
+
+$$  
+\mathbf{s_p} = \mathbf{\uptau + \upiota_p} =
+\begin{bmatrix} 
+\hat{\uptheta} + \hat{\uptheta} - \uptheta_p \\ 
+\hat{\upalpha} + \hat{\upalpha} - \upalpha_p \\ 
+0 + \hat{\upbeta} - \upbeta_p \\ 
+0 + \hat{\upgamma} - \upgamma_p \\ 
+\end{bmatrix}
+$$
+
+\noindent and 
+
+\begin{align}
+\mathbf{y_p} = \mathbf{\Uplambda s_p} + \mathbf{\mathcal{E}_p}. 
+(\#eq:taylor-final)
+\end{align}
+
+\noindent Because the expected value of the person-specific weights
+($\mathbf{s_p}$) is the mean vector ($\mathbf{\uptau}$;
+$\mathbb{E}[{\mathbf{s_p}}] = \mathbf{\uptau}$, the expected set
+of scores predicted across all people ($\mathbb{E}[{\mathbf{y_p}}]$) gives back the original expression for the logistic function matrix-vector product in Equation
+\ref{eq:logistic-matrix-vector} as shown below in Equation \ref{eq:expected-value}:
+
+\begin{align}
+ \mathbb{E}[{\mathbf{y_p}}] = \mathbf{\Uplambda\uptau} = \mathbf{L(\Uptheta, t)}. 
+(\#eq:expected-value)
+\end{align}
+
+\noindent Therefore, the structured latent curve modelling approach
+successfully reproduces the output of the nonlinear logistic function
+(Equation \ref{eq:logistic}) with the linear function of Equation
+\ref{eq:taylor-final}. Note that that no error term exists in Equation \ref{eq:expected-value} because the expected value of the error
+values is zero ($\mathbb{E}[{\mathbf{\mathcal{E}_p}}] = 0$).
+
+##### Estimating Parameters in the Structured Latent Curve Modelling Approach 
+
+To estimate parameter values, the full-information maximum
+likelihood shown in Equation \ref{eq:fiml-person} was computed for each
+person (i.e., likelihood of observing a $p$ person's data given the
+estimated parameter values):
+
+\begin{align}
+\mathcal{L}_p = k_p \ln(2\pi) + \ln(|\mathbf{\Sigma_p}| + (\mathbf{y_p} - \mathbf{\upmu_p})^\top \mathbf{\Sigma_p}^{-1}(\mathbf{y_p} - \mathbf{\upmu_p}),
+(\#eq:fiml-person)
+\end{align}
+
+
+\noindent where $k_p$ is the number of non-missing values for a given
+$p$ person, $\mathbf{\Sigma_p}$ is the model-implied covariance matrix
+with rows and columns filtered at time points where person $p$ has
+missing data, $\mathbf{y_p}$ is a vector containing the data points that
+were collected for a $p$ person (i.e., filtered data), and
+$\mathbf{\upmu_p}$ is the model-implied mean vector that is filtered at
+time points where person $p$ has missing data. Note that, because all
+simulations assumed complete data across all times points, no filtering
+procedures were executed [for a review of the filtering procedure, see @boker2020, Chapter 5]. Thus, computing the above full-information
+maximum likelihood in Equation \ref{eq:fiml-person} was equivalent to
+computing the below likelihood function in Equation
+\ref{eq:ml-estimation}:
+
+\begin{align}
+\mathcal{L}_p = k_p \ln(2\pi) + \ln(|\mathbf{\Sigma}| + (\mathbf{y_p} - \mathbf{\upmu})^\top \mathbf{\Sigma}^{-1}(\mathbf{y_p} - \mathbf{\upmu}),  
+(\#eq:ml-estimation)
+\end{align}
+
+\noindent where $\mathbf{\Sigma}$ is the model-implied covariance matrix,
+$\mathbf{y_p}$ contains the data collected from a $p$ person, and
+$\mathbf{\upmu}$ is the model-implied mean vector. The model-implied
+covariance matrix $\mathbf{\Sigma}$ is computed using Equation
+\ref{eq:covariance} below:
+
+\begin{align}
+\mathbf{\Sigma} = \mathbf{\Uplambda\Uppsi\Uplambda} + \mathbf{\Upomega}_{\mathcal{E}},   
+(\#eq:covariance)
+\end{align}
+
+\noindent where $\mathbf{\Uppsi}$ is the random-effect covariance matrix
+and $\mathbf{\Upomega}_{\mathcal{E}}$ contains the error variances at
+each time point. The mean vector $\mathbf{\upmu}$ was computed using
+Equation \ref{eq:mean-structure} shown below:
+
+\begin{align}
+\mathbf{\upmu} = \mathbf{\Uplambda\uptau}. 
+(\#eq:mean-structure)
+\end{align}
+
+\noindent Parameter estimation was conducted by finding values for the model-implied
+covariance matrix $\mathbf{\Sigma}$ and the model-implied mean vector
+$\mathbf{\upmu}$ that maximized the sum of log-likelihoods across all $P$ people
+(see Equation \ref{eq:max-ll} below):
+
+\begin{align}
+\mathcal{L} = \underset{\mathbf{\Sigma},\mathbf{\upmu} }{\argmax} \sum^P_{p = 1} \mathcal{L}_p.
+(\#eq:max-ll)
+\end{align}
+
+\noindent In OpenMx, the above problem was solved using the sequential
+least squares quadratic program [for a review, see @kraft1994].
+

@@ -307,7 +307,7 @@ create_data_visualizations_unfiltered <- function(dodge_position, point_size, li
   primary_plot <- list(
     geom_hline(mapping = aes(yintercept = pop_value), color = 'gray', alpha = 0.43, size = linesizes),
     geom_hline(mapping = aes(yintercept = pop_value), color = 'blue', size = 5, alpha = 0.8),
-    geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci, color = ci_status),
+    geom_errorbar(mapping  = aes(ymin = lower_ci, ymax = upper_ci, color = precision_status),
                   width = error_bar_width, position = dodge_position, size = 3.5),
     geom_point(position = dodge_position, size = point_size),
     geom_line(size = line_size,  position = dodge_position))
@@ -339,19 +339,26 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
   #legend details + x-axis name
   legend_details <- list(
     scale_shape_manual(name = shape_legend_title, values=c(22,21,24,23),
-                       guide  = guide_legend(override.aes = list(fill = c("black")),
-                                             guide = guide_legend(order = 0))),
+                       guide  = guide_legend(override.aes = list(fill = c("black")))),
+
+
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
-                          #guide = guide_legend(order = 3)),
-    scale_fill_manual(name = 'Bias Amount',
-                      values = c('black', 'white'),
-                      labels = c('Below 10%', 'Above 10%'), drop = FALSE,#set drop =FALSE so that unused levels are included
-                      guide = guide_legend(override.aes = list(shape = 22))), #order = 1)),
-    scale_color_manual(name = 'Error Bar Length',
-                       breaks = c("0", "1"),
-                       values = c('black', '#8cb9e3'),
-                       labels = c('Below 20%', 'Above 20%'), drop = FALSE,
-                       guide = guide_legend(order = 1)),
+
+    scale_fill_manual(name = 'Is Biased?',
+                     values = c('black', 'white'),
+                     labels = c('No', 'Yes'), drop = FALSE), #set drop =FALSE s that unused levels are included
+
+    #order = 1))
+    scale_color_manual(name = 'Is Precise?',
+                      breaks = c("0", "1"),
+                      values = c('black', '#8cb9e3'),
+                       labels = c('Yes', 'No'), drop = FALSE,
+                       guide = guide_legend(order = 2)),
+
+    guides(shape = guide_legend(order = 1,  override.aes = list(fill = "black")),
+           linetype = guide_legend(order = 1),
+           fill = guide_legend(order = 2, override.aes = list(shape = 22)),
+           color = guide_legend(order = 3)),
     #guides(col = guide_legend(reverse = TRUE)),
     #fill = guide_legend(override.aes = list(shape = 22, fill = c('black', 'white'))),
     labs(x = x_axis_name))

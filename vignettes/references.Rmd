@@ -49,8 +49,6 @@ header-includes:
 
 #environment numbering 
   - \setcounter{section}{0} 
-  
-  #remove section number from chapter 
   - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
 
 #set table line widths 
@@ -64,36 +62,20 @@ header-includes:
   #set figure title text
   - \newcommand{\figurefootnote}{\raggedright\linespread{2}\fontfamily{phv}\fontsize{9.5pt}{11.4pt}\selectfont \textit{Note. }}
   
-  #table of contents settings 
-  - \setcounter{tocdepth}{5} #
-  - \setcounter{secnumdepth}{5} #set depth of header that will be numbered in the text and in the table of contents
-  #title for table of contents 
-
-
   #modifies heading levels of 4-5 to follow apa7
-  -  |
+  - |
     \makeatletter
-    
-    \renewcommand\paragraph{% 
-     \@startsection{paragraph}%
-      {4}%
-      {\parindent}%
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
       {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
-      {-0.5em}%
-      {\normalfont\normalsize\bfseries\typesectitle}
-    }
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
     
-      
-     \renewcommand\subparagraph{%
-      \@startsection{subparagraph}%
-      {5}%
-      {\parindent}%
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
       {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
-      {-0.5em}%
-      {\normalfont\normalsize\bfseries\itshape\typesectitle}}
-      
-
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
     \makeatother
+  
   
 author: 
   - name          : "Sebastian Sciarra "
@@ -108,18 +90,18 @@ wordcount         : "5554 words"
 floatsintext      : yes
 linkcolor         : blue
 figsintext        : yes 
-figurelist        : yes
+figurelist        : no
 tablelist         : no
 footnotelist      : no
+numbersections    : yes
 linenumbers       : yes
 mask              : no
 draft             : no
 documentclass     : "apa7"
 csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
-classoption       : "man"        
-output: 
-  papaja::apa6_pdf
-
+classoption       : "man"
+output            : papaja::apa6_pdf
+keep_tex: true
 editor_options: 
   markdown: 
     wrap: 72
@@ -198,107 +180,18 @@ saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData'
 saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
 ```
 
-```{=tex}
-\newpage
-\vspace*{-\topskip}
-\vspace*{\fill}
-\nointerlineskip
-```
-```{=tex}
-\begin{titlepage}
-  \begin{center}
-    \vspace*{3cm}
-    
-  \textbf{Is Timing Everything? Measurement Timing and the Ability to Accurately Model Longitudinal Data}
-    
-  \vspace{2cm} 
-    by \\ Sebastian Sciarra 
-    
-      
-  \vspace{2cm} 
-   In partial fulfilment of requirements \\ 
-   for the degree of \\
-   Doctor of Philosophy \\ 
-   in \\ 
-   Psychology
-    
+@liu2021a
 
-  \vspace{4cm} 
-    Guelph, Ontario, Canada \\ 
-    \textcopyright \text{ Sebastian Sciarra, September 2022}
-
-  
-  \end{center}
-\end{titlepage}
-```
-
-
-
-# Chapter 1
-## Methods
-### Variables Used in Simulation Experiment
-
-#### Independent Variables 
-
-This is new text. 
-
-##### Spacing of Measurements {#spacing-measurements}
-
-More new text. 
-
-#### Independent Variables 
-
-##### Spacing of Measurements {#spacing-measurements}
-
-
-see [spacing](#spacing-measurements)
-
+# References
 
 ```{=tex}
-\begin{figure}[H]
-  \caption{Parameter Estimation Plots for Day-Unit Parameters With Equal Spacing in Experiment 1}
-  \label{fig:exp1_plot_equal}
-  \includegraphics{Figures/exp1_plot_days_equal spacing} \hfill{}
-\end{figure}
-\begin{figure}[H]
-\figurefootnote{Panel A: Parameter estimation plot for the fixed-effect days-to-halfway elevation parameter ($\upbeta_{fixed}$). Panel B: Parameter estimation plot for the fixed-effect triquarter-halfway elevation parameter ($\upgamma_{fixed}$). Panel C: Parameter estimation plot for the random-effect days-to-halfway elevation parameter ($\upbeta_{random}$). Panel D: Parameter estimation plot for the random-effect triquarter-halfway elevation parameter ($\upgamma_{random}$). Blue horizontal lines in each panel represent the population value for each parameter. Population values for each day-unit parameter are as follows: $\upbeta_{fixed}$ = 180.00, $\upbeta_{random}$ = 10.00, $\upgamma_{fixed}$ = 20.00, $\upgamma_{random}$ = 4.00. Gray bands indicate the $\pm 10\%$ margin of error for each parameter and unfilled dots indicate cells with average parameter estimates outside of the margin. Error bars represent the middle 95\% of estimated values, with light blue error bars indicating cells with variability greater than 20\% of the parameter's population value. I considered dots that fell outside the gray bands as biased and error bar lengths that exceeded 20\% of the parameter's population value as indicative of low-precision estimation. Note that random-effect parameter units are in standard deviation units. Importantly, across all nature-of-change values (i.e., population values used for $\upbeta_{fixed}$), the acceptable amount of bias and precision was based on a population value of 180. See Table \ref{tab:exp1-alpha-theta-param-est} for specific values estimated for each parameter and Table \ref{tab:omega-exp1-equal} for $\upomega^2$ effect size values.}
-\end{figure}
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
 ```
+::: {#refs custom-style="Bibliography"}
+:::
 
-```{r errorbar-equal-nc, echo=F}
-param_midpoint_equal <- exp_1_analytical$days %>%
-  filter(str_detect(string = measurement_spacing, pattern = 'Equal')) %>%
-  group_by(parameter, midpoint) %>%
-  summarize(
-            lower = mean(pop_value - lower_ci, digits = 2), 
-            upper = mean(upper_ci - pop_value, digits= 2),
-   total_length = mean(errorbar_length, digits = 2)) %>% 
-            #bias = round(mean(estimate) - mean(pop_value), digits = 2)) %>%
-  pivot_wider(names_from = midpoint, names_glue = "{midpoint}_{.value}",
-    values_from = lower:total_length,
-    names_vary = 'slowest')
-
-param_midpoint_equal$parameter <- factor(x = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}A)', 
-                                        '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}B)', 
-                                        '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_equal}C)', 
-                                       '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_equal}D)'))
-
-param_midpoint_equal$`180_upper`<- c(as.character(round(param_midpoint_equal$`180_upper`[1:3], digits = 2)),
-                                   paste(as.character(round(param_midpoint_equal$`180_upper`[4], digits = 2)), '\\textsuperscript{a}', sep = ''))
-  
-kbl(x = param_midpoint_equal, format = 'latex',digits = 2, 
-       longtable = T, booktabs = T, centering = T, escape = F,
-       align = c('l', rep('c', times = ncol(param_midpoint_equal) - 1)), col.names = c('Parameter', rep(c('Lower', 'Upper', 'Total'), times = 3)), 
-    caption = 'Error Bar Lengths Across Nature-of-Change Values Under Equal Spacing in Experiment 1') %>%
-      #header
-    add_header_above(header = c(' ' = 1, '80' = 3, '180' = 3, '280' = 3), escape = F) %>%
-    add_header_above(header = c(' ' = 1, 'Population Value of $\\\\upbeta_{fixed}$' = 9), escape = F) %>%
-  
-    column_spec(column = 5:7, background = '#DFDEDE') %>%
-    column_spec(column = 1, width = '3.5cm') %>%
-   # column_spec(column = c(2:4), width = '3cm') %>%
-    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}',
-           general = "`Total` indicates the total error bar length, which is a sum of the lower (`Lower') and upper (`Upper') whisker lengths. Parameter names and population values are as follows: $\\\\upbeta_{fixed}$ = fixed-effect days-to-halfway elevation parameter = \\{80, 180, 280\\}; $\\\\upgamma_{fixed}$ = fixed-effect halfway-triquarter delta parameter = 20; $\\\\upbeta_{random}$ = random-effect days-to-halfway elevation parameter = 10; $\\\\upgamma_{random}$ = random-effect halfway-triquarter delta parameter = 4. Note that error bar lengths were calculated by computing the average error bar length value across all number-of-measurement (NM) values (NM $\\\\in$ \\\\{5, 7, 9, 11\\\\}). Columns shaded in gray indicate the nature-of-change value that results in the shortest error bar and whisker lengths.",
-           alphabet_title = '\\\\newline', alphabet = "Whisker is longer than with other nature-of-change values because estimation procedure converges on larger $\\\\upgamma_{random}$ values with a nature-of-change value of $\\\\upbeta_{fixed}$ = 180 (see Figures \\\\ref{fig:density_gamma_equal}--\\\\ref{fig:density_gamma_equal_fixed} and Table \\\\ref{tab:equal-gamma-outlier}).") %>%
-  kable_styling(position = 'left')
+```{=tex}
+\endgroup
 ```

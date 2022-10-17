@@ -33,9 +33,9 @@ generate_param_density_plot <- function(raw_exp_data, param_summary_data,
 generate_param_histogram <- function(base_density_plot, plot_building_elements, param_ind_data_ls) {
 
   param_density <- base_density_plot +
-    scale_x_continuous(name = 'Value of parameter estimate (days)',
+    scale_x_continuous(name = 'Value of Parameter Estimate (ays)',
                        limits = c(150, 210), breaks = seq(from = 150, to = 210, by = 20)) +
-    scale_y_continuous(name = 'Density (proportion of estimates)')  +
+    scale_y_continuous(name = 'Density (Proportion of Estimates)')  +
 
     #shaded filling
     geom_area(data = plot_building_elements$density_df, mapping = aes(x = x, y = y), fill="grey") +
@@ -51,8 +51,8 @@ generate_param_histogram <- function(base_density_plot, plot_building_elements, 
     #plot aesthetics
 
     theme_classic() +
-    theme(axis.text = element_text(size = 14, color = 'black'),
-          axis.title = element_text(size = 18, color = 'black'))
+    theme(axis.text = element_text(size = 20, color = 'black'),
+          axis.title = element_text(size = 26, color = 'black'))
 
   return(param_density)
 

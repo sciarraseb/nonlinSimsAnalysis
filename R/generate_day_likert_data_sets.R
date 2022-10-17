@@ -13,6 +13,7 @@ generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
 
   #compute column for margin of error
   analytical_data$ci_status <- compute_ci_status(analytical_data = analytical_data, exp_num = exp_num)
+  analytical_data$precision_status <- compute_precision_status(analytical_data = analytical_data, exp_num = exp_num)
 
   #center beta_fixed data
   analytical_data <- center_beta_fixed_data(summary_data = analytical_data)
@@ -81,6 +82,35 @@ compute_ci_status <- function(analytical_data, exp_num) {
   }
 
   return(ci_status)
+
+}
+
+compute_precision_status <- function(analytical_data, exp_num) {
+
+  if(str_detect(string = exp_num, pattern = '1')) {
+
+    #compare all beta_fixed rows to cutff value of .10*180
+    beta_fixed_rows <- which(analytical_data$parameter == 'bold(A:~beta[fixed]~(`Days-to-Halfway`~Elevation))')
+    #analytical_data$pop_value[beta_fixed_rows] <- 180
+    beta_fixed_data <- analytical_data[beta_fixed_rows, ]
+    all_other_data <- analytical_data[-beta_fixed_rows, ]
+    precision_status <- rep(NA, nrow(analytical_data))
+
+    #fill precision_status rows by two beta_fixed rows
+    precision_status[beta_fixed_rows] <- ifelse(test = abs(beta_fixed_data$upper_ci - beta_fixed_data$pop_value) > .10*180  |
+                                                  abs(beta_fixed_data$pop_value - beta_fixed_data$lower_ci) > .10*180, yes = 1, no = 0)
+
+    #fill in all other rows
+   precision_status[-beta_fixed_rows] <- ifelse(test = abs(all_other_data$upper_ci - all_other_data$pop_value) > .10*all_other_data$pop_value |
+                               abs(all_other_data$pop_value - all_other_data$lower_ci) > .10*all_other_data$pop_value, yes = 1, no = 0)
+
+   precision_status <- factor(precision_status)
+  }
+  else {
+    precision_status <- factor(ifelse(test = abs(analytical_data$upper_ci - analytical_data$pop_value) > .10*analytical_data$pop_value |
+                                        abs(analytical_data$pop_value - analytical_data$lower_ci) > .10*analytical_data$pop_value, yes = 1, no = 0))  }
+
+  return(precision_status)
 
 }
 
