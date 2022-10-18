@@ -9,9 +9,6 @@ compute_parameter_summary(data, exp_num)
 \arguments{
 \item{data}{experiment data}
 }
-\value{
-
-}
 \description{
 Computes summary statistics for simulated experiment data.
 }

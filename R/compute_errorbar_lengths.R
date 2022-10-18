@@ -1,3 +1,7 @@
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 compute_errorbar_lengths <- function(exp_analytical_days,
                                      iv_level, num_measurements, sample_size) {
 

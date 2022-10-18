@@ -2,7 +2,7 @@
 #'
 #' @param data experiment data
 #' @exp_condition experimental conditions
-#' @return
+#' @export
 compute_parameter_summary <- function(data, exp_num) {
 
   data <- data %>% filter (code == 0)
