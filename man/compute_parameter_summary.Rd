@@ -8,6 +8,8 @@ compute_parameter_summary(data, exp_num)
 }
 \arguments{
 \item{data}{experiment data}
+
+\item{exp_num}{experimental conditions}
 }
 \description{
 Computes summary statistics for simulated experiment data.

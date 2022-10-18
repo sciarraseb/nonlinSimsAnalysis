@@ -15,6 +15,7 @@ Imports:
     parallel,
     rmarkdown,
     tidyverse, 
+    dplyr,
     egg, 
     kableExtra
 Suggests:
