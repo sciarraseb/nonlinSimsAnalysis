@@ -13,7 +13,7 @@ generate_day_likert_facet_plot(
   exp_num,
   beta_lower,
   beta_upper,
-  ticks
+  beta_ticks
 )
 }
 \arguments{
