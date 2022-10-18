@@ -9,9 +9,6 @@ remove_outliers(data, exp_conditions = locate_ivs(data))
 \arguments{
 \item{data}{experiment data}
 }
-\value{
-
-}
 \description{
 Removes outliers from each generated data set.
 }

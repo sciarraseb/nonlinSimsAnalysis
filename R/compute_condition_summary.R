@@ -1,5 +1,7 @@
-
-
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
 
   #converts random effect units from variance to SD, then computes mean

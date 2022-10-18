@@ -1,6 +1,7 @@
-
-
-
+#' Computes summary data for each experimental condition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 generate_column_latex <- function(col_number, parameter_data, abs_cutoff = .40) {
 
   ##escape = FALSE so that latex code can be interpreted by compiler

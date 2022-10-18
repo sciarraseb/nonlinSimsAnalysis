@@ -1,4 +1,7 @@
-
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 generate_summary_facet_plot <- function(condition_data, lower_y_limit, upper_y_limit, ticks,
                                         #parameters that change across Experiments 1-3
                                         x_axis_var = 'midpoint', x_axis_name = 'Midpoint location (days)',

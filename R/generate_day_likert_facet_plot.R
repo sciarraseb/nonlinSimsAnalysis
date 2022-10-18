@@ -2,7 +2,7 @@
 #'
 #' @param data experiment data
 #' @exp_condition experimental conditions
-#' @return
+#' @export
 generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measurement_spacing',
                                            target_value, x_axis_var, x_axis_name, exp_num,
                                           beta_lower, beta_upper, beta_ticks) {

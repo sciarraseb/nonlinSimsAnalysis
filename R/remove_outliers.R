@@ -2,7 +2,7 @@
 #'
 #' @param data experiment data
 #' @exp_condition experimental conditions
-#' @return
+#' @export
 remove_outliers <- function(data, exp_conditions = locate_ivs(data)) {
 
   #convert  columns that contain IVs to factors

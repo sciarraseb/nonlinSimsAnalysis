@@ -1,5 +1,7 @@
-
-
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 generate_param_density_plot <- function(raw_exp_data, param_summary_data,
                                         spacing, num_measurements, sample_size) {
 
