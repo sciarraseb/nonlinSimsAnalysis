@@ -1,7 +1,7 @@
 #' Removes outliers from each generated data set.
 #'
 #' @param data experiment data
-#' @exp_condition experimental conditions
+#' @param exp_conditions experimental conditions
 #' @export
 remove_outliers <- function(data, exp_conditions = locate_ivs(data)) {
 

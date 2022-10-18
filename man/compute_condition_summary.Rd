@@ -8,6 +8,10 @@ compute_condition_summary(param_summary_data, facet_var, ind_vars)
 }
 \arguments{
 \item{param_summary_data}{parameter summary data (created from compute_parameter_summary)}
+
+\item{facet_var}{variable to facet across}
+
+\item{ind_vars}{other independent variables}
 }
 \description{
 Computes summary data for each experimental conition/cell.

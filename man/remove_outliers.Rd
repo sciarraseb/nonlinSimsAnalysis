@@ -8,6 +8,8 @@ remove_outliers(data, exp_conditions = locate_ivs(data))
 }
 \arguments{
 \item{data}{experiment data}
+
+\item{exp_conditions}{experimental conditions}
 }
 \description{
 Removes outliers from each generated data set.

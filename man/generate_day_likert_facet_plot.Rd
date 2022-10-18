@@ -17,7 +17,7 @@ generate_day_likert_facet_plot(
 )
 }
 \arguments{
-\item{data}{experiment data}
+\item{analytical_data}{experiment data}
 }
 \description{
 Generate facetted plots

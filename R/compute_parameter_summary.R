@@ -1,7 +1,7 @@
 #' Computes summary statistics for simulated experiment data.
 #'
 #' @param data experiment data
-#' @exp_condition experimental conditions
+#' @param exp_num experimental conditions
 #' @export
 compute_parameter_summary <- function(data, exp_num) {
 
