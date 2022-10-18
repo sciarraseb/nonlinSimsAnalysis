@@ -1,6 +1,7 @@
 #' Computes summary data for each experimental conition/cell.
 #'
 #' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @return Returns a data table.
 #' @export
 print_bias_var_omega_table <- function(exp_data, target_col, target_value,
                                        ind_vars = c('number_measurements', 'midpoint'), ind_var_acronyms,
