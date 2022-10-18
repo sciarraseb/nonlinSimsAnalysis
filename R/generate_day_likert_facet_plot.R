@@ -255,7 +255,7 @@ generate_filtered_unfiltered_facet_plot <- function(parameter_data, num_rows = 1
 
   #facets
   facet_details <- create_filtered_unfiltered_param_facets(facet_var = facet_var, num_rows = num_rows, num_cols = num_cols,
-                                            y_axis_name = y_axis_name, beta_lower = beta_lower, beta_upper = beta_upper, ticks = ticks)
+                                            y_axis_name = y_axis_name, beta_lower = beta_lower, beta_upper = beta_upper, beta_ticks = ticks)
 
   #thematic elements
   thematic_details <- create_thematic_elements(legend_position = legend_position, legend_direction = legend_direction,

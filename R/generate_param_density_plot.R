@@ -24,8 +24,7 @@ generate_param_density_plot <- function(raw_exp_data, param_summary_data,
 
   param_density <- generate_param_histogram(base_density_plot = base_density_plot,
                            plot_building_elements = plot_building_elements,
-                           param_ind_data_ls = param_ind_data_ls,
-                           file_name = file_name)
+                           param_ind_data_ls = param_ind_data_ls)
 
   ggsave(filename = file_name, plot = param_density, width = 9, height = 6)
 }

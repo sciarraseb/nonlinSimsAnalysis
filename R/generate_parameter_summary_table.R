@@ -53,7 +53,7 @@ print_table <- function(data, caption_name, col_header_name,IV_names,column_name
 create_data_tables <- function(exp_data) {
 
   #filter out values for each parameter under each condition
-  exp_filtered <- remove_outliers(data = exp_data)
+  exp_filtered <- remove_outliers(param_summary_data = exp_data)
 
   #convert variance values to SD values for random effect parameters
   exp_cleaned <- convert_var_to_sd(data = exp_filtered)
