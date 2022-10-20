@@ -217,20 +217,9 @@ saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData'
 ```
 
 
-```{=tex}
-\newpage
-\vspace*{-\topskip}
-\vspace*{\fill}
-\nointerlineskip
-```
 
 # Experiment 1
 
-```{=tex}
-\nointerlineskip
-\vfill
-\newpage
-```
 
 In Experiment 1, I investigated the number of measurements needed to obtain accurate modelling (i.e., low bias and high precision) under different spacing schedules and natures of change. Before presenting the results of Experiment 1, I will present my design and analysis goals. For the design, I conducted a 4(measurement spacing:equal, time-interval increasing, time-interval decreasing, middle-and-extreme x 4(number of measurements: 5, 7, 9, 11) x 3(nature of change: population value for the fixed-effect days-to-halfway elevation parameter [$\upbeta_{fixed}$] of 80, 180, or 280) study. For the analysis, I was interested in answering two questions. First, I was interested in whether spacing measurements near periods of change leads to higher modelling accuracy. To answer the first question, I determined whether modelling accuracy under each spacing schedule increased when measurements were taken closer to periods of change.
 
@@ -789,13 +778,12 @@ parameterValues_df$Value[parameterValues_df$Value ==" NA"] <- ''
 
 kbl(parameterValues_df, booktabs = TRUE, format = 'latex', longtable = T, 
     linesep = c(rep('', times = 3), '\\addlinespace\\addlinespace\\cmidrule{1-2}', '\\cmidrule{1-2}',
-                rep('', times = 10))
-    , 
+                rep('', times = 10)), 
     align = c('l', 'c'), 
     caption = "Values Used for Multilevel Logistic Function Parameters", 
     escape = F) %>%
    add_indent(positions = c(1:4, 6:16), level_of_indent = 2) %>%
-   kable_styling(latex_options= c('hold_position', 'repeat_header'), position = 'left', font_size = 10) %>%
+   kable_styling(latex_options= c('hold_position', 'repeat_header'), position = 'left') %>%
   footnote(general =  "The difference between $\\\\alpha$ and $\\\\theta$ corresponds to the 50$\\\\mathrm{^{th}}$ percentile Cohen's $d$ value of 0.32 in organizational psychology (Bosco et al., 2015).",  threeparttable = T,  escape = F, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}') %>%
    column_spec(column = 1, width = '12 cm')
 ```

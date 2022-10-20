@@ -29,7 +29,7 @@ print_bias_var_omega_table <- function(exp_data, target_col, target_value,
   #header
   add_header_above(header = c(' ' = 1, 'Effect' = 3)) %>%
   #footnotes
-  footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1pc}',
+  footnote(escape = F, threeparttable = T, general_title = '',
            general = footnote) %>%
   #table position
   kable_styling(position = 'left')
