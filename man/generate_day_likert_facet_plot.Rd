@@ -21,6 +21,9 @@ generate_day_likert_facet_plot(
 
 \item{target_col}{experimental conditions}
 }
+\value{
+ggplot
+}
 \description{
 Generate facetted plots
 }

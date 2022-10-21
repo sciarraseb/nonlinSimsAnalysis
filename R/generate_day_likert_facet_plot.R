@@ -2,6 +2,7 @@
 #'
 #' @param analytical_data experiment data
 #' @param target_col experimental conditions
+#' @return ggplot
 #' @export
 generate_day_likert_facet_plot <- function(analytical_data, target_col = 'measurement_spacing',
                                            target_value, x_axis_var, x_axis_name, exp_num,
