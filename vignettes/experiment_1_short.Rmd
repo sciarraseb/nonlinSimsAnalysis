@@ -186,12 +186,6 @@ exp_1_long <- exp_1 %>%
 
 exp_1_ordered <- order_param_spacing_levels(data = exp_1_long)
 
-exp_1_ordered %>%
-      #compute statistics for each parameter for each experimental variable
-      group_by(parameter, .dots = locate_ivs(exp_1_ordered)) %>%
-      summarize(
-       lower_ci = compute_middle_95_estimate(param_data = estimate)[1],
-       upper_ci = compute_middle_95_estimate(param_data = estimate)[2])
 
 compute_parameter_summary(data = exp_1, exp_num = '1')
 
@@ -215,7 +209,6 @@ saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData'
 saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
 saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
 ```
-
 
 
 # Experiment 1
@@ -1482,7 +1475,7 @@ In summary, with time-interval increasing spacing, high precision is achieved in
 
 ```{r plots-time-increasing-exp1, include=F, eval=F}
 generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval increasing',
-                                x_axis_name = expression("Population Value Set for"~beta[fixed]), 
+                                  x_axis_name = expression("Nature of Change (Population Value Set for"~beta[fixed]~')'), 
                                 x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -60, beta_upper = 60, beta_ticks = 10)
 ```
 
@@ -1664,7 +1657,7 @@ In summary, with time-interval increasing spacing, high precision is achieved in
 
 ```{r plots-time-decreasing-exp1, include=F, eval=F}
 generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Time-interval decreasing',
-                                x_axis_name = expression("Population Value Set for"~beta[fixed]),
+                                  x_axis_name = expression("Nature of Change (Population Value Set for"~beta[fixed]~')'),
                                 x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -60, beta_upper = 80,  beta_ticks = 10)
 ```
 
@@ -1852,7 +1845,7 @@ With respect to precision for middle-and-extreme spacing, it is low (i.e., error
 
 ```{r plots-mid-ext-exp1, include=F, eval=F}
 generate_day_likert_facet_plot(analytical_data = exp_1_analytical, target_col = 'measurement_spacing', target_value = 'Middle-and-extreme spacing',
-                                x_axis_name = expression("Population Value Set for"~beta[fixed]), 
+                                  x_axis_name = expression("Nature of Change (Population Value Set for"~beta[fixed]~')'),
                                 x_axis_var = 'midpoint', exp_num = 'exp1_', beta_lower = -80, beta_upper = 80, beta_ticks = 20)
 ```
 

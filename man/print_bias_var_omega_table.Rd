@@ -22,6 +22,9 @@ print_bias_var_omega_table(
 \arguments{
 \item{param_summary_data}{parameter summary data (created from compute_parameter_summary)}
 }
+\value{
+Returns a data table.
+}
 \description{
 Computes summary data for each experimental conition/cell.
 }

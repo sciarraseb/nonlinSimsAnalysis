@@ -3,6 +3,7 @@
 #' @param param_summary_data parameter summary data (created from compute_parameter_summary)
 #' @param facet_var variable to facet across
 #' @param ind_vars other independent variables
+#' @return data table
 #' @export
 compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
 

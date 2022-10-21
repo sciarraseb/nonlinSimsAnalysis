@@ -13,6 +13,9 @@ compute_condition_summary(param_summary_data, facet_var, ind_vars)
 
 \item{ind_vars}{other independent variables}
 }
+\value{
+data table
+}
 \description{
 Computes summary data for each experimental conition/cell.
 }
