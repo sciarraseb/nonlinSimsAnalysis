@@ -1,12 +1,15 @@
 Type: Package
 Package: nonlinSimsAnalysis
-Title: Analyzes data simulated from nonlinSims package
+Title: 'Analyzes data simulated from nonlinSims package'
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: person("Sebastian", "Sciarra", email = "seb@sciarra.com",
+  role = c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line) Use four
-    spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: 'More about what it does (maybe more than one line) Use four
+    spaces when indenting paragraphs within the Description.'
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Roxygen: list(markdown = TRUE)
 Imports: 
     data.table,
     ggplot2,

@@ -12,7 +12,7 @@ compute_errorbar_lengths(
 )
 }
 \arguments{
-\item{param_summary_data}{parameter summary data (created from compute_parameter_summary)}
+\item{exp_analytical_days}{parameter summary data (created from compute_parameter_summary)}
 }
 \description{
 Computes summary data for each experimental conition/cell.
