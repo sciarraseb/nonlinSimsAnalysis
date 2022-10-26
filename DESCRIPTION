@@ -12,15 +12,14 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
 Roxygen: list(markdown = TRUE)
 Imports: 
     data.table,
-    ggplot2,
     ggtext,
     knitr,
     parallel,
     rmarkdown,
-    tidyverse, 
     dplyr,
-    egg, 
-    kableExtra
+    egg,
+    kableExtra,
+    stringr
 Suggests:
     nonlinSimsAnalysis
 VignetteBuilder: 
