@@ -11,8 +11,8 @@ print_bias_var_omega_table(
   ind_vars = c("number_measurements", "midpoint"),
   ind_var_acronyms,
   caption = "$\\\\upomega^2$ Values for Manipulated Variables With Equal Spacing",
- 
-    footnote = "NM = number of measurements, M = population value set for $\\\\\\\\upbeta_{fixed}$,\\n                                       NM x M = interaction between number of measurements and population value set for $\\\\\\\\upbeta_{fixed}$",
+  footnote =
+    "NM = number of measurements, M = population value set for $\\\\\\\\upbeta_{fixed}$,\\n                                       NM x M = interaction between number of measurements and population value set for $\\\\\\\\upbeta_{fixed}$",
   parameter_labels = c("$\\\\upbeta_{fixed}$ (Figure \\\\ref{fig:exp1_plot_equal}A)",
     "$\\\\upbeta_{random}$ (Figure \\\\ref{fig:exp1_plot_equal}B)",
     "$\\\\upgamma_{random}$ (Figure \\\\ref{fig:exp1_plot_equal}C)",

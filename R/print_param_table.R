@@ -36,13 +36,13 @@ print_param_table <- function(table_ready_data, parameter_name,
     column_spec(column = c(1, 2), width = '3cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
-    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.5pc}',
-            general = "Cells shaded in light blue indicate values estimated with low precision (i.e., range covered by middle 95\\\\% of estimated of
-            values exceeds 20\\\\% of parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate values estimated with bias (i.e., error exceeding 10\\\\% of
+    footnote(escape = F, threeparttable = T, general_title = '',
+            general = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding
+            10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., buas exceeding 10\\\\% of
             parameter's population value).") %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
     kable_styling(position = 'left') %>%
-    landscape(margin = '1cm')
+    landscape(margin = '2.54cm')
 
   return(table)
 }
