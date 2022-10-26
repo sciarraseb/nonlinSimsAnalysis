@@ -33,10 +33,10 @@ print_conv_table <- function(table_ready_data,
     column_spec(column = c(3:nrow(table_ready_data)), width = '1cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
-    footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.25pc}',
-             general = 'Cells shaded in gray indicate conditions where less than 90\\\\% of models converged. \\\\phantom{ indicate conditions where less than 90\\\\% of models converged.}', footnote_as_chunk = F) %>%
+    footnote(escape = F, threeparttable = T, general_title = '',
+             general = '\\\\textit{Note. }Cells shaded in gray indicate conditions where less than 90\\\\% of models converged.', footnote_as_chunk = F) %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
-    kable_styling(position = 'left', bootstrap_options = )
+    kable_styling(position = 'left')
     #landscape(margin = '1cm')
 
   return(table)
