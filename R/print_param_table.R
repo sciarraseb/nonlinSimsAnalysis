@@ -2,7 +2,6 @@
 #'
 #' @param param_summary_data parameter summary data (created from compute_parameter_summary)
 #' @export
-#extracts values for the fixed- and random-effect estimates for one parameter and produces an APA table
 print_param_table <- function(table_ready_data, parameter_name,
                               caption_name, col_header_name, IV_names, column_names, footnote
                               ) {
