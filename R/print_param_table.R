@@ -39,7 +39,7 @@ print_param_table <- function(table_ready_data, parameter_name,
     footnote(escape = F, threeparttable = T, general_title = '',
             general = footnote) %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
-    kable_styling(position = 'left') %>%
+    kable_styling(position = 'left',repeat_header_continued = T) %>%
     landscape(margin = '2.54cm')
 
   return(table)
