@@ -4,7 +4,7 @@
 #' @export
 #extracts values for the fixed- and random-effect estimates for one parameter and produces an APA table
 print_param_table <- function(table_ready_data, parameter_name,
-                              caption_name, col_header_name, IV_names, column_names
+                              caption_name, col_header_name, IV_names, column_names, footnote
                               ) {
 
   names(table_ready_data) <- gsub(pattern = "_", replacement = " ", x = names(table_ready_data))
@@ -37,9 +37,7 @@ print_param_table <- function(table_ready_data, parameter_name,
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
     footnote(escape = F, threeparttable = T, general_title = '',
-            general = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding
-            10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., buas exceeding 10\\\\% of
-            parameter's population value).") %>%
+            general = footnote) %>%
     collapse_rows(columns = 1, latex_hline = "major", valign = "middle") %>%
     kable_styling(position = 'left') %>%
     landscape(margin = '2.54cm')

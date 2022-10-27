@@ -10,7 +10,8 @@ print_param_table(
   caption_name,
   col_header_name,
   IV_names,
-  column_names
+  column_names,
+  footnote
 )
 }
 \arguments{
