@@ -74,10 +74,10 @@ create_table_data_sets <- function(param_summary_data, wide_var, first_col, seco
   errorbar_data <- generate_errorbar_data(param_summary_data = param_summary_data,
                                           bias_col_num = bias_col_num,
                                           wide_var = wide_var,
-                                          first_col = first_col, second_col = second_col)
+                                          first_col = first_col,
+                                          second_col = second_col)
 
-
-  parameter_est_data <- generate_latex_data(param_est_data_char, param_est_data_num, errorbar_data, pop_values)
+  parameter_est_data <- generate_latex_data(param_est_data_char = param_est_data_char, param_est_data_num, errorbar_data, pop_values)
 
  ##appends empty superscript square for biased estimates
  #parameter_est_data <- generate_bias_latex(parameter_est_data = parameter_est_data, pop_values = pop_values)
@@ -89,24 +89,62 @@ create_table_data_sets <- function(param_summary_data, wide_var, first_col, seco
   return(list('estimate_table' = parameter_est_data))
 }
 
-generate_errorbar_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
+generate_errorbar_data <- function(param_summary_data, bias_col_num, pop_values, param_est_data_char,
+                                   wide_var, first_col, second_col) {
 
-  param_summary_data$errorbar_range <- param_summary_data$upper_ci - param_summary_data$lower_ci
+  pop_values <- list('theta_fixed' = 3.00,
+                     'alpha_fixed' = 3.32,
+                     'beta_fixed' = 180,
+                     'gamma_fixed' = 20,
+                     'theta_rand' = 0.05,
+                     'alpha_rand' = 0.05,
+                     'beta_rand' = 10,
+                     'gamma_rand' = 4,
+                     'epsilon' = 0.05)
 
+  #reference table
+  param_est_data_char <- generate_parameter_est_data(param_summary_data = param_summary_data,
+                                                     bias_col_num = bias_col_num,
+                                                     wide_var = wide_var, first_col = first_col, second_col = second_col)
+
+  #compute whisker lengths
+  param_summary_data$lower_whisker_length <- abs(param_summary_data$pop_value - param_summary_data$lower_ci)
+  param_summary_data$upper_whisker_length <- abs(param_summary_data$upper_ci - param_summary_data$pop_value)
+
+  #create errorbar data
   errorbar_data <- param_summary_data %>%
-    select(1:(bias_col_num - 1), errorbar_range) %>%
-    pivot_wider(values_from = errorbar_range, names_from = parameter, names_prefix = 'range_') %>%
-    pivot_wider(values_from = contains('range_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
+    select(1:(bias_col_num - 1), lower_whisker_length, upper_whisker_length) %>%
+    pivot_wider(values_from = c(lower_whisker_length, upper_whisker_length), names_from = parameter) %>%
+    pivot_wider(values_from = contains('whisker'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
     relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
     arrange(!!sym(first_col), !!sym(second_col))
 
-  return(errorbar_data)
+
+  parameter_estimate_index <- which(str_detect(string = names(param_est_data_char), pattern = '\\d'))
+  cell_names <- str_remove(string = names(param_est_data_char)[parameter_estimate_index], pattern = 'est_')
+
+  for (name in 1:length(parameter_estimate_index)) {
+
+    pop_value <- pop_values[[which(str_detect(pattern = names(pop_values), string = cell_names[name]))]]
+    target_cols <- which(str_detect(string = names(errorbar_data), pattern = cell_names[name]))
+    target_data <- errorbar_data[ ,target_cols]
+
+
+    #determine whether each whisker length is longer than 10% threshold
+    whisker_results <- apply(X = errorbar_data[ ,target_cols], MARGIN = 2, FUN = is_imprecise, pop_value = pop_value)
+
+    #compute precision results and replace corresponding column in original dataframe
+    param_est_data_char[ ,parameter_estimate_index[name]] <- ifelse(test = rowSums(x = whisker_results) > 0, yes = T, no = F)
+  }
+
+  return(param_est_data_char)
 }
 
 generate_latex_data <- function(param_est_data_char, param_est_data_num, errorbar_data, pop_values) {
 
   #identify columns that contain parameter estimate information by finding column names with numbers in them
   parameter_estimate_index <- which(str_detect(string = names(param_est_data_char), pattern = '\\d'))
+
 
   for (col_number in parameter_estimate_index) {
 
@@ -127,7 +165,7 @@ generate_latex_data <- function(param_est_data_char, param_est_data_num, errorba
 
     #modify cell colour for error bar length
     param_est_data_char[[col_number]] <- cell_spec(x = param_est_data_char[[col_number]],
-                                                   background = ifelse(test = abs(errorbar_data[[col_number]]) > .2*as.numeric(pop_values[pop_value_index]),
+                                                   background = ifelse(test = errorbar_data[[col_number]] == TRUE,
                                                                        yes = '#8cb9e3', no = '#ffffff'),
                                                    format = 'latex', escape = F)
 
@@ -135,6 +173,12 @@ generate_latex_data <- function(param_est_data_char, param_est_data_num, errorba
 
   return(param_est_data_char)
 
+}
+
+#if either values in each row are above 10% of the corresponding population value, then T
+is_imprecise <- function(param_whisker_lengths, pop_value) {
+
+  param_whisker_lengths > .1*pop_value
 }
 
 generate_parameter_est_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
