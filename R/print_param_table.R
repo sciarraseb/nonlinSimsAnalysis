@@ -33,7 +33,7 @@ print_param_table <- function(table_ready_data, parameter_name,
       align = c(rep('l', times = length(IV_names)),
                 rep('c', times = header_width*num_repetitions))) %>%
     column_spec(column = c(1, 2), width = '3cm') %>%
-    column_spec(column = 3:ncol(param_data), width = '1cm') %>%
+    #column_spec(column = 3:ncol(param_data), width = '1.1cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
     footnote(escape = F, threeparttable = T, general_title = '',

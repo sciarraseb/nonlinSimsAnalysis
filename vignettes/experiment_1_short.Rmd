@@ -220,7 +220,6 @@ exp_3_tables$removed_value_table <- exp_3_tables$removed_value_table[ , -col_to_
 ```
 
 ```{r echo=F}
-
 print_param_table(table_ready_data = exp_1_tables$estimate_table, parameter_name = 'theta|alpha|epsilon', 
             caption_name = 'Parameter Values Estimated for Day- and Likert-Unit Parameters in Experiment 1', 
             col_header_name = c('\\\\thead{$\\\\uptheta_{fixed}$ (Baseline)  \\\\\\\\ Pop value = 3.00}', 
@@ -243,3 +242,41 @@ print_param_table(table_ready_data = exp_1_tables$estimate_table, parameter_name
             column_names = c(80, 180, 280),
             footnote = "")
 ```
+
+```{r param-exp-2, echo=F }
+print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'beta', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upbeta_{fixed}$ (Days to halfway elevation) \\\\\\\\ Pop value = 180.00}', 
+                               '\\\\thead{$\\\\upbeta_{random}$ (Days to halfway elevation) \\\\\\\\ Pop value = 10.00}'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+
+print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'gamma', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upgamma_{fixed}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 20.00}', 
+                                '\\\\thead{$\\\\upgamma_{random}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 4.00}'),
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+
+print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'theta', 
+            caption_name = 'Parameter Values Estimated in Experiment 2', 
+           col_header_name = c('\\\\thead{$\\\\uptheta_{fixed}$ (Baseline) \\\\\\\\ Pop value = 3.00}', 
+                               '\\\\thead{$\\\\uptheta_{random}$ (Baseline) \\\\\\\\ Pop value = 0.05}'),
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+
+print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'alpha', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+           col_header_name = c('\\\\thead{$\\\\upalpha_{fixed}$ (Maximal elevation) \\\\\\\\ Pop value = 3.32}', 
+                               '\\\\thead{$\\\\upalpha_{random}$ (Maximal elevation) \\\\\\\\ Pop value = 0.05}'),
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+
+print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'epsilon', 
+            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upepsilon$(error) \\\\\\\\ Pop value = 0.03}'), 
+            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), 
+             footnote = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding 10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., bias exceeding 10\\\\% of parameter's population value).")
+```
+
