@@ -11,7 +11,8 @@ print_param_table(
   col_header_name,
   IV_names,
   column_names,
-  footnote
+  footnote,
+  first_col_width = "3cm"
 )
 }
 \arguments{
