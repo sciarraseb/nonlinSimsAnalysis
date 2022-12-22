@@ -34,6 +34,7 @@ compute_parameter_summary <- function(data, exp_num) {
                                                labels = c('Time structured', 'Time unstructured (fast response)', 'Time unstructured (slow response)'))
   }
 
+
   return(summary_data)
 }
 

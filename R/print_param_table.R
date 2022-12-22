@@ -3,7 +3,7 @@
 #' @param param_summary_data parameter summary data (created from compute_parameter_summary)
 #' @export
 print_param_table <- function(table_ready_data, parameter_name,
-                              caption_name, col_header_name, IV_names, column_names, footnote
+                              caption_name, col_header_name, IV_names, column_names, footnote, first_col_width = '3cm'
                               ) {
 
   names(table_ready_data) <- gsub(pattern = "_", replacement = " ", x = names(table_ready_data))
@@ -32,7 +32,9 @@ print_param_table <- function(table_ready_data, parameter_name,
       caption = caption_name,
       align = c(rep('l', times = length(IV_names)),
                 rep('c', times = header_width*num_repetitions))) %>%
-    column_spec(column = c(1, 2), width = '3cm') %>%
+    column_spec(column = 1, width = first_col_width) %>%
+    column_spec(column = 2, width = '3cm') %>%
+
     #column_spec(column = 3:ncol(param_data), width = '1.1cm') %>%
     #add_header_above(header = pop_value_details, escape = F) %>%
     add_header_above(header = header_details, escape = F) %>%
@@ -103,7 +105,7 @@ generate_errorbar_data <- function(param_summary_data, bias_col_num, pop_values,
                      'epsilon' = 0.05)
 
   #reference table
-  param_est_data_char <- generate_parameter_est_data(param_summary_data = param_summary_data,
+  param_est_data_char <- generate_parameter_est_data( param_summary_data = param_summary_data,
                                                      bias_col_num = bias_col_num,
                                                      wide_var = wide_var, first_col = first_col, second_col = second_col)
 
@@ -183,12 +185,24 @@ is_imprecise <- function(param_whisker_lengths, pop_value) {
 
 generate_parameter_est_data <- function(param_summary_data, bias_col_num, wide_var, first_col, second_col) {
 
+
   parameter_est_data <- param_summary_data %>%
     select(1:(bias_col_num - 1), estimate) %>%
     pivot_wider(values_from = estimate, names_from = parameter, names_prefix = 'est_') %>%
     pivot_wider(values_from = contains('est_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
     relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
     arrange(!!sym(first_col), !!sym(second_col))
+
+
+ #else{
+ #  parameter_est_data <- param_summary_data %>%
+ #    select(1:(bias_col_num - 1), estimate) %>%
+ #    pivot_wider(values_from = estimate, names_from = parameter, names_prefix = 'est_') %>%
+ #    pivot_wider(values_from = contains('est_'), names_from = !!sym(wide_var), names_prefix = wide_var) %>%
+ #    mutate('time_structuredness' = 'Time-unstructured data (slow response rate)') %>%
+ #    relocate(!!sym(first_col), .before = !!sym(second_col)) %>%
+ #    arrange(!!sym(first_col), !!sym(second_col))
+ #}
 
   return(parameter_est_data)
 

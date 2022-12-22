@@ -46,7 +46,7 @@ header-includes:
   - \usepackage{anyfontsize}
   - \AtBeginEnvironment{ThreePartTable}{\fontfamily{phv} \fontsize{10.5pt}{12pt}\selectfont} 
   - \AtBeginEnvironment{tablenotes}{\fontsize{9.5pt}{11.4pt}\selectfont} 
-
+  - \usepackage[backref]{hyperref}
 #environment numbering 
   - \setcounter{section}{0} 
   - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
@@ -55,8 +55,6 @@ header-includes:
   - \setlength\cmidrulewidth{1pt} #line thickness of lines within table and in multi-row headers
   - \setlength\lightrulewidth{1pt} #line thickness of bottom line in header 
 
-  - \newtheorem{theorem}{Theorem}
-  - \newtheorem{example}[theorem]{Example}
   - \renewcommand\theadfont{} #sets cell font to be same as table font 
   
   #set figure title text
@@ -132,30 +130,40 @@ libraries(packages)
 load_all()
 ```
 
-```{r knitting_setup_1, echo=F, message = F, warning = F}
+```{r knitting_setup_int_c3, echo=F, message = F, warning = F}
 #import raw data files (needed for computing variances)
-exp_1_raw <- convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
+exp_1_raw <- nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
   mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
-  
-exp_2_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_2_data.csv')) %>%
+
+exp_2_raw <-nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_2_data.csv')) %>%
   mutate_at(.vars = c("number_measurements", "measurement_spacing", "sample_size"), factor)
 
-exp_3_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
+exp_3_raw <-nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
   mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+exp_3_def_raw <-nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_def.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
 
 #unfiltered data 
 param_summary_exp_1 <- readRDS(file = 'data/uf_param_summary_exp_1.RData')
 param_summary_exp_2 <- readRDS(file = 'data/uf_param_summary_exp_2.RData')
 param_summary_exp_3 <- readRDS(file = 'data/uf_param_summary_exp_3.RData')
+param_summary_exp_3_def <- readRDS(file = 'data/uf_param_summary_exp_3_def.RData')
 
 #create analytical versions of summary data + converts vars to sds
 exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = '1')
 exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = '2')
 exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = '3')
+exp_3_def_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3_def, exp_num = '3')
+exp_3_def_analytical$days$time_structuredness <-  factor(x = 'slow_response',labels = 'Time unstructured (slow response)')
+exp_3_def_analytical$likert$time_structuredness <-  factor(x = 'slow_response',labels = 'Time unstructured (slow response)')
 
 combined_analytical_exp_1 <- rbind(exp_1_analytical$likert, exp_1_analytical$days)
 combined_analytical_exp_2 <- rbind(exp_2_analytical$likert, exp_2_analytical$days)
 combined_analytical_exp_3 <- rbind(exp_3_analytical$likert, exp_3_analytical$days)
+combined_analytical_exp_3_def <- rbind(exp_3_def_analytical$likert, exp_3_def_analytical$days)
+
 
 #create condition summary data sets 
 cond_summary_exp_1 <- compute_condition_summary(param_summary_data = combined_analytical_exp_1, facet_var = 'measurement_spacing', 
@@ -166,23 +174,36 @@ cond_summary_exp_2 <- compute_condition_summary(param_summary_data = combined_an
 cond_summary_exp_3 <- compute_condition_summary(param_summary_data = combined_analytical_exp_3, facet_var = 'time_structuredness', 
                           ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
 
+
+cond_summary_exp_3_def <- compute_condition_summary(param_summary_data = combined_analytical_exp_3_def, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+
 ```
 
-```{r pre_knitting_setup_unfiltered_1, echo=F, eval=F, include=F}
+```{r pre_knitting_setup_unfiltered_int_c3, echo=F, eval=F, include=F}
 #code should be computed before knitting to decrease knitting time 
 #load data from experiments
 exp_1 <- read_csv(file = 'data/exp_1_data.csv') %>% filter(code == 0)
 exp_2 <- read_csv(file = 'data/exp_2_data.csv')
 exp_3 <- read_csv(file = 'data/exp_3_data.csv')
+exp_3_def <-  read_csv(file = 'data/exp_3_def.csv')
 
-exp_1_ordered <- order_param_spacing_levels(data = exp_1_long)
+#compute parameter summary statistics  
+exp_1_long <- exp_1 %>%
+    filter(code == 0) %>%
+    #place parameter estimates in one column
+    pivot_longer(cols = contains(c('theta', 'alpha', 'beta', 'gamma', 'epsilon')),
+                 names_to = 'parameter', values_to = 'estimate') %>%
+    filter(parameter == 'beta_fixed') %>%
+    mutate(pop_value = midpoint)
 
+exp_1_ordered <- nonlinSimsAnalysis:::order_param_spacing_levels(data = exp_1_long)
 
-compute_parameter_summary(data = exp_1, exp_num = '1')
 
 param_summary_exp_1 <- compute_parameter_summary(data = exp_1, exp_num = 1)
 param_summary_exp_2 <- compute_parameter_summary(data = exp_2, exp_num = 2)
 param_summary_exp_3 <- compute_parameter_summary(data = exp_3, exp_num = 3)
+param_summary_exp_3_def <- compute_parameter_summary(data = exp_3_def, exp_num = 2)
 
 #necessary factor conversions 
 param_summary_exp_1$number_measurements <- factor(param_summary_exp_1$number_measurements, levels = c(5, 7, 9,11))
@@ -194,13 +215,27 @@ param_summary_exp_2$sample_size <- factor(param_summary_exp_2$sample_size, level
 param_summary_exp_3$number_measurements <- factor(param_summary_exp_3$number_measurements, levels = c(5, 7, 9,11))
 param_summary_exp_3$sample_size <- factor(param_summary_exp_3$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
 
+param_summary_exp_3_def$number_measurements <- factor(param_summary_exp_3_def$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_3_def$sample_size <- factor(param_summary_exp_3_def$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
 #write data sets 
 #save parameter summary files as RData files so that metadata are correctly stored (e.g., factor levels, variable types)
 saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData')
 saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
 saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
+saveRDS(object = param_summary_exp_3_def, file = 'data/uf_param_summary_exp_3_def.RData')
+
 ```
 
+
+```{r echo=F}
+generate_day_likert_facet_plot(analytical_data = exp_3_def_analytical, 
+                               target_col = 'time_structuredness', target_value = 'Time unstructured (slow response)',
+                              x_axis_name = expression("Sample Size ("*italic(N)*")"), 
+                               x_axis_var = 'sample_size', exp_num = 'exp3_def', beta_lower = 160, beta_upper = 210,
+                                 beta_ticks = 5)
+
+```
 
 ```{r exp-table-generation, echo=F}
 exp_1_tables <- nonlinSimsAnalysis:::create_table_data_sets(param_summary_data = param_summary_exp_1, 
@@ -209,7 +244,17 @@ exp_1_tables <- nonlinSimsAnalysis:::create_table_data_sets(param_summary_data =
 exp_2_tables <- nonlinSimsAnalysis:::create_table_data_sets(param_summary_data = param_summary_exp_2, 
                                        wide_var = 'sample_size', first_col = 'measurement_spacing', second_col = 'number_measurements')
 
-exp_3_tables <- nonlinSimsAnalysis:::create_table_data_sets(param_summary_data = param_summary_exp_3, 
+param_summary_exp_3_def <- readRDS(file = 'data/uf_param_summary_exp_3_def.RData')
+
+param_summary_exp_3_def$time_structuredness <- factor(x = 'slow_response_def',labels = 'Time unstructured (slow response) with definition variables')
+
+param_summary_exp_3_def <- param_summary_exp_3_def %>% 
+  select(names(param_summary_exp_3))
+
+param_summary_exp_3_comb <- rbind(param_summary_exp_3, param_summary_exp_3_def)
+
+
+exp_3_tables <- nonlinSimsAnalysis:::create_table_data_sets(param_summary_data = param_summary_exp_3_comb, 
                                        wide_var = 'sample_size', first_col = 'time_structuredness', second_col = 'number_measurements') 
 
 #remove measurement spacing columns 
@@ -217,66 +262,333 @@ col_to_remove <- which(str_detect(string = names(exp_3_tables$estimate_table), p
 
 exp_3_tables$estimate_table <- exp_3_tables$estimate_table[, -col_to_remove]
 exp_3_tables$removed_value_table <- exp_3_tables$removed_value_table[ , -col_to_remove]
-```
 
-```{r echo=F}
-print_param_table(table_ready_data = exp_1_tables$estimate_table, parameter_name = 'theta|alpha|epsilon', 
-            caption_name = 'Parameter Values Estimated for Day- and Likert-Unit Parameters in Experiment 1', 
-            col_header_name = c('\\\\thead{$\\\\uptheta_{fixed}$ (Baseline)  \\\\\\\\ Pop value = 3.00}', 
-                                '\\\\thead{$\\\\uptheta_{random}$ (Baseline) \\\\\\\\ Pop value = 0.05}',
-                                '\\\\thead{$\\\\upalpha_{fixed}$ (Maximal \\\\\\\\ elevation)  \\\\\\\\ Pop value = 3.32}', 
-                                '\\\\thead{$\\\\upalpha_{random}$ (Maximal \\\\\\\\ elevation) \\\\\\\\ Pop value = 0.05}', 
-                                '\\\\thead{$\\\\upepsilon$(error) \\\\\\\\ Pop value = 0.03}'), 
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c('80', '180', '280'),
-            footnote = "")
-
-
-print_param_table(table_ready_data = exp_1_tables$estimate_table, parameter_name = 'beta|gamma', 
-            caption_name = 'Parameter Values Estimated for Day- and Likert-Unit Parameters in Experiment 1', 
-                 col_header_name = c('\\\\thead{$\\\\upbeta_{fixed}$ (Days to \\\\\\\\ halfway elevation)}', 
-                                '\\\\thead{$\\\\upbeta_{random}$ (Days to \\\\\\\\ halfway elevation) \\\\\\\\ Pop value = 10.00}', 
-                                '\\\\thead{$\\\\upgamma_{fixed}$ (Triquarter- \\\\\\\\ halfway delta) \\\\\\\\ Pop value = 20.00}', 
-                                '\\\\thead{$\\\\upgamma_{random}$ (Triquarter- \\\\\\\\ halfway delta) \\\\\\\\ Pop value = 4.00}'),
-             IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c(80, 180, 280),
-            footnote = "")
-```
-
-```{r param-exp-2, echo=F }
-print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'beta', 
-            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'beta', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
             col_header_name = c('\\\\thead{$\\\\upbeta_{fixed}$ (Days to halfway elevation) \\\\\\\\ Pop value = 180.00}', 
                                '\\\\thead{$\\\\upbeta_{random}$ (Days to halfway elevation) \\\\\\\\ Pop value = 10.00}'), 
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
 
-print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'gamma', 
-            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
-            col_header_name = c('\\\\thead{$\\\\upgamma_{fixed}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 20.00}', 
-                                '\\\\thead{$\\\\upgamma_{random}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 4.00}'),
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'gamma', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upbeta_{fixed}$ (Days to halfway elevation) \\\\\\\\ Pop value = 180.00}', 
+                               '\\\\thead{$\\\\upbeta_{random}$ (Days to halfway elevation) \\\\\\\\ Pop value = 10.00}'), 
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
 
-print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'theta', 
-            caption_name = 'Parameter Values Estimated in Experiment 2', 
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'theta', 
+            caption_name = 'Parameter Values Estimated in Experiment 3', 
            col_header_name = c('\\\\thead{$\\\\uptheta_{fixed}$ (Baseline) \\\\\\\\ Pop value = 3.00}', 
                                '\\\\thead{$\\\\uptheta_{random}$ (Baseline) \\\\\\\\ Pop value = 0.05}'),
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+           IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
 
-print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'alpha', 
-            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'alpha', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
            col_header_name = c('\\\\thead{$\\\\upalpha_{fixed}$ (Maximal elevation) \\\\\\\\ Pop value = 3.32}', 
                                '\\\\thead{$\\\\upalpha_{random}$ (Maximal elevation) \\\\\\\\ Pop value = 0.05}'),
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = '')
+            IV_names =  c( 'Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
 
-print_param_table(table_ready_data = exp_2_tables$estimate_table, parameter_name = 'epsilon', 
-            caption_name = 'Parameter Values Estimated in Experiment 2 (continued)', 
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'epsilon', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
             col_header_name = c('\\\\thead{$\\\\upepsilon$(error) \\\\\\\\ Pop value = 0.03}'), 
-            IV_names =  c('Measurement Spacing', 'Number of Measurements'), 
-            column_names = c("30", "50", "100", "200", "500", "1000"), 
-             footnote = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding 10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., bias exceeding 10\\\\% of parameter's population value).")
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"),  footnote = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding 10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., bias exceeding 10\\\\% of parameter's population value).")
+
 ```
+
+
+```{r param-exp-3, echo=F}
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'beta', 
+            caption_name = 'Parameter Values Estimated in Experiment 3', 
+            col_header_name = c('\\\\thead{$\\\\upbeta_{fixed}$ (Days to halfway elevation) \\\\\\\\ Pop value = 180.00}', 
+                               '\\\\thead{$\\\\upbeta_{random}$ (Days to halfway elevation) \\\\\\\\ Pop value = 10.00}'), 
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
+
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'gamma', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upgamma_{fixed}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 20.00}', 
+                                '\\\\thead{$\\\\upgamma_{random}$ (Triquarter-halfway delta) \\\\\\\\ Pop value = 4.00}'),
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
+
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'theta', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
+           col_header_name = c('\\\\thead{$\\\\uptheta_{fixed}$ (Baseline) \\\\\\\\ Pop value = 3.00}', 
+                               '\\\\thead{$\\\\uptheta_{random}$ (Baseline) \\\\\\\\ Pop value = 0.05}'),
+           IV_names =  c( 'Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
+
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'alpha', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
+           col_header_name = c('\\\\thead{$\\\\upalpha_{fixed}$ (Maximal elevation) \\\\\\\\ Pop value = 3.32}', 
+                               '\\\\thead{$\\\\upalpha_{random}$ (Maximal elevation) \\\\\\\\ Pop value = 0.05}'),
+            IV_names =  c( 'Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"), footnote = "")
+
+
+print_param_table(table_ready_data = exp_3_tables$estimate_table, parameter_name = 'epsilon', 
+            caption_name = 'Parameter Values Estimated in Experiment 3 (continued)', 
+            col_header_name = c('\\\\thead{$\\\\upepsilon$(error) \\\\\\\\ Pop value = 0.03}'), 
+            IV_names =  c('Time Structuredness', 'Number of Measurements'), 
+            column_names = c("30", "50", "100", "200", "500", "1000"),  footnote = "\\\\textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding 10\\\\% of the parameter's population value. Empty superscript squares ($^{\\\\square}$) indicate biased estimates (i.e., bias exceeding 10\\\\% of parameter's population value).")
+```
+
+
+```{=tex}
+
+\newgeometry{margin=2.54cm}
+\begin{landscape}
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item 
+\end{TableNotes}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}cccccccccccc}
+\caption{Parameter Values Estimated in Experiment 3}\label{param-exp-3}\\
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{6}{c}{\thead{$\upbeta_{fixed}$ (Days to halfway elevation) \\ Pop value = 180.00}} & \multicolumn{6}{c}{\thead{$\upbeta_{random}$ (Days to halfway elevation) \\ Pop value = 10.00}} \\
+\cmidrule(l{3pt}r{3pt}){3-8} \cmidrule(l{3pt}r{3pt}){9-14}
+Time Structuredness & Number of Measurements & 30 & 50 & 100 & 200 & 500 & 1000 & 30 & 50 & 100 & 200 & 500 & 1000\\
+\midrule
+ & 5 & \cellcolor[HTML]{ffffff}{179.71} & \cellcolor[HTML]{ffffff}{179.67} & \cellcolor[HTML]{ffffff}{179.75} & \cellcolor[HTML]{ffffff}{179.98} & \cellcolor[HTML]{ffffff}{180.00} & \cellcolor[HTML]{ffffff}{179.66} & \cellcolor[HTML]{8cb9e3}{10.40} & \cellcolor[HTML]{8cb9e3}{10.27} & \cellcolor[HTML]{8cb9e3}{10.37} & \cellcolor[HTML]{8cb9e3}{10.56} & \cellcolor[HTML]{8cb9e3}{10.73} & \cellcolor[HTML]{8cb9e3}{10.69}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{180.05} & \cellcolor[HTML]{ffffff}{179.59} & \cellcolor[HTML]{ffffff}{179.02} & \cellcolor[HTML]{ffffff}{179.66} & \cellcolor[HTML]{ffffff}{180.03} & \cellcolor[HTML]{ffffff}{179.63} & \cellcolor[HTML]{8cb9e3}{10.18} & \cellcolor[HTML]{8cb9e3}{10.42} & \cellcolor[HTML]{8cb9e3}{10.65} & \cellcolor[HTML]{8cb9e3}{10.52} & \cellcolor[HTML]{8cb9e3}{10.76} & \cellcolor[HTML]{8cb9e3}{10.60}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{179.84} & \cellcolor[HTML]{ffffff}{180.01} & \cellcolor[HTML]{ffffff}{180.01} & \cellcolor[HTML]{ffffff}{179.97} & \cellcolor[HTML]{ffffff}{180.01} & \cellcolor[HTML]{ffffff}{180.00} & \cellcolor[HTML]{8cb9e3}{10.28} & \cellcolor[HTML]{8cb9e3}{10.28} & \cellcolor[HTML]{8cb9e3}{10.37} & \cellcolor[HTML]{8cb9e3}{10.46} & \cellcolor[HTML]{8cb9e3}{10.42} & \cellcolor[HTML]{8cb9e3}{10.41}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time structured} & 11 & \cellcolor[HTML]{ffffff}{180.11} & \cellcolor[HTML]{ffffff}{179.91} & \cellcolor[HTML]{ffffff}{179.94} & \cellcolor[HTML]{ffffff}{180.00} & \cellcolor[HTML]{ffffff}{180.00} & \cellcolor[HTML]{ffffff}{180.00} & \cellcolor[HTML]{8cb9e3}{10.08} & \cellcolor[HTML]{8cb9e3}{10.32} & \cellcolor[HTML]{8cb9e3}{10.21} & \cellcolor[HTML]{8cb9e3}{10.29} & \cellcolor[HTML]{8cb9e3}{10.36} & \cellcolor[HTML]{8cb9e3}{10.31}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{177.48} & \cellcolor[HTML]{ffffff}{177.24} & \cellcolor[HTML]{ffffff}{176.74} & \cellcolor[HTML]{ffffff}{177.50} & \cellcolor[HTML]{ffffff}{177.42} & \cellcolor[HTML]{ffffff}{177.06} & \cellcolor[HTML]{8cb9e3}{10.65} & \cellcolor[HTML]{8cb9e3}{10.36} & \cellcolor[HTML]{8cb9e3}{10.38} & \cellcolor[HTML]{8cb9e3}{10.65} & \cellcolor[HTML]{8cb9e3}{10.85} & \cellcolor[HTML]{8cb9e3}{10.96}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{176.89} & \cellcolor[HTML]{ffffff}{177.03} & \cellcolor[HTML]{ffffff}{176.37} & \cellcolor[HTML]{ffffff}{175.92} & \cellcolor[HTML]{ffffff}{177.20} & \cellcolor[HTML]{ffffff}{176.95} & \cellcolor[HTML]{8cb9e3}{10.53} & \cellcolor[HTML]{8cb9e3}{10.60} & \cellcolor[HTML]{8cb9e3}{10.88} & \cellcolor[HTML]{8cb9e3}{10.83} & \cellcolor[HTML]{8cb9e3}{10.84} & \cellcolor[HTML]{8cb9e3}{10.84}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{177.54} & \cellcolor[HTML]{ffffff}{177.28} & \cellcolor[HTML]{ffffff}{177.27} & \cellcolor[HTML]{ffffff}{177.31} & \cellcolor[HTML]{ffffff}{177.34} & \cellcolor[HTML]{ffffff}{177.33} & \cellcolor[HTML]{8cb9e3}{10.66} & \cellcolor[HTML]{8cb9e3}{10.43} & \cellcolor[HTML]{8cb9e3}{10.44} & \cellcolor[HTML]{8cb9e3}{10.61} & \cellcolor[HTML]{8cb9e3}{10.65} & \cellcolor[HTML]{8cb9e3}{10.59}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (fast response)} & 11 & \cellcolor[HTML]{ffffff}{177.25} & \cellcolor[HTML]{ffffff}{177.35} & \cellcolor[HTML]{ffffff}{177.27} & \cellcolor[HTML]{ffffff}{177.37} & \cellcolor[HTML]{ffffff}{177.35} & \cellcolor[HTML]{ffffff}{177.30} & \cellcolor[HTML]{8cb9e3}{10.41} & \cellcolor[HTML]{8cb9e3}{10.37} & \cellcolor[HTML]{8cb9e3}{10.37} & \cellcolor[HTML]{8cb9e3}{10.45} & \cellcolor[HTML]{8cb9e3}{10.52} & \cellcolor[HTML]{8cb9e3}{10.51}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{174.13} & \cellcolor[HTML]{ffffff}{174.02} & \cellcolor[HTML]{ffffff}{173.65} & \cellcolor[HTML]{ffffff}{173.85} & \cellcolor[HTML]{ffffff}{173.41} & \cellcolor[HTML]{ffffff}{173.63} & \cellcolor[HTML]{8cb9e3}{11.23$^{\square}$} & \cellcolor[HTML]{8cb9e3}{10.93} & \cellcolor[HTML]{8cb9e3}{11.22$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.80$^{\square}$} & \cellcolor[HTML]{8cb9e3}{12.10$^{\square}$} & \cellcolor[HTML]{8cb9e3}{12.07$^{\square}$}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{173.31} & \cellcolor[HTML]{ffffff}{173.63} & \cellcolor[HTML]{ffffff}{173.01} & \cellcolor[HTML]{ffffff}{173.06} & \cellcolor[HTML]{ffffff}{173.55} & \cellcolor[HTML]{ffffff}{173.55} & \cellcolor[HTML]{8cb9e3}{11.71$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.67$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.88$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.97$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.91$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.94$^{\square}$}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{173.37} & \cellcolor[HTML]{ffffff}{173.37} & \cellcolor[HTML]{ffffff}{173.54} & \cellcolor[HTML]{ffffff}{173.52} & \cellcolor[HTML]{ffffff}{173.50} & \cellcolor[HTML]{ffffff}{173.49} & \cellcolor[HTML]{8cb9e3}{11.26$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.38$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.42$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.40$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.47$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.46$^{\square}$}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response)} & 11 & \cellcolor[HTML]{ffffff}{173.58} & \cellcolor[HTML]{ffffff}{173.56} & \cellcolor[HTML]{ffffff}{173.50} & \cellcolor[HTML]{ffffff}{173.51} & \cellcolor[HTML]{ffffff}{173.49} & \cellcolor[HTML]{ffffff}{173.47} & \cellcolor[HTML]{8cb9e3}{10.87} & \cellcolor[HTML]{8cb9e3}{10.98} & \cellcolor[HTML]{8cb9e3}{11.12$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.18$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.14$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.16$^{\square}$}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{179.92} & \cellcolor[HTML]{ffffff}{179.87} & \cellcolor[HTML]{ffffff}{179.97} & \cellcolor[HTML]{ffffff}{179.92} & \cellcolor[HTML]{ffffff}{179.87} & \cellcolor[HTML]{ffffff}{179.88} & \cellcolor[HTML]{8cb9e3}{10.70} & \cellcolor[HTML]{8cb9e3}{10.40} & \cellcolor[HTML]{8cb9e3}{10.35} & \cellcolor[HTML]{8cb9e3}{10.50} & \cellcolor[HTML]{8cb9e3}{10.66} & \cellcolor[HTML]{8cb9e3}{10.61}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{180.07} & \cellcolor[HTML]{ffffff}{179.96} & \cellcolor[HTML]{ffffff}{179.96} & \cellcolor[HTML]{ffffff}{179.92} & \cellcolor[HTML]{ffffff}{179.91} & \cellcolor[HTML]{ffffff}{179.94} & \cellcolor[HTML]{8cb9e3}{10.32} & \cellcolor[HTML]{8cb9e3}{10.32} & \cellcolor[HTML]{8cb9e3}{10.33} & \cellcolor[HTML]{8cb9e3}{10.52} & \cellcolor[HTML]{8cb9e3}{10.53} & \cellcolor[HTML]{8cb9e3}{10.50}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{180.17} & \cellcolor[HTML]{ffffff}{179.86} & \cellcolor[HTML]{ffffff}{179.88} & \cellcolor[HTML]{ffffff}{179.97} & \cellcolor[HTML]{ffffff}{179.95} & \cellcolor[HTML]{ffffff}{179.98} & \cellcolor[HTML]{8cb9e3}{10.12} & \cellcolor[HTML]{8cb9e3}{10.26} & \cellcolor[HTML]{8cb9e3}{10.43} & \cellcolor[HTML]{8cb9e3}{10.32} & \cellcolor[HTML]{8cb9e3}{10.40} & \cellcolor[HTML]{8cb9e3}{10.38}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response) with definition variables} & 11 & \cellcolor[HTML]{ffffff}{179.93} & \cellcolor[HTML]{ffffff}{180.20} & \cellcolor[HTML]{ffffff}{179.94} & \cellcolor[HTML]{ffffff}{179.97} & \cellcolor[HTML]{ffffff}{179.99} & \cellcolor[HTML]{ffffff}{179.99} & \cellcolor[HTML]{8cb9e3}{10.11} & \cellcolor[HTML]{8cb9e3}{10.20} & \cellcolor[HTML]{8cb9e3}{10.34} & \cellcolor[HTML]{8cb9e3}{10.31} & \cellcolor[HTML]{8cb9e3}{10.27} & \cellcolor[HTML]{8cb9e3}{10.32}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+
+\addtocounter{table}{-1}
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item 
+\end{TableNotes}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}cccccccccccc}
+\caption{Parameter Values Estimated in Experiment 3 (continued)}\\
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{6}{c}{\thead{$\upgamma_{fixed}$ (Triquarter-halfway delta) \\ Pop value = 20.00}} & \multicolumn{6}{c}{\thead{$\upgamma_{random}$ (Triquarter-halfway delta) \\ Pop value = 4.00}} \\
+\cmidrule(l{3pt}r{3pt}){3-8} \cmidrule(l{3pt}r{3pt}){9-14}
+Time Structuredness & Number of Measurements & 30 & 50 & 100 & 200 & 500 & 1000 & 30 & 50 & 100 & 200 & 500 & 1000\\
+\midrule
+ & 5 & \cellcolor[HTML]{8cb9e3}{18.25} & \cellcolor[HTML]{8cb9e3}{18.11} & \cellcolor[HTML]{8cb9e3}{18.46} & \cellcolor[HTML]{8cb9e3}{19.67} & \cellcolor[HTML]{8cb9e3}{20.55} & \cellcolor[HTML]{8cb9e3}{20.65} & \cellcolor[HTML]{8cb9e3}{17.69$^{\square}$} & \cellcolor[HTML]{8cb9e3}{17.05$^{\square}$} & \cellcolor[HTML]{8cb9e3}{16.38$^{\square}$} & \cellcolor[HTML]{8cb9e3}{15.03$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.63$^{\square}$} & \cellcolor[HTML]{8cb9e3}{9.02$^{\square}$}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{20.25} & \cellcolor[HTML]{8cb9e3}{20.79} & \cellcolor[HTML]{8cb9e3}{20.67} & \cellcolor[HTML]{8cb9e3}{20.77} & \cellcolor[HTML]{8cb9e3}{20.98} & \cellcolor[HTML]{8cb9e3}{20.93} & \cellcolor[HTML]{8cb9e3}{ 9.22$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 7.32$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 6.12$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.99$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.45$^{\square}$} & \cellcolor[HTML]{8cb9e3}{4.69$^{\square}$}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{20.88} & \cellcolor[HTML]{8cb9e3}{20.79} & \cellcolor[HTML]{8cb9e3}{20.84} & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{ffffff}{20.74} & \cellcolor[HTML]{ffffff}{20.71} & \cellcolor[HTML]{8cb9e3}{ 5.30$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.95$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.34} & \cellcolor[HTML]{8cb9e3}{ 4.13} & \cellcolor[HTML]{8cb9e3}{ 4.05} & \cellcolor[HTML]{8cb9e3}{3.96}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time structured} & 11 & \cellcolor[HTML]{8cb9e3}{20.65} & \cellcolor[HTML]{8cb9e3}{20.74} & \cellcolor[HTML]{8cb9e3}{20.73} & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{ffffff}{20.71} & \cellcolor[HTML]{ffffff}{20.67} & \cellcolor[HTML]{8cb9e3}{ 4.86$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.41$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.17} & \cellcolor[HTML]{8cb9e3}{ 4.13} & \cellcolor[HTML]{8cb9e3}{ 4.09} & \cellcolor[HTML]{8cb9e3}{4.03}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{18.57} & \cellcolor[HTML]{8cb9e3}{18.16} & \cellcolor[HTML]{8cb9e3}{18.59} & \cellcolor[HTML]{8cb9e3}{19.45} & \cellcolor[HTML]{8cb9e3}{20.15} & \cellcolor[HTML]{8cb9e3}{20.58} & \cellcolor[HTML]{8cb9e3}{16.85$^{\square}$} & \cellcolor[HTML]{8cb9e3}{16.21$^{\square}$} & \cellcolor[HTML]{8cb9e3}{14.96$^{\square}$} & \cellcolor[HTML]{8cb9e3}{13.48$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 9.94$^{\square}$} & \cellcolor[HTML]{8cb9e3}{7.72$^{\square}$}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{20.39} & \cellcolor[HTML]{8cb9e3}{20.44} & \cellcolor[HTML]{8cb9e3}{20.67} & \cellcolor[HTML]{8cb9e3}{20.73} & \cellcolor[HTML]{8cb9e3}{20.77} & \cellcolor[HTML]{8cb9e3}{20.77} & \cellcolor[HTML]{8cb9e3}{ 9.65$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 7.07$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 6.25$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.47$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.61$^{\square}$} & \cellcolor[HTML]{8cb9e3}{4.34}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{20.54} & \cellcolor[HTML]{8cb9e3}{20.66} & \cellcolor[HTML]{8cb9e3}{20.75} & \cellcolor[HTML]{8cb9e3}{20.71} & \cellcolor[HTML]{ffffff}{20.72} & \cellcolor[HTML]{ffffff}{20.74} & \cellcolor[HTML]{8cb9e3}{ 5.27$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.68$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.59$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.08} & \cellcolor[HTML]{8cb9e3}{ 4.06} & \cellcolor[HTML]{8cb9e3}{4.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (fast response)} & 11 & \cellcolor[HTML]{8cb9e3}{20.77} & \cellcolor[HTML]{8cb9e3}{20.70} & \cellcolor[HTML]{8cb9e3}{20.72} & \cellcolor[HTML]{8cb9e3}{20.70} & \cellcolor[HTML]{ffffff}{20.71} & \cellcolor[HTML]{ffffff}{20.73} & \cellcolor[HTML]{8cb9e3}{ 4.85$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.68$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.29} & \cellcolor[HTML]{8cb9e3}{ 4.14} & \cellcolor[HTML]{8cb9e3}{ 4.16} & \cellcolor[HTML]{8cb9e3}{4.14}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{18.66} & \cellcolor[HTML]{8cb9e3}{17.88} & \cellcolor[HTML]{8cb9e3}{18.34} & \cellcolor[HTML]{8cb9e3}{19.83} & \cellcolor[HTML]{8cb9e3}{20.57} & \cellcolor[HTML]{8cb9e3}{20.67} & \cellcolor[HTML]{8cb9e3}{14.54$^{\square}$} & \cellcolor[HTML]{8cb9e3}{13.26$^{\square}$} & \cellcolor[HTML]{8cb9e3}{11.51$^{\square}$} & \cellcolor[HTML]{8cb9e3}{10.05$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 7.89$^{\square}$} & \cellcolor[HTML]{8cb9e3}{6.65$^{\square}$}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{20.51} & \cellcolor[HTML]{8cb9e3}{20.73} & \cellcolor[HTML]{8cb9e3}{20.75} & \cellcolor[HTML]{8cb9e3}{20.89} & \cellcolor[HTML]{8cb9e3}{20.89} & \cellcolor[HTML]{8cb9e3}{20.86} & \cellcolor[HTML]{8cb9e3}{ 7.62$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 6.65$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.61$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.21$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.83$^{\square}$} & \cellcolor[HTML]{8cb9e3}{4.67$^{\square}$}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{20.91} & \cellcolor[HTML]{8cb9e3}{20.82} & \cellcolor[HTML]{8cb9e3}{20.82} & \cellcolor[HTML]{8cb9e3}{20.89} & \cellcolor[HTML]{8cb9e3}{20.94} & \cellcolor[HTML]{ffffff}{20.89} & \cellcolor[HTML]{8cb9e3}{ 6.00$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.32$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.97$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.67$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.74$^{\square}$} & \cellcolor[HTML]{8cb9e3}{4.70$^{\square}$}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response)} & 11 & \cellcolor[HTML]{8cb9e3}{20.98} & \cellcolor[HTML]{8cb9e3}{20.85} & \cellcolor[HTML]{8cb9e3}{20.90} & \cellcolor[HTML]{8cb9e3}{20.92} & \cellcolor[HTML]{ffffff}{20.90} & \cellcolor[HTML]{ffffff}{20.90} & \cellcolor[HTML]{8cb9e3}{ 5.26$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.92$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.83$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.69$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.75$^{\square}$} & \cellcolor[HTML]{8cb9e3}{4.71$^{\square}$}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{20.58} & \cellcolor[HTML]{8cb9e3}{20.64} & \cellcolor[HTML]{8cb9e3}{20.76} & \cellcolor[HTML]{8cb9e3}{20.86} & \cellcolor[HTML]{8cb9e3}{20.90} & \cellcolor[HTML]{8cb9e3}{20.94} & \cellcolor[HTML]{8cb9e3}{11.12$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 9.82$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 8.51$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 6.86$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.78$^{\square}$} & \cellcolor[HTML]{8cb9e3}{5.17$^{\square}$}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{20.55} & \cellcolor[HTML]{8cb9e3}{20.68} & \cellcolor[HTML]{8cb9e3}{20.73} & \cellcolor[HTML]{8cb9e3}{20.87} & \cellcolor[HTML]{8cb9e3}{20.81} & \cellcolor[HTML]{ffffff}{20.78} & \cellcolor[HTML]{8cb9e3}{ 6.68$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.93$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 5.14$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.74$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.11} & \cellcolor[HTML]{8cb9e3}{4.12}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{8cb9e3}{20.68} & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{8cb9e3}{20.74} & \cellcolor[HTML]{ffffff}{20.70} & \cellcolor[HTML]{ffffff}{20.73} & \cellcolor[HTML]{8cb9e3}{ 5.22$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.77$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.53$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.24} & \cellcolor[HTML]{8cb9e3}{ 4.05} & \cellcolor[HTML]{8cb9e3}{4.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response) with definition variables} & 11 & \cellcolor[HTML]{8cb9e3}{20.66} & \cellcolor[HTML]{8cb9e3}{20.77} & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{8cb9e3}{20.69} & \cellcolor[HTML]{ffffff}{20.67} & \cellcolor[HTML]{ffffff}{20.69} & \cellcolor[HTML]{8cb9e3}{ 4.79$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.72$^{\square}$} & \cellcolor[HTML]{8cb9e3}{ 4.32} & \cellcolor[HTML]{8cb9e3}{ 4.01} & \cellcolor[HTML]{8cb9e3}{ 4.14} & \cellcolor[HTML]{8cb9e3}{4.11}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+
+\addtocounter{table}{-1}
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item 
+\end{TableNotes}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}cccccccccccc}
+\caption{Parameter Values Estimated in Experiment 3 (continued)}\\
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{6}{c}{\thead{$\uptheta_{fixed}$ (Baseline) \\ Pop value = 3.00}} & \multicolumn{6}{c}{\thead{$\uptheta_{random}$ (Baseline) \\ Pop value = 0.05}} \\
+\cmidrule(l{3pt}r{3pt}){3-8} \cmidrule(l{3pt}r{3pt}){9-14}
+Time Structuredness & Number of Measurements & 30 & 50 & 100 & 200 & 500 & 1000 & 30 & 50 & 100 & 200 & 500 & 1000\\
+\midrule
+ & 5 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time structured} & 11 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (fast response)} & 11 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response)} & 11 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response) with definition variables} & 11 & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{ffffff}{3.00} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+
+\addtocounter{table}{-1}
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item 
+\end{TableNotes}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}cccccccccccc}
+\caption{Parameter Values Estimated in Experiment 3 (continued)}\\
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{6}{c}{\thead{$\upalpha_{fixed}$ (Maximal elevation) \\ Pop value = 3.32}} & \multicolumn{6}{c}{\thead{$\upalpha_{random}$ (Maximal elevation) \\ Pop value = 0.05}} \\
+\cmidrule(l{3pt}r{3pt}){3-8} \cmidrule(l{3pt}r{3pt}){9-14}
+Time Structuredness & Number of Measurements & 30 & 50 & 100 & 200 & 500 & 1000 & 30 & 50 & 100 & 200 & 500 & 1000\\
+\midrule
+ & 5 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time structured} & 11 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (fast response)} & 11 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response)} & 11 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-14}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response) with definition variables} & 11 & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{ffffff}{3.32} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+\addtocounter{table}{-1}
+
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item \textit{Note. }Cells shaded in light blue indicate cells where estimation is imprecise (i.e., lower and/or upper whisker lengths exceeding 10\% of the parameter's population value. Empty superscript squares ($^{\square}$) indicate biased estimates (i.e., bias exceeding 10\% of parameter's population value).
+\end{TableNotes}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}cccccc}
+\caption{Parameter Values Estimated in Experiment 3 (continued)}\\
+\toprule
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{6}{c}{\thead{$\upepsilon$(error) \\ Pop value = 0.03}} \\
+\cmidrule(l{3pt}r{3pt}){3-8}
+Time Structuredness & Number of Measurements & 30 & 50 & 100 & 200 & 500 & 1000\\
+\midrule
+ & 5 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time structured} & 11 & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-8}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (fast response)} & 11 & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-8}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response)} & 11 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\cmidrule{1-8}\pagebreak[0]
+ & 5 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 7 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+ & 9 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\nopagebreak
+\multirow{-4}{3cm}{\raggedright\arraybackslash Time unstructured (slow response) with definition variables} & 11 & \cellcolor[HTML]{8cb9e3}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05} & \cellcolor[HTML]{ffffff}{0.05}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+\end{landscape}
+\restoregeometry
+
+```
+
+
 
