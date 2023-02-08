@@ -53,7 +53,7 @@ generate_conv_success_latex <- function(conv_success_data) {
     ##escape = FALSE so that latex code can be interpreted by compiler
     ##notice use of [[]] for indexing
     conv_success_data[[col_number]] <- cell_spec(x = format(round(conv_success_data[[col_number]], digits = 2), nsmall = 2),
-                                                  background = ifelse(test = abs(conv_success_data[[col_number]]) < .90, yes = '#eeeeee', no = '#ffffff'),
+                                                  background = ifelse(test = abs(conv_success_data[[col_number]]) <= .90, yes = '#eeeeee', no = '#ffffff'),
                                                   format = 'latex', escape = F)
   }
 
