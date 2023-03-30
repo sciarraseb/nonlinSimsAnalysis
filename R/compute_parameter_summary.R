@@ -1,8 +1,8 @@
 #' Computes summary statistics for simulated experiment data.
 #'
 #' @param data experiment data
-#' @exp_condition experimental conditions
-#' @return
+#' @param exp_num experimental conditions
+#' @export
 compute_parameter_summary <- function(data, exp_num) {
 
   data <- data %>% filter (code == 0)
@@ -33,6 +33,7 @@ compute_parameter_summary <- function(data, exp_num) {
                                                levels = c('time_structured', 'fast_response', 'slow_response'),
                                                labels = c('Time structured', 'Time unstructured (fast response)', 'Time unstructured (slow response)'))
   }
+
 
   return(summary_data)
 }

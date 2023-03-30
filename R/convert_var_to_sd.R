@@ -1,4 +1,7 @@
-
+#' Converts variances to standard deviations for random-effect and residual parameters.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 convert_var_to_sd <- function(param_summary_data) {
 
   #identify rows with random-effects parameter data

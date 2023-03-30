@@ -1,4 +1,7 @@
-#relevel factors columns
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 #identify factor columns in data set
 relevel_factors <- function(param_summary_data, factor_levels_df) {
 

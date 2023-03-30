@@ -1,5 +1,10 @@
-
-
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @param facet_var variable to facet across
+#' @param ind_vars other independent variables
+#' @return data table
+#' @export
 compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
 
   #converts random effect units from variance to SD, then computes mean
@@ -7,7 +12,7 @@ compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
 
   #convert appropriate condition column to expressions (needed to facet titles)
   target_col <- which(x = names(param_summary_data) == facet_var)
-  labels <- generate_labels(facet_var = facet_var)
+  labels <- generate_labels(facet_var = facet_var, param_summary_data = param_summary_data)
 
   param_summary_data[[target_col]] <- factor(x =  param_summary_data[[target_col]],
                                                levels = levels(param_summary_data[[target_col]]),
@@ -30,7 +35,7 @@ compute_condition_summary <- function(param_summary_data, facet_var, ind_vars) {
   return(condition_summary)
 }
 
-generate_labels <- function(facet_var) {
+generate_labels <- function(facet_var, param_summary_data) {
 
   if (facet_var == 'measurement_spacing') {
     #facet panel titles for exp 1 & 2
@@ -40,11 +45,16 @@ generate_labels <- function(facet_var) {
                  bquote(expr = 'bold(D:~`Middle-and-Extreme`)'))
   }
 
-  else if (facet_var == 'time_structuredness') {
+  else if (facet_var == 'time_structuredness' & length(unique(param_summary_data$time_structuredness)) > 1) {
     #facet panel titles for exp 3
     labels <-  c(bquote(expr = 'bold(A:~Time~~Structured)'),
                  bquote(expr = bold(atop("B: Time Unstructured (Fast", paste("Response)")))),
                  bquote(expr =  bold(atop("C: Time Unstructured (Slow", paste("Response)")))))
+  }
+
+  else {
+    #facet panel titles for exp 3
+    labels <-  c(bquote(expr =  bold(atop("C: Time Unstructured (Slow", paste("Response)")))))
   }
 
   return(labels)

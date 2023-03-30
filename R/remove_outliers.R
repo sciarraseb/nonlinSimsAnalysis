@@ -1,8 +1,8 @@
 #' Removes outliers from each generated data set.
 #'
 #' @param data experiment data
-#' @exp_condition experimental conditions
-#' @return
+#' @param exp_conditions experimental conditions
+#' @export
 remove_outliers <- function(data, exp_conditions = locate_ivs(data)) {
 
   #convert  columns that contain IVs to factors

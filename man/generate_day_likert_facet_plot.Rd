@@ -13,14 +13,13 @@ generate_day_likert_facet_plot(
   exp_num,
   beta_lower,
   beta_upper,
-  ticks
+  beta_ticks
 )
 }
 \arguments{
-\item{data}{experiment data}
-}
-\value{
+\item{analytical_data}{experiment data}
 
+\item{target_col}{experimental conditions}
 }
 \description{
 Generate facetted plots

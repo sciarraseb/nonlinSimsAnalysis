@@ -1,5 +1,7 @@
-
-
+#' Computes summary data for each experimental conition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 #generates data sets likert- and day-based parameters
 generate_likert_days_data_sets <- function(summary_data, spacing, exp_num) {
 

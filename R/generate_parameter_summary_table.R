@@ -1,6 +1,7 @@
-
-
-
+#' Computes summary data for each experimental condition/cell.
+#'
+#' @param param_summary_data parameter summary data (created from compute_parameter_summary)
+#' @export
 generate_column_latex <- function(col_number, parameter_data, abs_cutoff = .40) {
 
   ##escape = FALSE so that latex code can be interpreted by compiler
@@ -56,7 +57,7 @@ create_data_tables <- function(exp_data) {
   exp_filtered <- remove_outliers(data = exp_data)
 
   #convert variance values to SD values for random effect parameters
-  exp_cleaned <- convert_var_to_sd(data = exp_filtered)
+  exp_cleaned <- convert_var_to_sd(param_summary_data = exp_filtered)
 
   #compute bias values
   summary_exp <- compute_estimate_summary(data = exp_cleaned)
