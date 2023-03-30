@@ -323,6 +323,217 @@ kbl(x = myValues_df, booktabs = TRUE, format = 'latex', longtable = T,
   column_spec(column = 2, width = '10cm') %>%
    kable_styling(latex_options= c('hold_position', 'repeat_header'), font_size = 10, position = 'left')
 ```
+
+
+## high-value outliers
+
+
+Importantly, the high-value outliers in the density plot of Figure \ref{fig:density_gamma_equal}B correspond to the maximum possible value that was set in the model specification (specifically, a maximum value of $\upgamma_{random}$ = 45.00). Table \ref{tab:equal-gamma-outlier} shows the number of maximum-value estimates obtained for the random-effect triquarter-halfway parameter ($\upgamma_{random}$) for each nature-of-change value. With a nature-of-change value of 180, 36 maximum-value estimates are obtained. With nature-of-change values of 80 and 280, no maximum-value estimates are obtained. Therefore, precision with a nature-of-change value of 180 may be artificially lower because of the presence of maximum-value estimates. 
+
+To investigate whether maximum-value estimations decreased precision for the random-effect triquarter-halfway parameter ($\upgamma_{random}$), I removed the maximum-value estimates (see Table \ref{tab:equal-gamma-outlier}) and then recomputed the 95% error bars. Figure \ref{fig:density_gamma_equal_fixed} shows the density plots of the random-effect triquarter-halfway parameter ($\upgamma_{random}$) with the maximum-value estimates removed. Although the error bar length with a nature-of-change value of 180 decreases when the maximum-value estimates are removed (see Figure \ref{fig:density_gamma_equal}B for comparison), it is still longer than the error bar lengths with the other nature-of-change values of 80 and 180 due to the existence of high-value estimates. Therefore, with equal spacing with a nature-of-change value of 180, precision is counterintuitively lower (i.e., longer error bars) for the estimation of the triquarter-halfway parameter ($\upgamma_{random}$) than with other nature-of-change values because the parameter estimation procedure converges on more high-value estimates. 
+
+```{r density-nature-of-change-equal, include=F, eval=F}
+compute_density <- function(error_bar_range, group, param_name, density_data) { 
+  
+  density_data <- density_data[density_data$group == group , ]
+  
+  density_lower_x <- min(which(density_data$x >= error_bar_range[1]))
+  density_upper_x <- max(which(density_data$x <= error_bar_range[2]))
+  
+  day_values <- density_data$x[density_lower_x:density_upper_x]
+  
+  
+  density_df <- data.frame('parameter' = param_name,
+                           'day_value' = day_values,
+                           'probability' = density_data$y[density_lower_x:density_upper_x], 
+                           'max_density_value' = max(density_data$y),
+                           'lower_ci' = error_bar_range[1], 
+                           'upper_ci' = error_bar_range[2])
+
+    return(density_df)
+}
+
+compute_ind_param_error_bar_range <- function(param_search_name, param_data) {
+  
+  #extract estimates from single parameter
+  ind_param_data <-  param_data %>%
+    filter(str_detect(string = param_data$parameter, pattern = param_search_name)) %>% 
+    pull(estimate)
+  
+  param_range <- as.numeric(compute_middle_95_estimate(param_data = ind_param_data))
+  
+  return(param_range)
+}
+
+##generate figure showing density distributions if gamma_fizxd at N = 500 and N = 1000 with middle 95% area shaded. Emphasize
+##that longer error bars in  N = 1000 are likely a statistical artifact of the random number generating procedure. 
+exp_1 <- read_csv('data/exp_1_data.csv') %>% filter(code == 0) #load data 
+exp_1 <- convert_raw_var_to_sd(raw_data = exp_1) #var to sd conversion 
+
+parameter_names <- c(bquote(expr = bold(A:~gamma[random]~"("~beta[fixed]~" = 80, NM = 5)")),
+                     quote(expr = bold(B:~gamma[random]~"("~beta[fixed]~" = 180, NM = 5)")),
+                     bquote(expr = bold(C:~gamma[random]~"("~beta[fixed]~" = 280, NM = 5)")))
+
+                     
+#1) Extract estimates for four parameter gamma_fixed and beta_rand when N =500 or 1000, num_measurements == 5, spacing == equal. 
+##Convert to long format, with parameter name going into unique column and estimate becoming new column 
+ param_data <- exp_1 %>%
+  filter(number_measurements == 5, measurement_spacing == 'equal') %>%
+  select(locate_ivs(exp_1),'gamma_rand') %>%
+  pivot_longer(cols = c(gamma_rand), values_to = 'estimate') %>%
+  unite(col = 'parameter', c(midpoint,name)) #%>%
+  #filter(estimate < 45)
+
+#2) Replace parameter values with tag labels. 
+param_data$parameter <- factor(param_data$parameter, 
+                               levels = c("80_gamma_rand", "180_gamma_rand", "280_gamma_rand"), 
+                               labels = parameter_names)
+
+
+#3) Create base density plot so that density data can be created
+base_density_plot <- ggplot(data = param_data, mapping = aes(x = estimate, group = parameter)) +
+   geom_density(size = 3) 
+
+##create density data for each parameter 
+density_data <- ggplot_build(plot = base_density_plot)$data[[1]]
+
+param_search_names <- c("A\\:", "B\\:", "C\\:")
+
+param_error_bar_ranges <- lapply(X = param_search_names, compute_ind_param_error_bar_range, param_data = param_data)
+
+
+##create density data for each parameter 
+plot_ready_data <- rbindlist(pmap(.l = list(error_bar_range = param_error_bar_ranges, 
+               group = 1:length(param_error_bar_ranges), 
+               param_name =  as.character(parameter_names)), .f = compute_density, density_data = density_data))
+plot_ready_data$parameter <- factor(plot_ready_data$parameter)
+
+
+example_plot <- base_density_plot +
+  scale_x_continuous(limits = c(0, 50), breaks = seq(from = 0, to = 50, by = 10), 
+                       name = 'Value of Parameter Estimate (Days)') + 
+  
+  #shaded filling
+      geom_area(data = plot_ready_data, mapping = aes(x = day_value, y = probability), 
+                show.legend = 'bin',  fill="grey", alpha = 1, color = 'black', size = 3) + 
+    #error bar
+    geom_errorbarh(data = plot_ready_data, inherit.aes = F,
+                   mapping = aes(xmin = lower_ci, xmax = upper_ci, 
+                                 y = max_density_value, height = 0.05), size = 3) + 
+
+    #vertical dashed lines for error bars
+    ##lower limit 
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$lower_ci, xend = plot_ready_data$lower_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+    ##upper limit
+    geom_segment(inherit.aes = F, data = plot_ready_data, x = plot_ready_data$upper_ci, xend = plot_ready_data$upper_ci,
+                 y = 0, yend = plot_ready_data$max_density_value, linetype = 2, size = 2) +
+  
+  facet_wrap_custom( ~ parameter, scales = "free", ncol = 1, nrow = 3,
+                                          dir = 'h', labeller = label_parsed,
+                                          scale_overrides = list(scale_override(1,scale_y_continuous(name =  'Density (Proportion of Estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))),
+                                                                 scale_override(2, scale_y_continuous(name = 'Density (Proportion of Estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))), 
+                                                                 scale_override(3, scale_y_continuous(name = 'Density (Proportion of Estimates)',
+                                                                                                   breaks = seq(from = 0, to = 0.60, by = 0.10),
+                                                                                                   limits = c(0, 0.60))))) + 
+    
+  
+    #plot aesthetics
+    theme_classic() +
+
+    theme(
+      #panel details
+      strip.background = element_rect(fill = "white", color = "white"),
+      #original text size = 60, 150 for pre-results figures
+      strip.text.x = element_text(face = 'bold', hjust = 0, size = 75, margin = unit(c(t = 0, r = 20, b = 1, l = 0), "cm")),
+
+      #axis details
+      axis.text = element_text(size = 60, color = 'black'),
+      axis.title = element_text(size = 70),
+      axis.title.x.bottom = element_markdown(),
+      axis.line = element_line(size = 2),
+      axis.ticks.length.x = unit(x = 1, units = 'cm'),
+      axis.title.x = element_text(margin = unit(c(3, 0, 0, 0), "cm")),
+      axis.title.y = element_text(margin = unit(c(t = 0, r = 3, b = 0, l = 0), units = 'cm')),
+      axis.ticks = element_line(size = 2, colour = 'black'),
+      axis.ticks.length.y =  unit(x = 1, units = 'cm'),
+
+      #panel details
+      panel.spacing.y = unit(x = 4, units = 'cm'),
+      panel.spacing.x = unit(x = 2, units = 'cm'))
+  #create PDF of faceted plot
+ set_panel_size(p = example_plot, height = unit(x = 28, units = 'cm'),
+                 width = unit(x = 40, units = 'cm'),
+                 file =  'Figures/density_plots_equal_gamma_exp1.pdf')
+ 
+ #set_panel_size(p = example_plot, height = unit(x = 28, units = 'cm'),
+ #               width = unit(x = 40, units = 'cm'),
+ #               file =  'Figures/density_plots_equal_gamma_filtered_exp1.pdf')
+```
+
+
+```{=tex}
+\begin{figure} [H]
+  \caption{Density Plots of the Random-Effect Halfway-Triquarter Delta ($\upgamma_{random}$; Figure \ref{fig:exp1_plot_equal}D) With Equal Spacing in Experiment 1 (95\% Error Bars)}
+  \label{fig:density_gamma_equal}
+  \includegraphics[height = 15cm, width = 25cm]{Figures/density_plots_equal_gamma_exp1} \newline
+  \figurefootnote{Regions shaded in in gray represent the the middle 95\% of estimated values and the width of the shaded regions is indicated by the length of the horizontal error bars. The error bar length if longest when the nature-of-change value is 180. $\upgamma_{random}$ = random-effect triquarter-halfway delta parameter, with population value of 4.00, NM = number of measurements.}
+\end{figure}
+```
+
+```{r equal-gamma-outlier, echo=F}
+##generate figure showing density distributions if gamma_fizxd at N = 500 and N = 1000 with middle 95% area shaded. Emphasize
+##that longer error bars in  N = 1000 are likely a statistical artifact of the random number generating procedure. 
+exp_1 <- read_csv('data/exp_1_data.csv') %>% filter(code == 0) #load data 
+exp_1 <- convert_raw_var_to_sd(raw_data = exp_1) #var to sd conversion 
+
+
+equal_gamma <- exp_1 %>%
+  filter(number_measurements == 5, measurement_spacing == 'equal') %>%
+  select(locate_ivs(exp_1),'gamma_rand') %>%
+  pivot_longer(cols = c(gamma_rand), values_to = 'estimate') %>%
+  unite(col = 'parameter', c(midpoint,name))
+
+table_ready <- equal_gamma %>% 
+  group_by(parameter) %>%
+  summarize(`Number of Maximum-Value Estimates`= sum(estimate == 45)) %>%
+  separate(col = parameter, into = c('Nature-of-Change Value', 'Parameter'), extra = 'drop') %>%
+  select(Parameter, `Nature-of-Change Value`, `Number of Maximum-Value Estimates`) %>% 
+  arrange(as.numeric(`Nature-of-Change Value`))
+
+table_ready$Parameter <- c('$\\upgamma_{random}$ (Figure \\ref{fig:density_gamma_equal}A)', 
+                           '$\\upgamma_{random}$ (Figure \\ref{fig:density_gamma_equal}B)', 
+                           '$\\upgamma_{random}$ (Figure \\ref{fig:density_gamma_equal}C)')
+
+
+kbl(x = table_ready, format = 'latex',digits = 2, 
+       longtable = T, booktabs = T, centering = T, escape = F,
+       align = c('l', rep('c', times = ncol(table_ready) - 1)),
+    caption = 'Number of Number of Maximum-Value Estimates Obtained for $\\upgamma_{random}$ With Each Nature-of-Change Value Under Equal Spacing in Experiment 1') %>%
+    #header
+  column_spec(column = 1, width = '4cm') %>%
+ column_spec(column = 2, width = '5cm') %>%
+   column_spec(column = 3, width = '8cm') %>%
+
+  footnote(escape = F, threeparttable = T, general_title = '\\\\textit{Note.}\\\\hspace{-1.1pc}',
+           general = " $\\\\upgamma_{random}$ = random-effect halfway-triquarter delta parameter, with population value of 4. The maximum $\\\\upgamma_{random}$ value is 45.00.") %>% 
+  kable_styling(position = 'left') %>%
+  landscape(margin = '2.54cm')
+
+```
+
+```{=tex}
+\begin{figure} [H]
+  \caption{Density Plots of $\upgamma_{random}$ (Figure \ref{fig:exp1_plot_equal}D) With Equal Spacing in Experiment 1 (95\% Error Bars With Maximum-Value Estimates Removed)}
+  \label{fig:density_gamma_equal_fixed}
+  \includegraphics[height = 15cm, width = 25cm]{Figures/density_plots_equal_gamma_filtered_exp1} \newline
+  \figurefootnote{Regions shaded in in gray represent the the middle 95\% of estimated values and the width of the shaded regions is indicated by the length of the horizontal error bars. Maximum-value estimates correspond to $\upgamma_{random}$ estiamtes of 45.00. $\upgamma_{random}$ = random-effect triquarter-halfway delta parameter, with population value of 4.00 and NM = number of measurements. Maximum-value estimates of $\upgamma_{random}$ have a value of 45.00.}
+\end{figure}
+```
 # References
 
 ```{=tex}

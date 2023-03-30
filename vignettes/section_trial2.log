@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  8 SEP 2022 17:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  3 SEP 2022 00:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpochnlO/preview-67e82eca3ffe.dir/section_trial2.tex
-(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpochnlO/preview-67e82eca3ffe.dir/section_trial2.tex
+**/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpdrufzT/preview-c50e1ca256a5.dir/section_trial2.tex
+(/private/var/folders/8l/3wt8fj596j1371dc7rx9syww0000gn/T/RtmpdrufzT/preview-c50e1ca256a5.dir/section_trial2.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-08-30> (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/apa7/apa7.cls
 Document Class: apa7 2022/07/25 v2.16 APA formatting (7th edition)
@@ -1068,7 +1068,7 @@ Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 11.
 )
 
-Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 225.
+Class apa7 Warning: Deprecated: see documentation for \authorsaffiliations on input line 224.
 
 \c@NumberOfAffiliations=\count491
 Package csquotes Info: Checking for multilingual support...
@@ -1078,24 +1078,24 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 (./section_trial2.aux)
 \openout1 = `section_trial2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 227.
-LaTeX Font Info:    ... okay on input line 227.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 226.
+LaTeX Font Info:    ... okay on input line 226.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1142,7 +1142,7 @@ Package grfext Info: Graphics extension search list:
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 227.
+Package hyperref Info: Link coloring ON on input line 226.
 (./section_trial2.out) (./section_trial2.out)
 \@outlinefile=\write7
 \openout7 = `section_trial2.out'.
@@ -1171,91 +1171,137 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'section_trial2.bbl' not found.
 No file section_trial2.bbl.
-Package biblatex Info: Reference section=0 on input line 227.
-Package biblatex Info: Reference segment=0 on input line 227.
+Package biblatex Info: Reference section=0 on input line 226.
+Package biblatex Info: Reference segment=0 on input line 226.
 
 Class apa7 Warning: Abstract not defined.
 
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 228.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 228.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 228.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 228.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 228.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 228.
+(Font)              <12> on input line 227.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 228.
+(Font)              <8> on input line 227.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 228.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 228.
+(Font)              <6> on input line 227.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 228.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 227.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/Users/sebastiansciarra/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 233.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 233.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 233.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 238.
-(/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [2]
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 252.
+] [2]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
+* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75539pt
+* \textheight=650.43037pt
+* \oddsidemargin=-0.00018pt
+* \evensidemargin=-0.00018pt
+* \topmargin=-40.20018pt
+* \headheight=15.2pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=95.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 231.
 (/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <11> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 252.
-<Figures/deriv_plot.pdf, id=50, 1793.70125pt x 3339.47626pt>
-File: Figures/deriv_plot.pdf Graphic file (type pdf)
-<use Figures/deriv_plot.pdf>
-Package pdftex.def Info: Figures/deriv_plot.pdf  used on input line 253.
-(pdftex.def)             Requested size: 310.53596pt x 578.14949pt.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9.5> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 257.
-LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9.5> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6.64996> on input line 257.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <4.75> on input line 257.
-[3] [4 <./Figures/deriv_plot.pdf>]
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 266.
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 278.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 237.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 243.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.5> on input line 278.
+(Font)              <10.5> on input line 243.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7.34996> on input line 278.
+(Font)              <7.34996> on input line 243.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5.25> on input line 278.
+(Font)              <5.25> on input line 243.
 
-LaTeX Warning: Reference `tab:first-deriv' on page 5 undefined on input line 284.
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 3 undefined on input line 243.
 
-[5] [6]
+
+Overfull \hbox (1.17047pt too wide) in paragraph at lines 243--243
+[]|[][] 
+ []
+
+
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 3 undefined on input line 244.
+
+
+Overfull \hbox (1.17047pt too wide) in paragraph at lines 244--244
+[]|[][] 
+ []
+
+
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 3 undefined on input line 245.
+
+
+Overfull \hbox (1.74802pt too wide) in paragraph at lines 245--245
+[]|[][] 
+ []
+
+
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 3 undefined on input line 246.
+
+
+Overfull \hbox (1.74802pt too wide) in paragraph at lines 246--246
+[]|[][] 
+ []
+
+LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 248.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9.5> on input line 248.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6.64996> on input line 248.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <4.75> on input line 248.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9.5> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 248.
+[3
+
+
+]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1289,135 +1335,71 @@ LaTeX Warning: Reference `tab:first-deriv' on page 5 undefined on input line 284
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-Overfull \hbox (8.83965pt too wide) in paragraph at lines 304--304
+Overfull \hbox (8.83965pt too wide) in paragraph at lines 266--266
  []|$\U/eur/m/n/10.5 ^^L[]$| 
  []
 
 
-Overfull \hbox (8.27248pt too wide) in paragraph at lines 304--305
+Overfull \hbox (8.27248pt too wide) in paragraph at lines 266--267
  []|$\U/eur/m/n/10.5 ^^M[]$| 
  []
 
 
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 7 undefined on input line 306.
+LaTeX Warning: Reference `fig:exp2_plot_equal' on page 4 undefined on input line 268.
+
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.5> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 269.
+
+LaTeX Warning: Reference `fig:exp2_plot_time_inc' on page 4 undefined on input line 273.
 
 
-LaTeX Warning: Reference `fig:exp1_plot_time_inc' on page 7 undefined on input line 308.
+LaTeX Warning: Reference `fig:exp2_plot_time_dec' on page 4 undefined on input line 278.
 
 
-LaTeX Warning: Reference `fig:exp1_plot_time_dec' on page 7 undefined on input line 310.
+LaTeX Warning: Reference `fig:exp2_plot_mid_ext' on page 4 undefined on input line 283.
 
 
-LaTeX Warning: Reference `fig:exp1_plot_time_mid_ext' on page 7 undefined on input line 312.
-
-
-Overfull \hbox (10.6413pt too wide) in alignment at lines 299--315
-[] [] [] [] [] [] [] [] 
+Overfull \hbox (14.62466pt too wide) in alignment at lines 261--286
+ [] [] [] [] [] [] [] [] 
  []
 
-[7
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(72.2698pt, 469.75539pt, 72.2698pt)
-* v-part:(T,H,B)=(72.2698pt, 650.43037pt, 72.2698pt)
-* \paperwidth=614.295pt
-* \paperheight=794.96999pt
-* \textwidth=469.75539pt
-* \textheight=650.43037pt
-* \oddsidemargin=-0.00018pt
-* \evensidemargin=-0.00018pt
-* \topmargin=-40.20018pt
-* \headheight=15.2pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=95.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 8 undefined on input line 335.
-
-
-LaTeX Warning: Reference `tab:errorbar-equal-nc' on page 8 undefined on input line 335.
-
-
-LaTeX Warning: Reference `fig:exp1_plot_time_inc' on page 8 undefined on input line 338.
-
-
-LaTeX Warning: Reference `tab:errorbar-time-inc-nc' on page 8 undefined on input line 338.
-
-
-LaTeX Warning: Reference `fig:exp1_plot_time_dec' on page 8 undefined on input line 341.
-
-
-LaTeX Warning: Reference `tab:errorbar-time-dec-nc' on page 8 undefined on input line 341.
-
-
-LaTeX Warning: Reference `fig:exp1_plot_time_mid_ext' on page 8 undefined on input line 344.
-
-
-LaTeX Warning: Reference `tab:errorbar-mid-ext-nc' on page 8 undefined on input line 344.
-
-[8
+[4
 
 
 
 
 ]
-<Figures/midpoint_plot.pdf, id=94, 2726.185pt x 2779.38374pt>
+<Figures/midpoint_plot.pdf, id=42, 2674.99374pt x 2380.895pt>
 File: Figures/midpoint_plot.pdf Graphic file (type pdf)
 <use Figures/midpoint_plot.pdf>
-Package pdftex.def Info: Figures/midpoint_plot.pdf  used on input line 355.
-(pdftex.def)             Requested size: 469.72665pt x 478.89288pt.
-
-LaTeX Warning: Reference `fig:summary-table-exp1-nc' on page 9 undefined on input line 358.
-
-[9
+Package pdftex.def Info: Figures/midpoint_plot.pdf  used on input line 294.
+(pdftex.def)             Requested size: 469.7228pt x 418.07973pt.
+AED endfloat: Processing end Figures and Tables [5
 
 
- <./Figures/midpoint_plot.pdf>] AED endfloat: Processing end Figures and Tables [10] (./section_trial2.aux)
+ <./Figures/midpoint_plot.pdf>] (./section_trial2.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `section_trial2.out' has not changed.
-(rerunfilecheck)             Checksum: 539407C61238C423C5863A954889A191;456.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 Package logreq Info: Writing requests to 'section_trial2.run.xml'.
 \openout1 = `section_trial2.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35364 strings out of 477035
- 673917 string characters out of 5826645
- 1425441 words of memory out of 5000000
- 55828 multiletter control sequences out of 15000+600000
- 629159 words of font info for 170 fonts, out of 8000000 for 9000
+ 35263 strings out of 477035
+ 671817 string characters out of 5826645
+ 1424822 words of memory out of 5000000
+ 55742 multiletter control sequences out of 15000+600000
+ 590705 words of font info for 141 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,15n,106p,1279b,1729s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
-
-{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on section_trial2.pdf (10 pages, 280893 bytes).
+ 99i,16n,106p,1232b,1729s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/euler/eurm10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></Users/sebastiansciarra/Library/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on section_trial2.pdf (5 pages, 170239 bytes).
 PDF statistics:
- 193 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 117 PDF objects out of 1000 (max. 8388607)
+ 81 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
+ 18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

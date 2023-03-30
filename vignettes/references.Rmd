@@ -1,0 +1,197 @@
+---
+shorttitle        : "Measurement timing"
+format          : "pandoc"
+header-includes:
+  - \usepackage{nccmath}
+  - \usepackage{caption}
+  - \usepackage{textcomp} #for copyright symbol on title page
+  - \usepackage{longtable}
+  - \usepackage{makecell}
+  - \usepackage[section]{placeins}
+  - \usepackage{setspace}
+  - \usepackage{biblatex}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{xcolor}
+  - \usepackage{amsthm} 
+  - \usepackage{amsmath} ##needed for argmax
+  - \usepackage{bm}  #thicker bold in math 
+  - \DeclareMathOperator*{\argmax}{arg\,max}
+  - \usepackage{setspace} #needed to doublespace caption text (using \doublespacing)
+  - \usepackage[labelfont = {bf, up}]{caption} 
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{upgreek}  #required for non-italicized Greek letters
+  - \usepackage{subcaption}
+  - \captionsetup[figure]{labelfont={normalfont, bf}, singlelinecheck=false, labelsep=newline}
+  - \DeclareCaptionFont{figCaptionFont}{\fontfamily{phv}\doublespacing} #sets caption font to sans serif font of Helvetica 
+  - \DeclareCaptionFont{figCaptionSize}{\fontsize{11pt}{13.2pt}\selectfont} #set caption font size to footnote 
+  - \DeclareCaptionFont{tabCaptionSize}{\small} #caption size for table title
+  - \DeclareCaptionFont{figCaptionStyle}{\textup}  #set caption font to non-italicized font  
+  - \DeclareCaptionLabelSeparator{captionSep}{\newline} #separates figure label and figure title with required white space
+  - \captionsetup[figure]{labelfont={figCaptionStyle, bf}, font = {figCaptionFont,figCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \captionsetup[table]{labelfont={tabCaptionSize, bf}, font = {figCaptionFont, tabCaptionSize, figCaptionStyle}, labelsep = captionSep, justification= raggedright}
+  - \newenvironment{helvenv}{\fontfamily{phv}\selectfont}{}
+  - \raggedbottom #ensures text starts from top of page and any white space is at the botom
+
+#both are needed to change font type of table footnotes
+  - \usepackage{anyfontsize}
+  - \AtBeginEnvironment{ThreePartTable}{\fontfamily{phv} \fontsize{10.5pt}{12pt}\selectfont} 
+  - \AtBeginEnvironment{tablenotes}{\fontsize{9.5pt}{11.4pt}\selectfont} 
+
+#environment numbering 
+  - \setcounter{section}{0} 
+  - \makeatletter \renewcommand\thesection{}\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection} \makeatother
+
+#set table line widths 
+  - \setlength\cmidrulewidth{1pt} #line thickness of lines within table and in multi-row headers
+  - \setlength\lightrulewidth{1pt} #line thickness of bottom line in header 
+
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{example}[theorem]{Example}
+  - \renewcommand\theadfont{} #sets cell font to be same as table font 
+  
+  #set figure title text
+  - \newcommand{\figurefootnote}{\raggedright\linespread{2}\fontfamily{phv}\fontsize{9.5pt}{11.4pt}\selectfont \textit{Note. }}
+  
+  #modifies heading levels of 4-5 to follow apa7
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+  
+  
+author: 
+  - name          : "Sebastian Sciarra "
+    affiliation   : "1"
+    corresponding : yes    
+    email         : "ssciarra@uoguelph.ca"
+affiliation: 
+  - id            : "1"
+    institution   : "University of Guelph"
+keywords          : "measurement timing, nonlinear "
+wordcount         : "5554 words"
+floatsintext      : yes
+linkcolor         : blue
+figsintext        : yes 
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+numbersections    : yes
+linenumbers       : yes
+mask              : no
+draft             : no
+documentclass     : "apa7"
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+classoption       : "man"
+output            : papaja::apa6_pdf
+keep_tex: true
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: dissertation_references.bib
+---
+
+```{r package_loading, include=F}
+#load packages
+library(easypackages)
+packages <- c('devtools','tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'nonlinSims','papaja', 'ggbrace', 'cowplot')
+libraries(packages)
+load_all()
+```
+
+```{r knitting_setup, echo=F, message = F, warning = F}
+#import raw data files (needed for computing variances)
+exp_1_raw <- convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
+  
+exp_2_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_2_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "sample_size"), factor)
+
+exp_3_raw <-convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+#unfiltered data 
+param_summary_exp_1 <- readRDS(file = 'data/uf_param_summary_exp_1.RData')
+param_summary_exp_2 <- readRDS(file = 'data/uf_param_summary_exp_2.RData')
+param_summary_exp_3 <- readRDS(file = 'data/uf_param_summary_exp_3.RData')
+
+#create analytical versions of summary data + converts vars to sds
+exp_1_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_1, exp_num = '1')
+exp_2_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_2, exp_num = '2')
+exp_3_analytical <- generate_likert_days_data_sets(summary_data = param_summary_exp_3, exp_num = '3')
+
+combined_analytical_exp_1 <- rbind(exp_1_analytical$likert, exp_1_analytical$days)
+combined_analytical_exp_2 <- rbind(exp_2_analytical$likert, exp_2_analytical$days)
+combined_analytical_exp_3 <- rbind(exp_3_analytical$likert, exp_3_analytical$days)
+
+#create condition summary data sets 
+cond_summary_exp_1 <- compute_condition_summary(param_summary_data = combined_analytical_exp_1, facet_var = 'measurement_spacing', 
+                          ind_vars = c('number_measurements', 'measurement_spacing', 'midpoint'))
+cond_summary_exp_2 <- compute_condition_summary(param_summary_data = combined_analytical_exp_2, facet_var = 'measurement_spacing', 
+                  ind_vars = c('number_measurements', 'measurement_spacing', 'sample_size'))
+
+cond_summary_exp_3 <- compute_condition_summary(param_summary_data = combined_analytical_exp_3, facet_var = 'time_structuredness', 
+                          ind_vars = c('number_measurements', 'sample_size', 'time_structuredness'))
+```
+
+```{r pre_knitting_setup_unfiltered, echo=F, eval=F, include=F}
+#code should be computed before knitting to decrease knitting time 
+#load data from experiments
+exp_1 <- read_csv(file = 'data/exp_1_data.csv')
+exp_2 <- read_csv(file = 'data/exp_2_data.csv')
+exp_3 <- read_csv(file = 'data/exp_3_data.csv')
+
+#compute parameter summary statistics  
+param_summary_exp_1 <- compute_parameter_summary(data = exp_1, exp_num = 1)
+param_summary_exp_2 <- compute_parameter_summary(data = exp_2, exp_num = 2)
+param_summary_exp_3 <- compute_parameter_summary(data = exp_3, exp_num = 3)
+
+#necessary factor conversions 
+param_summary_exp_1$number_measurements <- factor(param_summary_exp_1$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_1$midpoint <- factor(param_summary_exp_1$midpoint, levels = c(80, 180,280))
+
+param_summary_exp_2$number_measurements <- factor(param_summary_exp_2$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_2$sample_size <- factor(param_summary_exp_2$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+param_summary_exp_3$number_measurements <- factor(param_summary_exp_3$number_measurements, levels = c(5, 7, 9,11))
+param_summary_exp_3$sample_size <- factor(param_summary_exp_3$sample_size, levels = c(30, 50, 100, 200, 500, 1000))
+
+#write data sets 
+#save parameter summary files as RData files so that metadata are correctly stored (e.g., factor levels, variable types)
+saveRDS(object = param_summary_exp_1, file = 'data/uf_param_summary_exp_1.RData')
+saveRDS(object = param_summary_exp_2, file = 'data/uf_param_summary_exp_2.RData')
+saveRDS(object = param_summary_exp_3, file = 'data/uf_param_summary_exp_3.RData')
+```
+
+@liu2021a
+
+# References
+
+```{=tex}
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+```
+::: {#refs custom-style="Bibliography"}
+:::
+
+```{=tex}
+\endgroup
+```
