@@ -147,9 +147,9 @@ center_beta_fixed_data <- function(summary_data) {
   #code needed for modifications to beta; because midpoint is manipulated, the pop_value column is set to zero (centered value)
   beta_fixed_data <- summary_data %>%
     filter(parameter == 'beta_fixed')%>%
-    mutate(estimate = pop_value - estimate, #centers all beta_fixed estimates on zero
-           lower_ci = pop_value - lower_ci,
-           upper_ci = pop_value - upper_ci,
+    mutate(estimate =  estimate - pop_value, #centers all beta_fixed estimates on zero
+           lower_ci = lower_ci - pop_value,
+           upper_ci = upper_ci - pop_value,
            lower_ci_90 = pop_value - lower_ci_90,
            upper_ci_90 = pop_value - upper_ci_90,
            pop_value = 0) #needed so that pop_value on plot is zero
