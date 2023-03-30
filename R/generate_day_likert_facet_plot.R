@@ -345,7 +345,7 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
 
     scale_linetype_manual(name = shape_legend_title, values = rev(c('dotted', 'dashed', 'longdash', 'solid'))),
 
-<<<<<<< HEAD
+
     scale_fill_manual(name = 'Is Biased?',
                      values = c('black', 'white'),
                      labels = c('No', 'Yes'), drop = FALSE), #set drop =FALSE s that unused levels are included
@@ -353,8 +353,8 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
     #order = 1))
     scale_color_manual(name = 'Is Precise?',
                       breaks = c("0", "1"),
-                      values = c('black', '#8cb9e3'),
-=======
+                      values = c('black', '#8cb9e3')),
+
     scale_fill_manual(name = 'Is Unbiased?',
                       values = c('black', 'white'),
                       labels = c('Yes', 'No'), drop = FALSE), #set drop =FALSE s that unused levels are included
@@ -363,7 +363,7 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
     scale_color_manual(name = 'Is Precise?',
                        breaks = c("0", "1"),
                        values = c('black', '#8cb9e3'),
->>>>>>> origin/master
+
                        labels = c('Yes', 'No'), drop = FALSE,
                        guide = guide_legend(order = 2)),
 
