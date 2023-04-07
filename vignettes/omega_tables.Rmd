@@ -1,0 +1,53 @@
+---
+title: "Omega tables"
+output: pdf_document
+header-includes:
+  - \usepackage{upgreek}
+date: "2023-04-06"
+---
+
+```{r setup, include=FALSE}
+
+library(easypackages)
+packages <- c('tidyverse', 'RColorBrewer', 'parallel', 'data.table', 'kableExtra', 'ggtext', 'egg', 'ggbrace', 'cowplot', 'nonlinSimsAnalysis', 'nonlinSims', 'knitr', 'devtools')
+libraries(packages)
+
+exp_1_raw <- nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_1_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "measurement_spacing", "midpoint"), factor)
+
+exp_3_raw <-nonlinSimsAnalysis:::convert_raw_var_to_sd(raw_data = read_csv('data/exp_3_data.csv')) %>%
+  mutate_at(.vars = c("number_measurements", "time_structuredness", "sample_size"), factor)
+
+```
+
+
+
+```{r echo=F}
+print_bias_var_omega_table(exp_data = exp_1_raw, target_col = 'measurement_spacing', target_value = 'equal', 
+ind_vars = c('number_measurements', 'midpoint'), 
+ind_var_acronyms = c('NM', 'NC', 'NM x NC'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Equal Spacing in Experiment 1',
+footnote = '\\\\textit{Note. }NM = number of measurements $\\\\in$ \\\\{5, 7, 9, 11\\\\}, NC = nature of change (population value set for $\\\\upbeta_{fixed}$ $\\\\in$ \\\\{80, 180, 280\\\\}), NM x NC = interaction between number of measurements and population value set for $\\\\upbeta_{fixed}$. $\\\\upbeta_{fixed}$ = fixed-effect days-to-halfway elevation parameter,
+           $\\\\upgamma_{fixed}$ = fixed-effect triquarter-halfway delta parameter, 
+           $\\\\upbeta_{random}$ = random-effect days-to-halfway elevation parameter, and 
+           $\\\\upgamma_{random}$ = random-effect triquarter-halfway delta parameter.', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp1_plot_equal}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp1_plot_equal}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp1_plot_equal}D)'))
+
+
+
+
+print_bias_var_omega_table(exp_data = exp_3_raw, target_col = 'time_structuredness', target_value = 'fast_response', 
+ind_vars = c('number_measurements', 'sample_size'), 
+ind_var_acronyms = c('NM', 'S', 'NM x S'), 
+caption = 'Partial $\\upomega^2$ Values for Manipulated Variables With Time-Unstructured Data Characterized by a Slow Response Rate With a Model Using Definition Variables in Experiment 3',
+footnote = 'NM = number of measurements (5, 7, 9, 11), S = sample size (30, 50, 100, 200, 500, 100), NM x S = interaction between number of measurements and sample size.', 
+parameter_labels = c('$\\upbeta_{fixed}$ (Figure \\ref{fig:exp3_plot_days_def}A)',
+                     '$\\upbeta_{random}$ (Figure \\ref{fig:exp3_plot_days_def}B)',
+                     '$\\upgamma_{fixed}$ (Figure \\ref{fig:exp3_plot_days_def}C)',
+                     '$\\upgamma_{random}$ (Figure \\ref{fig:exp3_plot_days_def}D)'))
+
+
+```

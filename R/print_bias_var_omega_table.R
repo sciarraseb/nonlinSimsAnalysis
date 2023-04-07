@@ -64,7 +64,7 @@ assemble_bias_var_omega_table <- function(exp_data,
   #bias_var_omega_table <-  left_join(x = pop_deviation, y = med_abs_deviation, by = 'Parameter')
 
   #update with latex code
-  med_abs_deviation$Parameter <- parameter_labels
+  med_abs_deviation$parameter <- parameter_labels
 
   return(med_abs_deviation)
 }
@@ -75,6 +75,10 @@ compute_day_param_omega_squared <- function(exp_data,
                                             target_col, target_value, dv_var = 'med_abs_deviation') {
 
   #create analytical data
+  if (is.na(target_col)) {
+
+
+    }
   long_param_data <- generate_long_param_data(exp_data = exp_data, target_col = target_col, target_value = target_value)
   analytical_data <- compute_var_bias_cols(long_param_data = long_param_data, ind_vars = ind_vars)
   #compute regression
@@ -84,15 +88,23 @@ compute_day_param_omega_squared <- function(exp_data,
                                                 param = param, ind_vars = ind_vars)
   #setup variables
   num_rows <- nrow(lm_output) - 1
-  omega_squared_values <- lapply(X = 1:num_rows, FUN = compute_ind_omega_squared, constant_terms_list = constant_terms_list,
-                                 lm_output = lm_output)
 
-  omega_output <- c(param, omega_squared_values)
+  param_partial_omega <- compute_ind_omega_squared(row_num = 1, lm_output = lm_output, constant_terms_list = constant_terms_list)
+
+  #format partial omega wide
+  param_partial_omega$parameter <- param
+  param_partial_omega_wide <- param_partial_omega %>% pivot_wider(names_from = 'effect',values_from = 'partial_omega')
+
+
+  #omega_squared_values <- lapply(X = 1:num_rows, FUN = compute_ind_omega_squared, constant_terms_list = constant_terms_list,
+  #                               lm_output = lm_output)
+
+  #omega_output <- c(param, omega_squared_values)
 
   #format output to be table ready
-  table_ready_output <- format_regression_output(omega_output = omega_output)
+  #table_ready_output <- format_regression_output(omega_output = omega_output)
 
-  return(table_ready_output)
+  return(param_partial_omega_wide)
 }
 
 format_regression_output <- function(omega_output) {
@@ -127,6 +139,30 @@ compute_constant_terms <- function(lm_output, analytical_data, param, ind_vars){
     mean()
 
   residuals_row <- which(rownames(lm_output) == 'Residuals')
+  MS_effects <- lm_output$Mean.Sq[1:(residuals_row - 1)]
+  df_effects <- lm_output$Df[1:(residuals_row - 1)]
+  MSE <-  lm_output$Mean.Sq[residuals_row]
+  #cell size x df_effect_a x df_effect_b
+  denominator <- lm_output$Df[1:(residuals_row-1)]*mean_cell_size
+
+  return(list('cell_size' = mean_cell_size,
+              'residuals_row' = residuals_row,
+              'MS_effects' = MS_effects,
+              'df_effects' = df_effects,
+              'MSE' = MSE,
+              'denominator' = denominator))
+}
+
+compute_constant_terms_orig <- function(lm_output, analytical_data, param, ind_vars){
+
+  mean_cell_size <- analytical_data %>%
+    filter(parameter == param) %>%
+    group_by(across(.cols = c(ind_vars))) %>%
+    summarize(cell_size = n()) %>%
+    pull(cell_size) %>%
+    mean()
+
+  residuals_row <- which(rownames(lm_output) == 'Residuals')
   MSE <-  lm_output$Mean.Sq[residuals_row]
   #cell size x df_effect_a x df_effect_b
   denominator <- prod(lm_output$Df[1:(residuals_row - 2)] + 1)*mean_cell_size
@@ -140,16 +176,15 @@ compute_constant_terms <- function(lm_output, analytical_data, param, ind_vars){
 compute_ind_omega_squared <- function(row_num, lm_output, constant_terms_list) {
 
   #terms that differ across each effect
-  MS_effect <- lm_output$Mean.Sq[row_num]
-  df_effect <- lm_output$Df[row_num]
-  sigma_effect <- df_effect*(MS_effect - constant_terms_list$MSE)/constant_terms_list$denominator
+  sigma_effect <- constant_terms_list$df_effects*(constant_terms_list$MS_effects - constant_terms_list$MSE)/constant_terms_list$denominator
 
   partial_omega_squared <- sigma_effect/(sigma_effect + constant_terms_list$MSE)
 
   #extract effect name
   effect_name <- rownames(lm_output)[row_num]
 
-  return(c(effect_name, partial_omega_squared))
+  return(data.frame('effect' = rownames(lm_output)[1:(nrow(lm_output)- 1)],
+                    'partial_omega' = partial_omega_squared))
 }
 
 compute_regression <- function(param, analytical_data, dv_var = 'med_abs_deviation', ind_vars) {
@@ -188,9 +223,18 @@ compute_var_bias_cols <- function(long_param_data, ind_vars = c('number_measurem
 generate_long_param_data <- function(exp_data, target_col, target_value) {
 
   #extract data for measurement spacing condition for day-unit parameters
-  exp_data_filtered <- exp_data %>%
-    filter(!!sym(target_col) == target_value) %>%
-    select(c(locate_ivs(exp_data), midpoint),  matches('beta|gamma'))
+  if(is.na(target_col)) {
+    exp_data_filtered <- exp_data %>%
+     # filter(!!sym(target_col) == target_value) %>%
+      select(c(locate_ivs(exp_data), midpoint),  matches('beta|gamma'))
+  }
+
+  else{
+    exp_data_filtered <- exp_data %>%
+      filter(!!sym(target_col) == target_value) %>%
+      select(c(locate_ivs(exp_data), midpoint),  matches('beta|gamma'))
+  }
+
 
   #create placeholder dataframe with population values; needed to left_join() in next pipe
   pop_values <- data.frame('gamma_fixed' = 20,

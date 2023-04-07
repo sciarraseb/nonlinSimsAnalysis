@@ -351,20 +351,13 @@ create_legend <- function(shape_legend_title, fill_legend_title, x_axis_name) {
                      labels = c('No', 'Yes'), drop = FALSE), #set drop =FALSE s that unused levels are included
 
     #order = 1))
-    scale_color_manual(name = 'Is Precise?',
-                      breaks = c("0", "1"),
-                      values = c('black', '#8cb9e3')),
-
-    scale_fill_manual(name = 'Is Unbiased?',
-                      values = c('black', 'white'),
-                      labels = c('Yes', 'No'), drop = FALSE), #set drop =FALSE s that unused levels are included
 
     #order = 1))
     scale_color_manual(name = 'Is Precise?',
                        breaks = c("0", "1"),
                        values = c('black', '#8cb9e3'),
 
-                       labels = c('Yes', 'No'), drop = FALSE,
+                       labels = c('Yes', 'No'), drop = FALSE,#set drop =FALSE s that unused levels are included
                        guide = guide_legend(order = 2)),
 
     guides(shape = guide_legend(order = 1,  override.aes = list(fill = "black")),
