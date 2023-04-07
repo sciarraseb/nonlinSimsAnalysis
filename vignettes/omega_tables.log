@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.1)  6 APR 2023 21:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.1)  6 APR 2023 22:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/private/var/folders/jd/040j2c_s7jlgd0tqzr3lqptc0000gn/T/Rtmp8pEPeY/preview-1
-404b53f6403e.dir/omega_tables.tex
+**/private/var/folders/jd/040j2c_s7jlgd0tqzr3lqptc0000gn/T/RtmplvU2Wi/preview-1
+5da167b5ae68.dir/omega_tables.tex
 
-(/private/var/folders/jd/040j2c_s7jlgd0tqzr3lqptc0000gn/T/Rtmp8pEPeY/preview-14
-04b53f6403e.dir/omega_tables.tex
+(/private/var/folders/jd/040j2c_s7jlgd0tqzr3lqptc0000gn/T/RtmplvU2Wi/preview-15
+da167b5ae68.dir/omega_tables.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (/usr/local/texlive/2022/texmf-dist/tex/latex
 /base/article.cls
@@ -634,80 +634,85 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
-)
+) [1
+
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 98.
+(Font)              <10> on input line 100.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 98.
+(Font)              <7> on input line 100.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 98.
+(Font)              <5> on input line 100.
 
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 1 undefined on input lin
-e 104.
-
-
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 1 undefined on input lin
-e 105.
-
-
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 1 undefined on input lin
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
 e 106.
 
 
-LaTeX Warning: Reference `fig:exp1_plot_equal' on page 1 undefined on input lin
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
 e 107.
 
 
-LaTeX Warning: Reference `fig:exp3_plot_days_def' on page 1 undefined on input 
-line 124.
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 108.
 
 
-LaTeX Warning: Reference `fig:exp3_plot_days_def' on page 1 undefined on input 
-line 125.
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 109.
 
 
-LaTeX Warning: Reference `fig:exp3_plot_days_def' on page 1 undefined on input 
-line 126.
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 129.
 
 
-LaTeX Warning: Reference `fig:exp3_plot_days_def' on page 1 undefined on input 
-line 127.
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 130.
 
-[1
 
-{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./omeg
-a_tables.aux)
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 131.
+
+
+LaTeX Warning: Reference `fig:exp1_plot_equal' on page 2 undefined on input lin
+e 132.
+
+[2
+
+] (./omega_tables.aux)
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
- ) 
+ )
+(\end occurred inside a group at level 1)
+
+### semi simple group (level 1) entered at line 90 (\begingroup)
+### bottom level 
 Here is how much of TeX's memory you used:
- 14964 strings out of 478268
- 238321 string characters out of 5846348
- 579976 words of memory out of 5000000
- 32836 multiletter control sequences out of 15000+600000
- 517807 words of font info for 101 fonts, out of 8000000 for 9000
+ 14962 strings out of 478268
+ 238283 string characters out of 5846348
+ 577040 words of memory out of 5000000
+ 32835 multiletter control sequences out of 15000+600000
+ 517724 words of font info for 100 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,11n,77p,1103b,349s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/lo
-cal/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/20
-22/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-d
-ist/fonts/enc/dvips/lm/lm-rm.enc}</usr/local/texlive/2022/texmf-dist/fonts/type
-1/public/amsfonts/euler/eurm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/ty
-pe1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
-/lm/lmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.p
-fb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/lo
-cal/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive
-/2022/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2022/texmf-
-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts
-/type1/public/lm/lmsy10.pfb>
-Output written on omega_tables.pdf (1 page, 143849 bytes).
+ 74i,11n,77p,1103b,371s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-maths
+y.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/lo
+cal/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texliv
+e/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</usr/local/texlive/2022/texmf-d
+ist/fonts/type1/public/amsfonts/euler/eurm10.pfb></usr/local/texlive/2022/texmf
+-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/font
+s/type1/public/lm/lmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/pub
+lic/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr1
+2.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr
+/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texli
+ve/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/te
+xmf-dist/fonts/type1/public/lm/lmsy10.pfb>
+Output written on omega_tables.pdf (2 pages, 143807 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
- 4 named destinations out of 1000 (max. 500000)
+ 68 PDF objects out of 1000 (max. 8388607)
+ 45 compressed objects within 1 object stream
+ 5 named destinations out of 1000 (max. 500000)
  24577 words of extra memory for PDF output out of 24883 (max. 10000000)
 

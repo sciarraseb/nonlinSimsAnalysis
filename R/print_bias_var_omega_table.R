@@ -27,7 +27,7 @@ print_bias_var_omega_table <- function(exp_data, target_col, target_value,
        caption = caption) %>%
   column_spec(column = 1, width = '6cm') %>%
   #header
-  add_header_above(header = c(' ' = 1, 'Effect' = 3)) %>%
+  add_header_above(header = c(' ' = 1, 'Effect' = ncol(bias_var_table) - 1)) %>%
   #footnotes
   footnote(escape = F, threeparttable = T, general_title = '',
            general = footnote) %>%
@@ -74,11 +74,6 @@ compute_day_param_omega_squared <- function(exp_data,
                                             ind_vars = c('number_measurements', 'midpoint'), param,
                                             target_col, target_value, dv_var = 'med_abs_deviation') {
 
-  #create analytical data
-  if (is.na(target_col)) {
-
-
-    }
   long_param_data <- generate_long_param_data(exp_data = exp_data, target_col = target_col, target_value = target_value)
   analytical_data <- compute_var_bias_cols(long_param_data = long_param_data, ind_vars = ind_vars)
   #compute regression
@@ -142,8 +137,10 @@ compute_constant_terms <- function(lm_output, analytical_data, param, ind_vars){
   MS_effects <- lm_output$Mean.Sq[1:(residuals_row - 1)]
   df_effects <- lm_output$Df[1:(residuals_row - 1)]
   MSE <-  lm_output$Mean.Sq[residuals_row]
-  #cell size x df_effect_a x df_effect_b
-  denominator <- lm_output$Df[1:(residuals_row-1)]*mean_cell_size
+  #cell size x df_effect_a x df_effect_b for fixed effects
+  ##identify row names that do not include a colon (:) so that only main effects degrees of freedom are taken
+  target_rows <- subset(lm_output, !grepl(":|Residuals", rownames(lm_output)))
+  denominator <- prod(target_rows$Df)*mean_cell_size
 
   return(list('cell_size' = mean_cell_size,
               'residuals_row' = residuals_row,
@@ -180,11 +177,13 @@ compute_ind_omega_squared <- function(row_num, lm_output, constant_terms_list) {
 
   partial_omega_squared <- sigma_effect/(sigma_effect + constant_terms_list$MSE)
 
+  partial_omega_squared_rounded <- format(round(as.numeric(partial_omega_squared), digits = 2), nsmall = 2)
+
   #extract effect name
   effect_name <- rownames(lm_output)[row_num]
 
   return(data.frame('effect' = rownames(lm_output)[1:(nrow(lm_output)- 1)],
-                    'partial_omega' = partial_omega_squared))
+                    'partial_omega' = partial_omega_squared_rounded))
 }
 
 compute_regression <- function(param, analytical_data, dv_var = 'med_abs_deviation', ind_vars) {
